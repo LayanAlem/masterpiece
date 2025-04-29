@@ -1,0 +1,328 @@
+:root {
+    --primary: #92400b;
+    --primary-dark: #793509;
+    --secondary: #b85c38;
+    --accent: #e09132;
+    --light: #f7f1e5;
+    --dark: #2d2424;
+    --white: #ffffff;
+}
+
+/* General styles */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar styles */
+.navbar-brand {
+    font-weight: bold;
+    color: var(--primary) !important;
+    font-size: 1.5rem;
+}
+
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.nav-link {
+    color: var(--dark) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+/* Services Header Section */
+.services-header-section {
+    padding: 60px 0;
+    background-color: var(--light);
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--dark);
+}
+
+.section-description {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Service Categories Section */
+.service-categories-section {
+    padding: 60px 0;
+    background-color: #fafaf7;
+}
+
+.category-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.category-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.category-card.hover {
+    transform: translateY(-7px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.category-image {
+    flex: 0 0 40%;
+    position: relative;
+    overflow: hidden;
+    min-height: 250px;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.category-card:hover .category-image img {
+    transform: scale(1.1);
+}
+
+.category-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.5) 0%,
+        rgba(0, 0, 0, 0)
+    );
+    transition: background 0.3s ease;
+}
+
+.category-content {
+    flex: 1;
+    padding: 25px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.category-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--dark);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.category-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.category-description {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.subcategories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.subcategory-tag {
+    background-color: var(--light);
+    color: var(--primary);
+    font-size: 0.85rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.subcategory-tag:hover {
+    background-color: var(--primary);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.explore-btn {
+    align-self: flex-start;
+    background: linear-gradient(135deg, var(--primary) 0%, #b85c38 100%);
+    color: var(--white);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(146, 64, 11, 0.2);
+}
+
+.explore-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(135deg, #b85c38 0%, var(--primary) 100%);
+    transition: width 0.4s ease;
+    z-index: -1;
+    border-radius: 30px;
+}
+
+.explore-btn:hover {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(146, 64, 11, 0.3);
+}
+
+.explore-btn:hover::after {
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+    .category-card {
+        flex-direction: column;
+    }
+
+    .category-image {
+        flex: 0 0 200px;
+        position: relative;
+    }
+
+    .category-overlay {
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(0, 0, 0, 0)
+        );
+    }
+}
+
+/* Seasonal recommendations styles */
+.recommendations-section {
+    padding: 60px 0 80px;
+    background-color: var(--white);
+}
+
+.recommendations-section .section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.season-card {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    height: 220px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.season-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.season-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.season-card:hover img {
+    transform: scale(1.1);
+}
+
+.season-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.8) 20%,
+        rgba(0, 0, 0, 0.2)
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    color: var(--white);
+    transition: background 0.3s ease;
+}
+
+.season-card:hover .season-overlay {
+    background: linear-gradient(
+        to top,
+        rgba(146, 64, 11, 0.8) 20%,
+        rgba(146, 64, 11, 0.3)
+    );
+}
+
+.season-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.season-months {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Responsive styles for seasonal cards */
+@media (max-width: 992px) {
+    .season-card {
+        height: 180px;
+    }
+}
+
+@media (max-width: 576px) {
+    .season-title {
+        font-size: 1.1rem;
+    }
+
+    .season-months {
+        font-size: 0.8rem;
+    }
+}

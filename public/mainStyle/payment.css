@@ -1,0 +1,780 @@
+:root {
+    --primary: #92400b;
+    --primary-dark: #793509;
+    --secondary: #b85c38;
+    --accent: #e09132;
+    --light: #f7f1e5;
+    --dark: #2d2424;
+    --white: #ffffff;
+    --light: #f8f9fa;
+    --white: #ffffff;
+    --green: #28a745;
+    --red: #dc3545;
+    --blue: #0d6efd;
+    --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+    --dark-gray: #495057;
+    --medium-gray: #ced4da;
+    --light-gray: #e9ecef;
+}
+
+/* Container and General Layout */
+.booking-container {
+    max-width: 1000px; /* Increased from 800px for more width */
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Progress Steps */
+.progress-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.step-number {
+    width: 45px; /* Increased from 40px */
+    height: 45px; /* Increased from 40px */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 1.1rem; /* Added for better visibility */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Added for depth */
+}
+
+.step.active .step-number {
+    background-color: var(--primary);
+    color: white;
+}
+
+.step.completed .step-number {
+    background-color: var(--primary);
+    color: white;
+}
+
+.step.inactive .step-number {
+    background-color: #dee2e6;
+    color: #6c757d;
+}
+
+.step-label {
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+.step.active .step-label {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.step-connector {
+    width: 180px; /* Increased for more width */
+    height: 4px; /* Thicker line */
+    background-color: #dee2e6;
+    margin: 0 25px; /* More spacing between steps */
+    position: relative;
+    border-radius: 2px; /* Slightly rounded edges */
+}
+
+.step-connector.active {
+    background-color: var(--primary);
+}
+
+/* Form Card */
+.form-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    margin-bottom: 25px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #212529;
+}
+
+/* Booking Summary */
+.booking-summary {
+    border-bottom: 1px solid var(--light-gray);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.tour-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.tour-name {
+    font-weight: 500;
+}
+
+.tour-date {
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.pricing-table {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.pricing-table tr {
+    height: 32px;
+}
+
+.pricing-table td {
+    padding: 5px 0;
+}
+
+.pricing-table .td-right {
+    text-align: right;
+}
+
+.pricing-label {
+    color: var(--dark-gray);
+}
+
+.pricing-value {
+    font-weight: 500;
+}
+
+.discount {
+    color: var(--green);
+}
+
+.total-row {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--light-gray);
+}
+
+/* Payment Section */
+.payment-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.secure-icon {
+    color: var(--green);
+}
+
+.payment-methods {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.payment-method {
+    flex: 1;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.payment-method.selected {
+    border-color: var(--primary);
+    background-color: rgba(230, 126, 34, 0.05);
+}
+
+.payment-method:hover {
+    border-color: var(--primary-light);
+}
+
+.payment-method-radio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--medium-gray);
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.payment-method.selected .payment-method-radio {
+    border-color: var(--primary);
+}
+
+.payment-method.selected .payment-method-radio::after {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary);
+}
+
+.payment-method-label {
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+/* Card Information */
+.card-info-section {
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+}
+
+.form-control {
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    padding: 12px 15px;
+    height: auto;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(230, 126, 34, 0.25);
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.card-icons {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.card-icon {
+    width: 35px;
+    height: 22px;
+    background-color: var(--light-gray);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.card-icon.visa {
+    background-color: #1a1f71;
+    color: white;
+}
+
+.card-icon.mastercard {
+    background-color: #eb001b;
+    color: white;
+}
+
+/* Loyalty Points */
+.loyalty-section {
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.loyalty-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.loyalty-title {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.available-points {
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.loyalty-option {
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.loyalty-earn {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.loyalty-earn i {
+    color: var(--green);
+}
+
+/* Terms Checkbox */
+.terms-checkbox {
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.terms-text {
+    font-size: 0.9rem;
+}
+
+.terms-text a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.terms-text a:hover {
+    text-decoration: underline;
+}
+
+/* Submit Button */
+.submit-button,
+.proceed-button {
+    width: 100%;
+    background-color: var(--blue);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 12px;
+    font-weight: 500;
+    margin-top: 20px;
+    transition: var(--transition);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none !important; /* Added to ensure no underline */
+}
+
+.submit-button:hover,
+.proceed-button:hover {
+    background-color: #0b5ed7;
+    color: white;
+}
+
+/* Confirmation Message */
+.confirmation-message {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+/* Payment Icons */
+.payment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.payment-icons .icon {
+    width: 40px;
+    height: 25px;
+    background-color: var(--light-gray);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--dark-gray);
+}
+
+/* Continue Shopping */
+.continue-shopping {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.continue-shopping a {
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.continue-shopping a:hover {
+    color: var(--primary);
+}
+
+/* Checkout Page Specific Styles */
+
+/* Checkout Headers */
+.checkout-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.checkout-subtitle {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Booking Item Card Styling */
+.booking-item-card {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.booking-item-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.activity-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.activity-info {
+    flex: 1;
+    padding-left: 15px;
+}
+
+.activity-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.booking-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.booking-meta-item {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+.booking-meta-item i {
+    margin-right: 5px;
+    color: var(--primary);
+}
+
+.booking-price {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.booking-actions {
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-action {
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-remove {
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+    background-color: transparent;
+}
+
+.btn-remove:hover {
+    background-color: #ffebee;
+}
+
+.btn-view {
+    color: #555;
+    border: 1px solid #d4d4d4;
+    background-color: transparent;
+}
+
+.btn-view:hover {
+    background-color: #f5f5f5;
+    border-color: #aaa;
+}
+
+/* Checkout Sidebar Styling */
+.checkout-sidebar {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    padding: 25px;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.checkout-summary-table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.checkout-summary-table td {
+    padding: 12px 0;
+    color: #555;
+    font-size: 15px;
+}
+
+.checkout-summary-table .label {
+    font-weight: 500;
+}
+
+.checkout-summary-table .value {
+    text-align: right;
+    font-weight: 600;
+}
+
+.checkout-summary-table .discount-value {
+    color: #4caf50;
+}
+
+.checkout-summary-table .total-row td {
+    padding-top: 15px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    border-top: 1px solid #ddd;
+}
+
+/* Empty Cart Styling */
+.empty-cart {
+    text-align: center;
+    padding: 60px 0;
+}
+
+.empty-cart-icon {
+    font-size: 70px;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.empty-cart h3 {
+    font-size: 24px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.empty-cart p {
+    color: #777;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.explore-button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.explore-button:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+/* Booking Status Badge */
+.booking-status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background-color: #fff8e1;
+    color: #f57c00;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991px) {
+    .checkout-sidebar {
+        margin-top: 30px;
+        position: static;
+    }
+
+    .step-connector {
+        width: 100px; /* Adjusted for tablet */
+    }
+}
+
+@media (max-width: 767px) {
+    .progress-steps {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .step-connector {
+        width: 80px; /* Adjusted for smaller tablets */
+        height: 3px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    .payment-methods {
+        flex-direction: column;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .activity-image {
+        width: 80px;
+        height: 80px;
+    }
+
+    .activity-name {
+        font-size: 18px;
+    }
+
+    .booking-price {
+        font-size: 18px;
+    }
+
+    .checkout-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 575px) {
+    .step-label {
+        font-size: 0.85rem;
+    }
+
+    .step-number {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+
+    .step-connector {
+        width: 60px; /* Adjusted for mobile */
+        height: 3px;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+    }
+
+    .tour-info {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .booking-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .booking-meta-item {
+        margin-right: 0;
+    }
+
+    .booking-actions {
+        flex-direction: column;
+    }
+
+    .btn-action {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -1,0 +1,368 @@
+:root {
+    --primary: #92400b;
+    --primary-dark: #793509;
+    --secondary: #b85c38;
+    --accent: #e09132;
+    --light: #f7f1e5;
+    --dark: #2d2424;
+    --white: #ffffff;
+}
+
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar styles */
+.navbar-brand {
+    font-weight: bold;
+    color: var(--primary) !important;
+    font-size: 1.5rem;
+}
+
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.nav-link {
+    color: var(--dark) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+/* Breadcrumb styles */
+.breadcrumb-section {
+    padding: 15px 0;
+    background-color: var(--light);
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.breadcrumb {
+    margin-bottom: 0;
+}
+
+.breadcrumb-item a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: var(--dark);
+}
+
+/* Filter section styles */
+.filter-section {
+    padding: 20px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.filter-btn {
+    background-color: var(--white);
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 8px 16px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 140px;
+}
+
+.filter-btn:hover {
+    border-color: var(--primary);
+}
+
+.filter-btn i {
+    margin-left: 8px;
+}
+
+.more-filters-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.view-btn {
+    border: 1px solid #e5e5e5;
+    background-color: var(--white);
+    color: #666;
+    padding: 8px 12px;
+}
+
+.view-btn.active {
+    background-color: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+/* Tour card styles */
+.tours-section {
+    padding: 40px 0;
+}
+
+.tour-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    margin-bottom: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tour-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.15);
+}
+
+.tour-image {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tour-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.tour-card:hover .tour-image img {
+    transform: scale(1.1);
+}
+
+.favorite-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 24px;
+    z-index: 10;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+    transition: all 0.3s;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+.location-tag {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--white);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tour-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tour-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--dark);
+}
+
+.tour-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.tour-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rating i {
+    color: #ffba08;
+}
+
+.rating-score {
+    font-weight: 600;
+}
+
+.reviews-count {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.duration {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #666;
+}
+
+.duration i {
+    color: var(--primary);
+}
+
+.tour-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.per-person {
+    color: #666;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.book-btn {
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.book-btn:hover {
+    background-color: var(--primary-dark);
+    color: var(--white);
+}
+
+/* Seasonal recommendations styles */
+.recommendations-section {
+    padding: 40px 0 60px;
+    background-color: var(--white);
+}
+
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--dark);
+}
+
+.season-card {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    height: 220px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.season-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.season-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.season-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.2));
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    padding: 20px;
+    color: var(--white);
+}
+
+.season-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.season-months {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .tour-image {
+        height: 180px;
+    }
+
+    .season-card {
+        height: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-section .d-flex {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .filter-btn {
+        min-width: auto;
+        flex: 1;
+    }
+
+    .view-buttons {
+        width: 100%;
+        margin-top: 10px;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 576px) {
+    .tour-title {
+        font-size: 1.1rem;
+    }
+
+    .tour-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+}
