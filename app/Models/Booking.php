@@ -33,23 +33,28 @@ class Booking extends Model
     }
 
     /**
-     * Get the participants for this booking
+     * Get the activity associated with this booking (one-to-many)
      */
-    public function participants()
+    public function activity()
     {
-        return $this->hasMany(ActivityParticipant::class);
+        return $this->belongsTo(Activity::class);
     }
-
-    // Simplified relationship without the pivot attributes
+    
+    /**
+     * Get activities associated with this booking (many-to-many)
+     * This is needed for backward compatibility with existing code
+     */
     public function activities()
     {
         return $this->belongsToMany(Activity::class, 'activity_booking');
     }
 
-    // Use this for direct access to the pivot table
-    public function activityBookings()
+    /**
+     * Get the participants for this booking
+     */
+    public function participants()
     {
-        return $this->hasMany(ActivityBooking::class);
+        return $this->hasMany(ActivityParticipant::class);
     }
 
     public function payments()
@@ -80,11 +85,14 @@ class Booking extends Model
     protected static function booted()
     {
         static::creating(function ($booking) {
-            do {
-                $bookingNumber = 'JT-' . now()->format('Ymd') . '-' . rand(1000, 9999);
-            } while (Booking::where('booking_number', $bookingNumber)->exists());
-
-            $booking->booking_number = $bookingNumber;
+            // Only generate booking number if one wasn't provided
+            if (empty($booking->booking_number)) {
+                do {
+                    $bookingNumber = 'JT-' . now()->format('Ymd') . '-' . rand(1000, 9999);
+                } while (Booking::where('booking_number', $bookingNumber)->exists());
+                
+                $booking->booking_number = $bookingNumber;
+            }
         });
     }
 }

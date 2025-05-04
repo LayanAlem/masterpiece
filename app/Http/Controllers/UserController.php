@@ -79,6 +79,7 @@ class UserController extends Controller
             'phone' => 'nullable|string|max:20',
             'password' => 'required|string|min:8|confirmed',
             'loyalty_points' => 'nullable|integer|min:0',
+            'referral_balance' => 'nullable|numeric|min:0',
             'referred_by' => 'nullable|exists:users,id',
         ]);
 
@@ -89,6 +90,7 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->password = Hash::make($request->password);
         $user->loyalty_points = $request->loyalty_points ?? 0;
+        $user->referral_balance = $request->referral_balance ?? 0;
         $user->referred_by = $request->referred_by;
         $user->referral_code = Str::random(10);
         $user->save();
@@ -149,6 +151,7 @@ class UserController extends Controller
             'phone' => 'nullable|string|max:20',
             'password' => 'nullable|string|min:8|confirmed',
             'loyalty_points' => 'nullable|integer|min:0',
+            'referral_balance' => 'nullable|numeric|min:0',
             'referred_by' => [
                 'nullable',
                 'exists:users,id',
@@ -170,6 +173,7 @@ class UserController extends Controller
         }
 
         $user->loyalty_points = $request->loyalty_points ?? $user->loyalty_points;
+        $user->referral_balance = $request->referral_balance ?? $user->referral_balance;
         $user->referred_by = $request->referred_by;
         $user->save();
 
@@ -285,5 +289,46 @@ class UserController extends Controller
 
         return redirect()->back()
             ->with('success', 'Referral code regenerated successfully.');
+    }
+
+    /**
+     * Update user's referral balance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateReferralBalance(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'operation' => 'required|in:add,subtract,set',
+        ]);
+
+        $user = User::findOrFail($id);
+        $amount = (float) $request->amount;
+        $operation = $request->operation;
+
+        switch ($operation) {
+            case 'add':
+                $user->referral_balance += $amount;
+                $message = "Added \${$amount} to {$user->first_name}'s referral balance.";
+                break;
+            case 'subtract':
+                if ($amount > $user->referral_balance) {
+                    return redirect()->back()->with('error', "Cannot subtract \${$amount}. User only has \${$user->referral_balance} available.");
+                }
+                $user->referral_balance -= $amount;
+                $message = "Subtracted \${$amount} from {$user->first_name}'s referral balance.";
+                break;
+            case 'set':
+                $user->referral_balance = max(0, $amount);
+                $message = "Set {$user->first_name}'s referral balance to \${$amount}.";
+                break;
+        }
+
+        $user->save();
+
+        return redirect()->back()->with('success', $message);
     }
 }

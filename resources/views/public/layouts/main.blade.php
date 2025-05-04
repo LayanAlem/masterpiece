@@ -19,6 +19,12 @@
 
     @stack('styles')
 
+
+    <style>
+        body {
+            padding-top: 60px;
+        }
+    </style>
 </head>
 
 <body>

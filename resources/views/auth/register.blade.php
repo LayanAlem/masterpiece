@@ -48,21 +48,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 10px;
             margin: 0;
+            min-height: 100vh;
         }
 
         .authentication-wrapper {
             display: flex;
             flex-basis: 100%;
-            min-height: 100vh;
             width: 100%;
             align-items: center;
             justify-content: center;
+            padding: 10px 0;
+            overflow-y: auto;
+            max-height: 100vh;
         }
 
         .authentication-inner {
-            max-width: 500px;
+            max-width: 850px;
             width: 100%;
         }
 
@@ -72,14 +75,16 @@
             border-radius: 1.25rem;
             background-color: var(--white);
             overflow: hidden;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
         }
 
         .card-body {
-            padding: 2.5rem;
+            padding: 2rem;
         }
 
         .app-brand {
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             display: flex;
             justify-content: center;
         }
@@ -105,13 +110,13 @@
         .auth-title {
             color: var(--dark);
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             font-size: 1.25rem;
         }
 
         .auth-subtitle {
             color: #697a8d;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .form-control {
@@ -131,7 +136,7 @@
         .form-label {
             color: var(--dark);
             font-weight: 500;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .form-password-toggle .input-group-text {
@@ -165,7 +170,7 @@
         .auth-footer-links {
             display: flex;
             justify-content: center;
-            margin-top: 1.5rem;
+            margin-top: 0.75rem;
         }
 
         .auth-link {
@@ -191,8 +196,8 @@
             border-color: #ffcacc;
             color: #dc3545;
             border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
         }
 
         .text-center {
@@ -208,10 +213,42 @@
             border-color: #d9dee3;
         }
 
+        /* Fix border radius on all input groups */
+        .input-group .input-group-text:first-child {
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        .input-group .form-control:not(:first-child):not(:last-child) {
+            border-radius: 0;
+        }
+
+        .input-group .form-control:first-child {
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        .input-group .form-control:last-child {
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        .input-group .input-group-text:last-child {
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        /* Override for merged input groups */
+        .input-group-merge .form-control:not(:last-child) {
+            border-right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
         .file-upload {
             position: relative;
             width: 100%;
-            height: 200px;
+            height: 120px;
             border: 2px dashed #d9dee3;
             border-radius: 0.5rem;
             display: flex;
@@ -220,7 +257,7 @@
             flex-direction: column;
             overflow: hidden;
             background-color: #f6f9ff;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -240,47 +277,161 @@
         }
 
         .file-upload-icon {
-            font-size: 3rem;
+            font-size: 2rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .file-upload-text {
             color: #697a8d;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
         }
 
         .preview-image {
             max-width: 100%;
-            max-height: 160px;
+            max-height: 100px;
             display: none;
+        }
+
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: rgba(247, 241, 229, 0.4);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) rgba(247, 241, 229, 0.4);
         }
 
         @media (max-width: 768px) {
             .card-body {
-                padding: 1.5rem;
+                padding: 1.25rem;
+            }
+
+            .file-upload {
+                height: 100px;
             }
         }
 
         .row {
             display: flex;
             flex-wrap: wrap;
-            margin-right: -0.75rem;
-            margin-left: -0.75rem;
+            margin-right: -0.5rem;
+            margin-left: -0.5rem;
         }
 
         .col-md-6 {
             flex: 0 0 50%;
             max-width: 50%;
-            padding-right: 0.75rem;
-            padding-left: 0.75rem;
+            padding-right: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 0.75rem !important;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem !important;
+        }
+
+        .mb-5 {
+            margin-bottom: 1.25rem !important;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .authentication-inner {
+                max-width: 700px;
+            }
         }
 
         @media (max-width: 768px) {
+            .authentication-inner {
+                max-width: 100%;
+                padding: 0 15px;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .file-upload {
+                height: 100px;
+            }
+
             .col-md-6 {
                 flex: 0 0 100%;
                 max-width: 100%;
             }
+
+            .auth-title {
+                font-size: 1.2rem;
+            }
+
+            .app-brand-text {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 1.25rem;
+            }
+
+            .auth-subtitle {
+                margin-bottom: 0.75rem;
+            }
+
+            .mb-5 {
+                margin-bottom: 0.75rem !important;
+            }
+
+            .file-upload {
+                height: 80px;
+            }
+
+            .file-upload-icon {
+                font-size: 1.5rem;
+            }
+
+            .file-upload-text {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Fix border radius on password inputs */
+        .input-group-merge .form-control:not(:last-child) {
+            border-right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .input-group-merge .input-group-text:first-child {
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        .input-group-merge .input-group-text:last-child {
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
         }
     </style>
 </head>
@@ -345,59 +496,81 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                        id="email" name="email" value="{{ old('email') }}"
-                                        placeholder="Enter your email" required autocomplete="email" />
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                            id="email" name="email" value="{{ old('email') }}"
+                                            placeholder="Enter your email" required autocomplete="email" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-phone"></i></span>
+                                        <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                                            id="phone" name="phone" value="{{ old('phone') }}"
+                                            placeholder="Enter your phone number" autocomplete="tel" />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Phone Number</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bx bx-phone"></i></span>
-                                    <input type="text" class="form-control @error('phone') is-invalid @enderror"
-                                        id="phone" name="phone" value="{{ old('phone') }}"
-                                        placeholder="Enter your phone number" autocomplete="tel" />
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group input-group-merge">
+                                        <span class="input-group-text"><i class="bx bx-lock-alt"></i></span>
+                                        <input type="password" id="password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            name="password" required autocomplete="new-password"
+                                            placeholder="Create a password" />
+                                        <span class="input-group-text cursor-pointer toggle-password"><i
+                                                class="bx bx-hide"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="password-confirm">Confirm Password</label>
+                                    <div class="input-group input-group-merge">
+                                        <span class="input-group-text"><i class="bx bx-lock"></i></span>
+                                        <input type="password" id="password-confirm" class="form-control"
+                                            name="password_confirmation" required autocomplete="new-password"
+                                            placeholder="Confirm your password" />
+                                        <span class="input-group-text cursor-pointer toggle-confirm"><i
+                                                class="bx bx-hide"></i></span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="mb-4">
-                                <label for="profile_image" class="form-label">Profile Image</label>
-                                <div class="file-upload">
-                                    <input type="file" id="profile_image" name="profile_image"
-                                        class="@error('profile_image') is-invalid @enderror" accept="image/*"
-                                        onchange="previewImage(this)" />
-                                    <i class="bx bx-upload file-upload-icon"></i>
-                                    <p class="file-upload-text">Click to upload or drag and drop</p>
-                                    <img id="preview" class="preview-image" src="#" alt="Preview" />
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="referral_code" class="form-label">Referral Code (Optional)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bx bx-gift"></i></span>
+                                        <input type="text"
+                                            class="form-control @error('referral_code') is-invalid @enderror"
+                                            id="referral_code" name="referral_code"
+                                            value="{{ old('referral_code') }}"
+                                            placeholder="Enter referral code (if any)" />
+                                    </div>
+                                    <div class="form-text text-muted">
+                                        If someone referred you, enter their code here
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="mb-3 form-password-toggle">
-                                <label class="form-label" for="password">Password</label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text"><i class="bx bx-lock-alt"></i></span>
-                                    <input type="password" id="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="new-password" placeholder="Create a password" />
-                                    <span class="input-group-text cursor-pointer toggle-password"><i
-                                            class="bx bx-hide"></i></span>
-                                </div>
-                            </div>
-
-                            <div class="mb-3 form-password-toggle">
-                                <label class="form-label" for="password-confirm">Confirm Password</label>
-                                <div class="input-group input-group-merge">
-                                    <span class="input-group-text"><i class="bx bx-lock"></i></span>
-                                    <input type="password" id="password-confirm" class="form-control"
-                                        name="password_confirmation" required autocomplete="new-password"
-                                        placeholder="Confirm your password" />
-                                    <span class="input-group-text cursor-pointer toggle-confirm"><i
-                                            class="bx bx-hide"></i></span>
+                                <div class="col-md-6 mb-4">
+                                    <label for="profile_image" class="form-label">Profile Image</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="profile_image" name="profile_image"
+                                            class="@error('profile_image') is-invalid @enderror" accept="image/*"
+                                            onchange="previewImage(this)" />
+                                        <i class="bx bx-upload file-upload-icon"></i>
+                                        <p class="file-upload-text">Click to upload or drag and drop</p>
+                                        <img id="preview" class="preview-image" src="#" alt="Preview" />
+                                    </div>
                                 </div>
                             </div>
 

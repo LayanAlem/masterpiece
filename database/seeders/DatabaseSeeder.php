@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Seeding core data...');
 
+        // 0. Seed settings (including referral code settings)
+        $this->call(SettingsSeeder::class);
+
         // 1. Seed admin users
         $this->call(AdminSeeder::class);
 

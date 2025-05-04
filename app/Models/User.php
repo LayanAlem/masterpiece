@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\ReferralService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,8 +23,10 @@ class User extends Authenticatable
         'profile_image',
         'phone',
         'loyalty_points',
+        'used_points',
         'referral_code',
         'referred_by',
+        'referral_balance',
     ];
 
     protected $hidden = [
@@ -35,7 +38,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'loyalty_points' => 'integer',
+        'referral_balance' => 'decimal:2',
     ];
+
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Generate a referral code for new users
+        static::creating(function (User $user) {
+            if (empty($user->referral_code) && !empty($user->first_name)) {
+                $referralService = new ReferralService();
+                $user->referral_code = $referralService->generateReferralCode($user);
+            }
+        });
+    }
 
     public function referrer()
     {
@@ -94,5 +114,99 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Activity::class, 'wishlists')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the total number of points earned from referrals
+     *
+     * @return float
+     */
+    public function getReferralPointsAttribute(): float
+    {
+        // Calculate referral rewards at $10 per referral
+        // Limited to 5 referrals maximum
+        $referralCount = min($this->referrals->count(), (int) Setting::get('referral_max_uses', 5));
+        $rewardAmount = (float) Setting::get('referral_reward_amount', 10);
+
+        return $referralCount * $rewardAmount;
+    }
+
+    /**
+     * Get the number of remaining referrals allowed
+     *
+     * @return int
+     */
+    public function getRemainingReferralsAttribute(): int
+    {
+        $maxReferrals = (int) Setting::get('referral_max_uses', 5);
+        return max(0, $maxReferrals - $this->referrals->count());
+    }
+
+    /**
+     * Get available (unused) loyalty points
+     *
+     * @return int
+     */
+    public function getAvailablePointsAttribute(): int
+    {
+        return max(0, $this->loyalty_points - $this->used_points);
+    }
+
+    /**
+     * Get the tier/generation of this user in the referral system
+     *
+     * @return int
+     */
+    public function getReferralTierAttribute(): int
+    {
+        $referralService = new ReferralService();
+        return $referralService->getReferralTier($this);
+    }
+
+    /**
+     * Get all users referred by this user at a specific tier
+     *
+     * @param int $tier
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getTierReferrals(int $tier = 1)
+    {
+        $referralService = new ReferralService();
+        return $referralService->getReferralsByTier($this, $tier);
+    }
+
+    /**
+     * Check if this user should continue to receive multi-level referral rewards
+     *
+     * @return bool
+     */
+    public function canContinueReferralIteration(): bool
+    {
+        $referralService = new ReferralService();
+        return $referralService->continueToIterate($this);
+    }
+
+    /**
+     * Get multi-tier referral rewards for this user
+     *
+     * @return array
+     */
+    public function getMultiLevelReferralRewards(): array
+    {
+        $referralService = new ReferralService();
+        $rewards = [];
+        $maxTiers = (int) Setting::get('referral_max_tiers', 3);
+
+        for ($tier = 1; $tier <= $maxTiers; $tier++) {
+            $referrals = $this->getTierReferrals($tier);
+            $rewardAmount = $referralService->calculateTierReward($tier);
+            $rewards[$tier] = [
+                'count' => $referrals->count(),
+                'rate' => $rewardAmount,
+                'total' => $referrals->count() * $rewardAmount
+            ];
+        }
+
+        return $rewards;
     }
 }

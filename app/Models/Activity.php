@@ -197,13 +197,13 @@ class Activity extends Model
      */
     public function getRemainingCapacityAttribute()
     {
-        // Count the number of bookings for this activity
-        $bookedCount = $this->bookings()
+        // Sum the ticket counts for all non-cancelled bookings
+        $bookedTickets = $this->bookings()
             ->whereNotIn('status', ['cancelled', 'refunded'])
-            ->count();
+            ->sum('ticket_count');
 
-        // Return the difference between capacity and the number of bookings
-        return max(0, $this->capacity - $bookedCount);
+        // Return the difference between capacity and the total number of tickets
+        return max(0, $this->capacity - $bookedTickets);
     }
 
     /**

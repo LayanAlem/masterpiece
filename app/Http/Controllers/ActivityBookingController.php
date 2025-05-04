@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use App\Services\PointsService;
 
 class ActivityBookingController extends Controller
 {
@@ -24,8 +25,6 @@ class ActivityBookingController extends Controller
     {
         // Log the request for debugging
         Log::info('Booking request data:', $request->all());
-
-        // Authentication is now handled by middleware, so we can remove the explicit check here
 
         // Validate the request
         $validator = Validator::make($request->all(), [
@@ -45,6 +44,7 @@ class ActivityBookingController extends Controller
             'payment_info.expiry_date' => 'nullable|string',
             'payment_info.cvv' => 'nullable|string',
             'payment_info.cardholder_name' => 'nullable|string',
+            'loyalty_points_used' => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -68,6 +68,65 @@ class ActivityBookingController extends Controller
 
             Log::info('Found activity:', ['id' => $activity->id, 'name' => $activity->name]);
 
+            // Check if there's enough capacity for this booking
+            $requestedTickets = $request->quantity;
+            if ($requestedTickets > $activity->remaining_capacity) {
+                Log::warning('Booking capacity exceeded', [
+                    'activity_id' => $activity->id,
+                    'requested_tickets' => $requestedTickets,
+                    'remaining_capacity' => $activity->remaining_capacity
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Not enough seats available for this activity',
+                    'details' => "You requested {$requestedTickets} seats, but only {$activity->remaining_capacity} seats are available."
+                ], 400);
+            }
+
+            // Process loyalty points if any
+            $pointsUsed = $request->loyalty_points_used ?? 0;
+            $pointsValueInDollars = 0;
+
+            // Verify user has enough points if they're using points
+            if ($pointsUsed > 0) {
+                // For backward compatibility, check both available_points and loyalty_points
+                $availablePoints = $user->available_points ?? ($user->loyalty_points - $user->used_points);
+
+                if ($availablePoints < $pointsUsed) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Not enough loyalty points available',
+                    ], 400);
+                }
+
+                // Calculate points value in dollars (1 point = $0.1)
+                $pointsService = app(PointsService::class);
+                $pointsValueInDollars = $pointsService->pointsToDollars($pointsUsed);
+                Log::info('Using loyalty points:', ['points' => $pointsUsed, 'value' => $pointsValueInDollars]);
+
+                // Use points immediately when applied to a booking
+                $pointsService->usePoints($user, $pointsUsed, 'booking_discount');
+            }
+
+            // Calculate final price after discounts and points redemption
+            $subtotal = $request->total;
+            $discountAmount = $request->discount_amount ?? 0;
+            $finalPrice = $subtotal - $discountAmount - $pointsValueInDollars;
+
+            // Ensure final price is not negative
+            $finalPrice = max(0, $finalPrice);
+
+            // Calculate loyalty points earned (1 point per $1 spent after discounts and point redemption)
+            $pointsEarned = max(0, round($finalPrice));
+            Log::info('Points calculation:', [
+                'subtotal' => $subtotal,
+                'discount' => $discountAmount,
+                'points_value' => $pointsValueInDollars,
+                'final_price' => $finalPrice,
+                'points_earned' => $pointsEarned,
+            ]);
+
             // Create the booking with activity_id as a foreign key
             $booking = \App\Models\Booking::create([
                 'user_id' => $user->id,
@@ -75,11 +134,11 @@ class ActivityBookingController extends Controller
                 'booking_number' => 'JT-' . now()->format('Ymd') . '-' . rand(1000, 9999),
                 'ticket_count' => $request->quantity,
                 'total_price' => $request->total,
-                'discount_amount' => 0,
-                'status' => 'confirmed',
+                'discount_amount' => $discountAmount + $pointsValueInDollars, // Include points redemption in discount
+                'status' => 'pending', // Changed from 'confirmed' to 'pending'
                 'payment_status' => 'paid',
-                'loyalty_points_earned' => ceil($request->total / 10),
-                'loyalty_points_used' => 0,
+                'loyalty_points_earned' => $pointsEarned, // Store points to be added later
+                'loyalty_points_used' => $pointsUsed,
                 'notes' => $request->notes ?? null,
             ]);
 
@@ -107,10 +166,15 @@ class ActivityBookingController extends Controller
                 'booking_id' => $booking->id,
                 'payment_method' => $request->payment_info['payment_method'] ?? 'credit_card',
                 'transaction_id' => 'TXN-' . uniqid(),
-                'amount' => $request->total,
+                'amount' => $finalPrice, // Amount after discounts and point redemption
                 'currency' => 'USD',
                 'status' => 'completed',
             ]);
+
+            // IMPORTANT CHANGE: Points are now stored in booking but NOT added to user account
+            // They will be added when admin marks booking as completed
+
+            // We're already using points if user redeemed them, but we don't add earned points yet
 
             // Commit the transaction
             \DB::commit();
@@ -121,7 +185,12 @@ class ActivityBookingController extends Controller
                 'success' => true,
                 'message' => 'Activity booked successfully!',
                 'booking_id' => $booking->id,
-                'booking_number' => $booking->booking_number
+                'booking_number' => $booking->booking_number,
+                'data' => [
+                    'loyalty_points_earned' => $pointsEarned,
+                    'loyalty_points_used' => $pointsUsed,
+                    'final_price' => $finalPrice
+                ]
             ], 201);
         } catch (\Exception $e) {
             // Roll back the transaction on error

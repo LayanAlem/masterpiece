@@ -15,12 +15,13 @@
     --red: #dc2626;
     --blue: #1d4ed8;
     --border-radius: 12px;
-    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05),
+        0 4px 6px -2px rgba(0, 0, 0, 0.025);
     --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     background-color: #f8f9fa;
     color: var(--dark);
     line-height: 1.6;
@@ -63,7 +64,7 @@ body {
 }
 
 .nav-link:after {
-    content: '';
+    content: "";
     position: absolute;
     width: 0;
     height: 2px;
@@ -74,11 +75,13 @@ body {
     transform: translateX(-50%);
 }
 
-.nav-link:hover:after, .nav-link.active:after {
+.nav-link:hover:after,
+.nav-link.active:after {
     width: 60%;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
     color: var(--primary) !important;
 }
 
@@ -230,7 +233,7 @@ body {
 }
 
 .section-title:after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -473,7 +476,8 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .main-photo, .sub-photo {
+    .main-photo,
+    .sub-photo {
         height: 250px;
         grid-column: 1;
         grid-row: auto;
@@ -523,5 +527,612 @@ body {
     .review-avatar {
         width: 50px;
         height: 50px;
+    }
+}
+
+/* Loyalty Points Section Styles */
+.loyalty-section {
+    background-color: rgba(78, 156, 169, 0.05);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 24px 0;
+    border: 1px solid rgba(78, 156, 169, 0.15);
+}
+
+.loyalty-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.loyalty-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.available-points {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(78, 156, 169, 0.2);
+}
+
+.loyalty-option {
+    margin-bottom: 16px;
+}
+
+.points-slider-container {
+    padding: 8px 0;
+}
+
+.loyalty-earn {
+    font-size: 0.85rem;
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.loyalty-earn i {
+    margin-right: 8px;
+}
+
+.points-selected {
+    font-size: 0.9rem;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+/* Booking Modal Styles */
+.booking-modal .modal-dialog {
+    max-width: 1000px;
+}
+
+.booking-modal .modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 20px 30px;
+}
+
+.modal-body {
+    padding: 0;
+}
+
+.booking-progress {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 30px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.booking-step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+.step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.step-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.booking-step-indicator.active .step-number {
+    background-color: var(--primary);
+    color: white;
+}
+
+.booking-step-indicator.active .step-label {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.booking-step-indicator.completed .step-number {
+    background-color: var(--green);
+    color: white;
+}
+
+.booking-step-indicator:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    right: -50%;
+    width: 100%;
+    height: 2px;
+    background-color: #e9ecef;
+    z-index: 0;
+}
+
+.booking-step-indicator.completed:not(:last-child)::after {
+    background-color: var(--green);
+}
+
+.booking-step {
+    padding: 30px;
+}
+
+/* Payment Container Styles */
+.payment-container {
+    display: flex;
+    gap: 30px;
+}
+
+.booking-summary {
+    flex: 1;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 24px;
+    position: sticky;
+    top: 30px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.tour-info {
+    margin-bottom: 24px;
+}
+
+.tour-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+.tour-date {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.tour-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tour-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pricing-table {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.pricing-table tr {
+    line-height: 2;
+}
+
+.pricing-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.pricing-value {
+    font-weight: 500;
+    text-align: right;
+}
+
+.td-right {
+    text-align: right;
+}
+
+.discount {
+    color: var(--green);
+}
+
+.total-row {
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.total-row td {
+    padding-top: 12px;
+}
+
+.back-button {
+    color: var(--text-muted);
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.back-button:hover {
+    color: var(--primary);
+}
+
+/* Payment Section Styles */
+.payment-section {
+    flex: 1.5;
+}
+
+.card-title {
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.section-divider {
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 20px 0;
+}
+
+.section-divider:before,
+.section-divider:after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.section-divider span {
+    padding: 0 15px;
+}
+
+/* Rewards Styling */
+.rewards-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.reward-option {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+}
+
+.card-hover-effect:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.reward-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.2rem;
+}
+
+.loyalty-icon {
+    background-color: rgba(232, 170, 66, 0.1);
+    color: #e8aa42;
+}
+
+.referral-icon {
+    background-color: rgba(29, 78, 216, 0.1);
+    color: #1d4ed8;
+}
+
+.reward-summary h6 {
+    font-weight: 600;
+}
+
+.points-badge {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+/* Custom Range Slider */
+.custom-range {
+    -webkit-appearance: none;
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    outline: none;
+    transition: var(--transition);
+}
+
+.custom-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.custom-range::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.slider-values {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* Modern Switch Styling */
+.modern-switch .form-check-input {
+    width: 48px;
+    height: 24px;
+    margin-top: 0;
+}
+
+.modern-switch .form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.modern-switch .form-check-label {
+    margin-left: 10px;
+}
+
+/* Reward Earn Info */
+.reward-earn-info {
+    background-color: rgba(21, 128, 61, 0.05);
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid rgba(21, 128, 61, 0.1);
+}
+
+.reward-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(21, 128, 61, 0.1);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+/* Payment Method Selection */
+.payment-methods {
+    margin: 20px 0;
+}
+
+.payment-method-option {
+    flex: 1;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.payment-method-option:not(:last-child) {
+    margin-right: 15px;
+}
+
+.payment-method-option i {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+
+.payment-method-option.selected {
+    background-color: rgba(146, 64, 11, 0.1);
+    border-color: var(--primary);
+}
+
+.payment-method-option.selected i,
+.payment-method-option.selected span {
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.payment-method-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Card Form */
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--primary);
+    opacity: 0.9;
+}
+
+.form-floating > .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.25rem rgba(146, 64, 11, 0.25);
+}
+
+/* Terms Checkbox */
+.terms-checkbox {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.terms-checkbox input {
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.terms-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.terms-text a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.terms-text a:hover {
+    text-decoration: underline;
+}
+
+/* Complete Booking Button */
+.complete-booking-container {
+    background-color: white;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px 30px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+}
+
+.payment-button {
+    background: linear-gradient(to right, var(--primary), var(--primary-light));
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(146, 64, 11, 0.2);
+}
+
+.payment-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(146, 64, 11, 0.3);
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(146, 64, 11, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(146, 64, 11, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(146, 64, 11, 0);
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991px) {
+    .payment-container {
+        flex-direction: column;
+    }
+
+    .booking-summary {
+        position: relative;
+        top: 0;
+        max-height: none;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .booking-modal .modal-dialog {
+        margin: 10px;
+    }
+
+    .booking-step {
+        padding: 20px;
+    }
+
+    .payment-method-option i {
+        font-size: 1.2rem;
+    }
+
+    .payment-method-option span {
+        font-size: 0.9rem;
+    }
+
+    .payment-button {
+        width: 100%;
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 575px) {
+    .booking-progress {
+        padding: 15px;
+    }
+
+    .step-number {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+
+    .step-label {
+        font-size: 0.8rem;
+    }
+
+    .payment-method-option:not(:last-child) {
+        margin-right: 8px;
+    }
+
+    .payment-method-option {
+        padding: 10px;
+    }
+
+    .payment-method-option span {
+        display: none;
+    }
+
+    .payment-method-option i {
+        margin-bottom: 0;
     }
 }

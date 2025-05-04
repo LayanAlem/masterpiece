@@ -12,13 +12,17 @@
                 <div class="d-flex align-items-center justify-content-between p-3">
                     <h5 class="card-header m-0 bg-transparent border-0">User Reviews</h5>
                     <div>
-                        <form method="GET" action="{{ route('reviews.index') }}" class="d-flex">
-                            <input type="text" name="search" class="form-control me-2" placeholder="Search..." value="{{ request('search') }}">
+                        <form method="GET" action="{{ route('admin.reviews.index') }}" class="d-flex">
+                            <input type="text" name="search" class="form-control me-2" placeholder="Search..."
+                                value="{{ request('search') }}">
                             <select name="status" class="form-select me-2">
                                 <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
+                                </option>
+                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved
+                                </option>
+                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected
+                                </option>
                             </select>
                             <button type="submit" class="btn btn-primary">Filter</button>
                         </form>
@@ -47,7 +51,8 @@
                                 <td>{{ $review->user->first_name ?? '' }} {{ $review->user->last_name ?? 'N/A' }}</td>
                                 <td>{{ $review->activity->name ?? 'N/A' }}</td>
                                 <td>
-                                    <span class="badge bg-label-info">#{{ $review->booking ? $review->booking->booking_number : 'N/A' }}</span>
+                                    <span
+                                        class="badge bg-label-info">#{{ $review->booking ? $review->booking->booking_number : 'N/A' }}</span>
                                 </td>
                                 <td>
                                     <div class="rating-stars">
@@ -92,10 +97,9 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                        <form action="{{ route('reviews.update', $review->id) }}" method="POST"
-                                            id="statusForm-{{ $review->id }}" style="display: none;">
+                                        <form action="{{ route('admin.reviews.update-status', $review->id) }}"
+                                            method="POST" id="statusForm-{{ $review->id }}" style="display: none;">
                                             @csrf
-                                            @method('PATCH')
                                             <input type="hidden" name="status" id="status-value-{{ $review->id }}">
                                         </form>
                                     </div>
@@ -108,7 +112,7 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="{{ route('reviews.show', $review->id) }}">
+                                            <a class="dropdown-item" href="{{ route('admin.reviews.show', $review->id) }}">
                                                 <i class="bx bx-show me-1"></i> View
                                             </a>
                                             <button class="dropdown-item delete-btn" type="button" data-bs-toggle="modal"
@@ -183,17 +187,25 @@
                     activityNameDisplay.textContent = activityName;
 
                     // Set the form action to the correct route
-                    deleteForm.action = "{{ route('reviews.destroy', '') }}/" + reviewId;
+                    deleteForm.action = "{{ route('admin.reviews.destroy', '') }}/" + reviewId;
                 });
             });
         });
 
         function updateStatus(reviewId, status) {
+            console.log('Updating review ID:', reviewId, 'to status:', status);
+
             // Set the hidden input value
-            document.getElementById('status-value-' + reviewId).value = status;
+            const statusInput = document.getElementById('status-value-' + reviewId);
+            statusInput.value = status;
+            console.log('Status input value set to:', statusInput.value);
+
+            // Get the form and submit it
+            const form = document.getElementById('statusForm-' + reviewId);
+            console.log('Submitting form with action:', form.action);
 
             // Submit the form
-            document.getElementById('statusForm-' + reviewId).submit();
+            form.submit();
         }
     </script>
 @endsection

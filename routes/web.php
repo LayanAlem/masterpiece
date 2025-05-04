@@ -8,7 +8,8 @@ use App\Http\Controllers\Admin\CategoryTypeController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\Admin\RestaurantController;
-use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Auth;
@@ -108,10 +109,20 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::delete('restaurants/feature/remove', [RestaurantController::class, 'removeFromFeatured'])->name('restaurants.feature.remove');
 
     // Reviews
-    Route::resource('reviews', ReviewController::class);
-    Route::get('reviews-trashed', [ReviewController::class, 'trashed'])->name('reviews.trashed');
-    Route::patch('reviews/{id}/restore', [ReviewController::class, 'restore'])->name('reviews.restore');
-    Route::delete('reviews/{id}/force-delete', [ReviewController::class, 'forceDelete'])->name('reviews.force-delete');
+    Route::resource('reviews', AdminReviewController::class)->names([
+        'index' => 'admin.reviews.index',
+        'create' => 'admin.reviews.create',
+        'store' => 'admin.reviews.store',
+        'show' => 'admin.reviews.show',
+        'edit' => 'admin.reviews.edit',
+        'update' => 'admin.reviews.update',
+        'destroy' => 'admin.reviews.destroy',
+    ]);
+    Route::get('reviews-trashed', [AdminReviewController::class, 'trashed'])->name('admin.reviews.trashed');
+    Route::patch('reviews/{id}/restore', [AdminReviewController::class, 'restore'])->name('admin.reviews.restore');
+    Route::delete('reviews/{id}/force-delete', [AdminReviewController::class, 'forceDelete'])->name('admin.reviews.force-delete');
+    Route::post('reviews/bulk-update', [AdminReviewController::class, 'bulkUpdate'])->name('admin.reviews.bulk-update');
+    Route::post('reviews/{id}/update-status', [AdminReviewController::class, 'updateStatus'])->name('admin.reviews.update-status');
 
     // Activities Trashed
     Route::get('activities-trashed', [ActivityController::class, 'trashed'])->name('activities.trashed');
@@ -129,6 +140,34 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 });
 
+// Admin panel user management routes
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    // User management
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    // User loyalty points
+    Route::post('/users/{id}/points', [UserController::class, 'updatePoints'])->name('users.points.update');
+
+    // User referral code
+    Route::post('/users/{id}/referral-code', [UserController::class, 'regenerateReferralCode'])->name('users.referral.regenerate');
+
+    // User referral balance
+    Route::post('/users/{id}/referral-balance', [UserController::class, 'updateReferralBalance'])->name('users.referral-balance.update');
+
+    // Trashed users
+    Route::get('/users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
+    Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('/users/{id}/force', [UserController::class, 'forceDelete'])->name('users.force-delete');
+
+    // Other admin routes...
+});
+
 // Seasonal routes
 Route::get('/seasonal/{season}', [App\Http\Controllers\SeasonalController::class, 'activities'])->name('seasonal.activities');
 
@@ -140,4 +179,22 @@ Route::middleware('auth')->group(function () {
 });
 
 // Booking routes
-Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store')->middleware('auth');
+// Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store')->middleware('auth');
+
+// User profile and bookings routes
+Route::middleware('auth')->group(function () {
+    // Cancel a booking
+    Route::post('/booking/{booking}/cancel', [App\Http\Controllers\BookingController::class, 'cancel'])->name('booking.cancel');
+});
+
+// User reviews
+Route::middleware(['auth'])->group(function () {
+    Route::get('/reviews', [ReviewController::class, 'index'])->name('reviews.index');
+    Route::get('/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/reviews/{review}', [ReviewController::class, 'show'])->name('reviews.show');
+    Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::post('/reviews/quick', [ReviewController::class, 'quickReview'])->name('reviews.quick');
+});

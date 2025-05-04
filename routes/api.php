@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ActivityBookingController;
+use App\Http\Controllers\API\ActivityBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Activity booking routes
-Route::post('/activity-booking', [ActivityBookingController::class, 'store'])
+Route::post('/activity-booking', action: [ActivityBookingController::class, 'store'])
     ->middleware(['web', 'auth'])
     ->name('api.activity-booking.store');

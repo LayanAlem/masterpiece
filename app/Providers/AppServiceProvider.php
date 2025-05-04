@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\MainCategory;
 use App\Models\Booking;
+use App\Services\ReferralService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Register the ReferralService as a singleton
+        $this->app->singleton(ReferralService::class, function ($app) {
+            return new ReferralService();
+        });
     }
 
     /**

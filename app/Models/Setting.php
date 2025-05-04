@@ -40,5 +40,26 @@ class Setting extends Model
 
         return $setting;
     }
-}
 
+    /**
+     * Initialize default settings if they don't exist
+     * Call this method during seeding or installation
+     */
+    public static function initializeDefaults()
+    {
+        $defaults = [
+            'referral_enabled' => 'true',
+            'referral_max_uses' => '5',
+            'referral_reward_amount' => '10',
+            'referral_code_length' => '8',
+            'loyalty_points_per_dollar' => '1',
+            'loyalty_point_value' => '0.1',
+        ];
+
+        foreach ($defaults as $key => $value) {
+            if (!static::where('key', $key)->exists()) {
+                static::set($key, $value);
+            }
+        }
+    }
+}

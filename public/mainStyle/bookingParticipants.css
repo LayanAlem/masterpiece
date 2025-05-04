@@ -637,3 +637,358 @@
     border-color: var(--primary);
     box-shadow: 0 0 0 0.25rem rgba(146, 64, 14, 0.25);
 }
+
+/* Loyalty Benefits Card */
+.loyalty-benefits-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 20px;
+}
+
+.loyalty-benefits-card .benefits-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.loyalty-benefits-card .benefits-header i {
+    color: var(--primary);
+}
+
+.loyalty-benefits-card .benefits-content {
+    color: #4b5563;
+}
+
+.loyalty-benefits-card .benefits-content p {
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.loyalty-benefits-card .benefits-content small {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+/* Rewards and Discounts Section Styling */
+.rewards-banner {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border: 2px solid rgba(146, 64, 11, 0.2);
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.banner-header {
+    background-color: #92400b;
+    color: white;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 8px 8px 0 0;
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.banner-header i {
+    margin-right: 8px;
+}
+
+.rewards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.reward-card {
+    flex: 1;
+    min-width: 250px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reward-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.loyalty-card {
+    border-left: 4px solid #92400b;
+}
+
+.referral-card {
+    border-left: 4px solid #28a745;
+}
+
+.reward-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.loyalty-card .reward-icon {
+    background-color: rgba(146, 64, 11, 0.1);
+    color: #92400b;
+}
+
+.referral-card .reward-icon {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.reward-info {
+    flex: 1;
+}
+
+.reward-info h5 {
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.reward-info p {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.reward-usage {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.slider-values {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.points-value {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #28a745;
+}
+
+.form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.custom-range {
+    height: 6px;
+}
+
+.custom-range::-webkit-slider-thumb {
+    background: #92400b;
+}
+
+.custom-range::-moz-range-thumb {
+    background: #92400b;
+}
+
+.custom-range::-ms-thumb {
+    background: #92400b;
+}
+
+.reward-info-banner {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reward-info-banner i {
+    font-size: 1.1rem;
+}
+
+/* Form Switch styling */
+.form-switch .form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+}
+
+.form-check-input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
+
+@media (max-width: 768px) {
+    .rewards-container {
+        flex-direction: column;
+    }
+
+    .reward-card {
+        width: 100%;
+    }
+}
+
+/* Payment Rewards Section Styling */
+.payment-rewards-section {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e7e7e7;
+}
+
+.section-divider {
+    position: relative;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.section-divider:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #dee2e6;
+}
+
+.section-divider span {
+    position: relative;
+    display: inline-block;
+    padding: 0 15px;
+    background-color: white;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.payment-rewards-section .section-divider span {
+    background-color: #f8f9fa;
+}
+
+.rewards-options {
+    margin-top: 20px;
+}
+
+.reward-option {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+.reward-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.reward-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+}
+
+.loyalty-icon {
+    background-color: rgba(146, 64, 11, 0.1);
+    color: #92400b;
+}
+
+.referral-icon {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.reward-summary h6 {
+    font-weight: 600;
+    margin-bottom: 3px;
+    font-size: 1rem;
+}
+
+.reward-summary p {
+    color: #6c757d;
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+.reward-controls {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.form-range::-webkit-slider-thumb {
+    background-color: #92400b;
+}
+
+.form-range::-moz-range-thumb {
+    background-color: #92400b;
+}
+
+.discount-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.reward-earn-info {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #fff3cd;
+    border-radius: 6px;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.reward-earn-info i {
+    font-size: 1.1rem;
+    color: #ffc107;
+}
+
+/* Make sure form switch is visible and attractive */
+.form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.form-switch .form-check-input {
+    height: 1.25em;
+    width: 2.5em;
+}
+
+.form-check-label {
+    padding-left: 5px;
+}

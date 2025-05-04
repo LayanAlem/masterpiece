@@ -74,7 +74,7 @@ class ReviewController extends Controller
     {
         $review = Review::onlyTrashed()->findOrFail($id);
         $review->restore();
-        return redirect()->route('reviews.trashed')
+        return redirect()->route('admin.reviews.trashed')
             ->with('success', 'Review restored successfully.');
     }
 
@@ -86,7 +86,7 @@ class ReviewController extends Controller
         $review = Review::onlyTrashed()->findOrFail($id);
         $review->forceDelete();
 
-        redirect()->route('reviews.trashed')
+        return redirect()->route('admin.reviews.trashed')
             ->with('success', 'Review permanently deleted.');
     }
 
@@ -96,7 +96,7 @@ class ReviewController extends Controller
     public function create()
     {
         // This might not be needed in admin panel, as reviews are typically created by users
-        return redirect()->route('reviews.index');
+        return redirect()->route('admin.reviews.index');
     }
 
     /**
@@ -122,15 +122,51 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        $validated = $request->validate([
-            'comment' => 'nullable|string|max:1000',
-            'rating' => 'nullable|integer|min:1|max:5',
-            'status' => 'required|in:pending,approved,rejected',
+        // Log request data for debugging
+        \Log::info('Review update request:', [
+            'review_id' => $review->id,
+            'request_data' => $request->all()
         ]);
 
-        $review->update($validated);
+        // Make status field not required if only updating comment or rating
+        $isStatusOnly = $request->has('status') && !$request->has('comment') && !$request->has('rating');
 
-        return redirect()->route('reviews.index')
+        $rules = [
+            'comment' => 'nullable|string|max:1000',
+            'rating' => 'nullable|integer|min:1|max:5',
+        ];
+
+        // Only add status rule if it's provided
+        if ($request->has('status')) {
+            $rules['status'] = 'required|in:pending,approved,rejected';
+        }
+
+        $validated = $request->validate($rules);
+
+        // Apply validated data or keep existing values
+        $dataToUpdate = [];
+        if (isset($validated['status'])) {
+            $dataToUpdate['status'] = $validated['status'];
+        }
+        if (isset($validated['comment'])) {
+            $dataToUpdate['comment'] = $validated['comment'];
+        }
+        if (isset($validated['rating'])) {
+            $dataToUpdate['rating'] = $validated['rating'];
+        }
+
+        // Log the data that will be updated
+        \Log::info('Updating review with data:', $dataToUpdate);
+
+        $review->update($dataToUpdate);
+
+        // Log the updated review
+        \Log::info('Review updated successfully:', [
+            'review_id' => $review->id,
+            'status' => $review->status
+        ]);
+
+        return redirect()->route('admin.reviews.index')
             ->with('success', 'Review has been updated successfully.');
     }
 
@@ -141,7 +177,7 @@ class ReviewController extends Controller
     {
         $review->delete();
 
-        return redirect()->route('reviews.index')
+        return redirect()->route('admin.reviews.index')
             ->with('success', 'Review has been moved to trash.');
     }
 
@@ -177,5 +213,59 @@ class ReviewController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Bulk update reviews status
+     */
+    public function bulkUpdate(Request $request)
+    {
+        $request->validate([
+            'reviews' => 'required|array',
+            'reviews.*' => 'exists:reviews,id',
+            'action' => 'required|in:approve,reject,delete',
+        ]);
+
+        $reviews = Review::whereIn('id', $request->reviews)->get();
+
+        foreach ($reviews as $review) {
+            if ($request->action === 'approve') {
+                $review->update(['status' => 'approved']);
+            } elseif ($request->action === 'reject') {
+                $review->update(['status' => 'rejected']);
+            } elseif ($request->action === 'delete') {
+                $review->delete();
+            }
+        }
+
+        $actionVerb = $request->action === 'delete' ? 'deleted' : $request->action . 'd';
+        $count = count($request->reviews);
+
+        return redirect()->route('admin.reviews.index')
+            ->with('success', "{$count} " . ($count === 1 ? 'review' : 'reviews') . " {$actionVerb} successfully.");
+    }
+
+    /**
+     * Update the status of a review directly (alternative method)
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $review = Review::findOrFail($id);
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
+        // Log the status update request
+        \Log::info('Direct status update request:', [
+            'review_id' => $id,
+            'new_status' => $validated['status'],
+            'old_status' => $review->status
+        ]);
+
+        $review->update(['status' => $validated['status']]);
+
+        return redirect()->route('admin.reviews.index')
+            ->with('success', 'Review status updated to ' . ucfirst($validated['status']));
     }
 }

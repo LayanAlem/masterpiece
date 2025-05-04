@@ -7,18 +7,7 @@
 @endpush
 
 @section('content')
-    <!-- Breadcrumb Section -->
-    <section class="breadcrumb-section">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('services') }}">Services</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
+    
 
     <!-- Category Header Section -->
     <section class="category-header">

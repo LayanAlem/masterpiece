@@ -10,39 +10,16 @@ class ActivityBooking extends Model
     use HasFactory;
 
     protected $table = 'activity_booking';
+    
+    public $incrementing = true;
 
     protected $fillable = [
-        'user_id',
         'activity_id',
-        'booking_number',
-        'ticket_count',
-        'unit_price',
-        'total_price',
-        'booking_date',
-        'activity_date',
-        'activity_time',
-        'status',
-        'payment_status',
-        'notes'
-    ];
-
-    protected $casts = [
-        'unit_price' => 'decimal:2',
-        'total_price' => 'decimal:2',
-        'booking_date' => 'date',
-        'activity_date' => 'date',
+        'booking_id'
     ];
 
     /**
-     * Get the user that owns the booking
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get the activity associated with this booking
+     * Get the activity associated with this pivot
      */
     public function activity()
     {
@@ -50,10 +27,10 @@ class ActivityBooking extends Model
     }
 
     /**
-     * Get the participants for this booking
+     * Get the booking associated with this pivot
      */
-    public function participants()
+    public function booking()
     {
-        return $this->hasMany(ActivityParticipant::class, 'booking_id');
+        return $this->belongsTo(Booking::class);
     }
 }

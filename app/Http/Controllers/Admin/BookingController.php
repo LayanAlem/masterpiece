@@ -159,9 +159,17 @@ class BookingController extends Controller
                 'status' => 'required|in:pending,confirmed,completed,cancelled',
             ]);
 
+            $oldStatus = $booking->status;
+            $newStatus = $validated['status'];
+
             $booking->update([
-                'status' => $validated['status'],
+                'status' => $newStatus,
             ]);
+
+            // If status is being changed to "completed", add loyalty points to the user
+            if ($oldStatus != 'completed' && $newStatus == 'completed') {
+                $this->processCompletedBookingPoints($booking);
+            }
 
             return redirect()->route('bookings.index')
                 ->with('success', 'Booking status updated successfully.');
@@ -185,15 +193,23 @@ class BookingController extends Controller
             'activity_date.*' => 'date',
         ]);
 
+        $oldStatus = $booking->status;
+        $newStatus = $validated['status'];
+
         // Update booking
         $booking->update([
             'user_id' => $validated['user_id'],
-            'status' => $validated['status'],
+            'status' => $newStatus,
             'payment_status' => $validated['payment_status'],
             'ticket_count' => $validated['ticket_count'],
             'total_price' => $validated['total_price'],
             'discount_amount' => $validated['discount_amount'] ?? 0,
         ]);
+
+        // If status is being changed to "completed", add loyalty points to the user
+        if ($oldStatus != 'completed' && $newStatus == 'completed') {
+            $this->processCompletedBookingPoints($booking);
+        }
 
         // Sync activities with pivot data
         $activities = [];
@@ -230,5 +246,30 @@ class BookingController extends Controller
 
         return redirect()->route('bookings.show', $booking->id)
             ->with('success', 'Booking has been cancelled.');
+    }
+
+    /**
+     * Process loyalty points when a booking is marked as completed
+     * This adds the earned points to the user's account
+     *
+     * @param \App\Models\Booking $booking
+     * @return void
+     */
+    protected function processCompletedBookingPoints($booking)
+    {
+        // Only proceed if there are points to add and the status is now completed
+        if ($booking->loyalty_points_earned <= 0 || $booking->status !== 'completed') {
+            return;
+        }
+
+        $pointsService = app(\App\Services\PointsService::class);
+        $user = $booking->user;
+
+        // Add the points that were calculated when booking was created but not yet added to user account
+        $pointsToAdd = $booking->loyalty_points_earned;
+        $pointsService->addPoints($user, $pointsToAdd, 'booking_completed');
+
+        // Log the points addition
+        \Log::info("Added {$pointsToAdd} loyalty points to user {$user->id} for completed booking {$booking->id}");
     }
 }

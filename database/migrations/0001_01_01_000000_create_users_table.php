@@ -22,8 +22,10 @@ return new class extends Migration
             $table->string('profile_image')->nullable();
             $table->string('phone', 30)->nullable();
             $table->integer('loyalty_points')->default(0);
+            $table->integer(column: 'used_points')->default(0); // Added column for tracking used points
             $table->string('referral_code', 20)->unique();
             $table->foreignId('referred_by')->nullable()->references('id')->on('users');
+            $table->decimal('referral_balance', 8, 2)->default(0); // Added column for referral balance
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

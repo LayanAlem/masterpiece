@@ -425,6 +425,15 @@
                                                     <div class="text-muted small text-truncate">
                                                         {{ $activity ? $activity->location : 'Unknown Location' }}
                                                     </div>
+                                                    <div class="mt-1">
+                                                        <span
+                                                            class="badge {{ $activity->remaining_capacity > 5 ? 'bg-success' : ($activity->remaining_capacity > 0 ? 'bg-warning' : 'bg-danger') }}">
+                                                            <i
+                                                                class="bx {{ $activity->remaining_capacity > 0 ? 'bx-user-check' : 'bx-user-x' }} me-1"></i>
+                                                            {{ $activity->remaining_capacity }} of
+                                                            {{ $activity->capacity }} seats available
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

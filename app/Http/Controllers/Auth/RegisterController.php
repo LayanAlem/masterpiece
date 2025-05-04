@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\ReferralService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -58,6 +58,35 @@ class RegisterController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
             'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'referral_code' => [
+                'nullable',
+                'string',
+                'max:20',
+                function ($attribute, $value, $fail) {
+                    // Skip validation if no referral code provided
+                    if (empty($value)) {
+                        return;
+                    }
+
+                    // Validate referral code format and existence
+                    $referralService = app(ReferralService::class);
+                    if (!$referralService->isValidReferralCode($value)) {
+                        $fail('The provided referral code is invalid.');
+                        return;
+                    }
+
+                    // Check if referral code has reached maximum usage
+                    $referrer = \App\Models\User::where('referral_code', $value)->first();
+                    if ($referrer) {
+                        $maxUses = (int) \App\Models\Setting::get('referral_max_uses', 5);
+                        $currentUses = $referrer->referrals()->count();
+
+                        if ($currentUses >= $maxUses) {
+                            $fail("This referral code has reached its maximum usage limit ($maxUses).");
+                        }
+                    }
+                }
+            ],
         ]);
     }
 
@@ -75,8 +104,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'phone' => $data['phone'] ?? null,
             'password' => Hash::make($data['password']),
-            'referral_code' => Str::random(10),
-            'loyalty_points' => 0
+            'loyalty_points' => 0,
+            'referral_balance' => 0
         ];
 
         // Handle profile image if uploaded
@@ -85,7 +114,15 @@ class RegisterController extends Controller
             $userData['profile_image'] = $imagePath;
         }
 
-        return User::create($userData);
+        // Create the user (referral_code will be automatically generated in the User model boot method)
+        $user = User::create($userData);
+
+        // Apply referral code if provided
+        if (!empty($data['referral_code'])) {
+            app(ReferralService::class)->applyReferralCode($user, $data['referral_code']);
+        }
+
+        return $user;
     }
 
     // Add this method to override the default behavior
