@@ -300,6 +300,19 @@
 
                         <div class="row">
                             <div class="col-md-12">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-semibold">Booking Participants</h6>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bx bx-export me-1"></i> Export Participants
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                                            <li><a class="dropdown-item" href="{{ route('bookings.export-participants', ['id' => $booking->id, 'format' => 'pdf']) }}">
+                                                <i class="bx bx-file-pdf me-2"></i> Export as PDF
+                                            </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-hover table-striped align-middle">
                                         <thead class="table-light">

@@ -61,16 +61,34 @@
 
     <!-- Hidden Places Competition Banner -->
     <section class="competition-section">
-        <div class="container py-5">
+        <div class="container py-4">
             <div class="competition-banner">
-                <div class="row g-0">
-                    <div class="col-md-6 competition-content">
-                        <h2 class="competition-title">Hidden Places Competition</h2>
-                        <p class="competition-text">Share your secret spot in Jordan and win a luxury trip worth $5000!</p>
-                        <a href="#" class="btn btn-light competition-btn">Enter Now</a>
+                <div class="competition-bg">
+                    <div class="competition-bg-shapes">
+                        <div class="shape shape-1"></div>
+                        <div class="shape shape-2"></div>
                     </div>
-                    <div class="col-md-6 competition-image">
-                        <img src="../assets/images/hiddenGem.jpg" alt="Hidden canyon in Jordan" class="img-fluid">
+                </div>
+                <div class="row g-0">
+                    <div class="col-md-7 competition-content">
+                        <span class="competition-badge">Limited Time</span>
+                        <h2 class="competition-title">Hidden Places Competition</h2>
+                        <p class="competition-text">Share your secret spot and win a luxury trip worth $5000!</p>
+                        <div class="competition-features">
+                            <div class="feature"><i class="fas fa-camera"></i> Photos</div>
+                            <div class="feature"><i class="fas fa-map-marker-alt"></i> Location</div>
+                            <div class="feature"><i class="fas fa-trophy"></i> Prizes</div>
+                        </div>
+                        <div class="d-flex align-items-center flex-wrap">
+                            <a href="#" class="btn competition-btn">Enter Now <i class="fas fa-arrow-right"></i></a>
+                            <div class="competition-timer">
+                                <span class="timer-label">Ends in:</span>
+                                <span class="timer-value">14 Days</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <!-- Image is now handled via CSS background -->
                     </div>
                 </div>
             </div>
@@ -94,8 +112,20 @@
                                     <button class="favorite-btn" data-activity-id="{{ $activity->id }}">
                                         <i class="far fa-heart"></i>
                                     </button>
-                                    <img src="{{ asset($activity->image) }}" class="card-img-top"
-                                        alt="{{ $activity->name }}">
+                                    @php
+                                        $primaryImage = null;
+                                        if (
+                                            $activity->images instanceof \Illuminate\Database\Eloquent\Collection &&
+                                            $activity->images->count() > 0
+                                        ) {
+                                            $primaryImage = $activity->images->where('is_primary', true)->first();
+                                            if (!$primaryImage) {
+                                                $primaryImage = $activity->images->first();
+                                            }
+                                        }
+                                    @endphp
+                                    <img src="{{ $primaryImage ? asset('storage/' . $primaryImage->path) : asset('api/placeholder/400/250') }}"
+                                        class="card-img-top" alt="{{ $activity->name }}">
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title mb-3">{{ $activity->name }}</h5>
@@ -154,7 +184,8 @@
                         <div class="item">
                             <div class="restaurant-card">
                                 <div class="card-image">
-                                    <img src="{{ asset($restaurant->image) }}" alt="{{ $restaurant->name }}" />
+                                    <img src="{{ $restaurant->image ? asset('storage/' . $restaurant->image) : asset('api/placeholder/400/250') }}"
+                                        alt="{{ $restaurant->name }}" />
                                 </div>
                                 <div class="card-content">
                                     <h3 class="restaurant-name">{{ $restaurant->name }}</h3>
@@ -215,26 +246,26 @@
                             <span class="loyalty-icon"><i class="fas fa-crown"></i></span>
                             <h3 class="loyalty-title">Loyalty Program</h3>
                         </div>
-                        <p class="loyalty-text">Earn points with every booking and unlock exclusive rewards</p>
+                        <p class="loyalty-text">Earn points with every booking</p>
 
                         <div class="loyalty-benefits">
                             <div class="row text-center">
                                 <div class="col-4">
-                                    <div class="benefit-value">500</div>
-                                    <div class="benefit-label">Points per booking</div>
+                                    <div class="benefit-value">Points</div>
+                                    <div class="benefit-label">Earn Point With Every Booking</div>
                                 </div>
                                 <div class="col-4">
                                     <div class="benefit-value">10%</div>
-                                    <div class="benefit-label">Cashback</div>
+                                    <div class="benefit-label">Cashback on Your Next Trip</div>
                                 </div>
                                 <div class="col-4">
                                     <div class="benefit-value">VIP</div>
-                                    <div class="benefit-label">Access</div>
+                                    <div class="benefit-label">Be a Golden Member and Enjoy Exclusiv Offers</div>
                                 </div>
                             </div>
                         </div>
 
-                        <a href="#" class="btn btn-loyalty w-100 mt-auto">Join Now</a>
+                        <a href="{{ route('services') }}" class="btn btn-loyalty w-100 mt-auto">Join Now</a>
                     </div>
                 </div>
 
@@ -248,11 +279,14 @@
                         <p class="referral-text">Invite friends and get rewards for each successful referral</p>
 
                         <div class="referral-reward">
-                            <div class="reward-amount">$50</div>
-                            <div class="reward-text">For each friend who books</div>
+                            <div class="text-center">
+                                <div class="reward-amount">$10</div>
+                                <div class="reward-text">For Each Friend Who Registers</div>
+                            </div>
                         </div>
 
-                        <a href="#" class="btn btn-referral w-100 mt-auto">Get Referral Link</a>
+                        <a href="{{ route('profile.index') }}#referral" class="btn btn-referral w-100 mt-auto">Get
+                            Referral Link</a>
                     </div>
                 </div>
             </div>
@@ -261,5 +295,5 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('mainJS/index.js') }}"></script>
-    <script src="{{ asset('mainJS/wishlist.js') }}"></script>
+    {{-- <script src="{{ asset('mainJS/wishlist.js') }}"></script> --}}
 @endpush

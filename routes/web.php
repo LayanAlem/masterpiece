@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\RestaurantController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\LoyaltyPointsController;
+use App\Http\Controllers\Admin\ReferralController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +27,8 @@ Route::get('test', function () {
     return view('public.pages.servicesPage');
 })->name('test');
 
+// Search route
+Route::get('/search', [App\Http\Controllers\SearchController::class, 'search'])->name('search');
 
 // VisitJo Public Routes
 Route::prefix('VisitJo')->group(function () {
@@ -39,15 +43,11 @@ Route::prefix('VisitJo')->group(function () {
         return view('public.pages.competitionUpload');
     });
     Route::get('/activity/{id}', [App\Http\Controllers\ActivityController::class, 'show'])->name('activity.detail');
+    Route::get('/activities/{id}', [App\Http\Controllers\ActivityController::class, 'detailed'])->name('activities.detailed');
     Route::get('/detailed', function () {
         return view('public.pages.detailed');
     });
-    Route::get('/about', action: function () {
-        return view('public.pages.about');
-    })->name(name: 'about');
-    Route::get('/hiddengem', function () {
-        return view('public.pages.hiddengem');
-    })->name('hiddengem');
+    Route::get('/about', [App\Http\Controllers\AboutController::class, 'index'])->name('about');
 
     Route::get('/services', [ServiceController::class, 'index'])->name('services');
     Route::get('/category/{categoryId}', [ServiceController::class, 'categoryActivities'])->name('category.activities');
@@ -57,6 +57,25 @@ Route::prefix('VisitJo')->group(function () {
     Route::get('contact', function () {
         return view('public.pages.contact');
     })->name('contact');
+
+    // BlogPost Routes
+    Route::get('/hiddengem', [App\Http\Controllers\BlogPostController::class, 'index'])->name('blog.index');
+
+    // Add a fallback route with the name 'hiddengem' pointing to the same controller action
+    Route::get('/hidden-gems', [App\Http\Controllers\BlogPostController::class, 'index'])->name('hiddengem');
+
+    Route::get('/hiddengem/create', [App\Http\Controllers\BlogPostController::class, 'create'])->name('blog.create')->middleware('auth');
+    Route::post('/hiddengem', [App\Http\Controllers\BlogPostController::class, 'store'])->name('blog.store')->middleware('auth');
+    Route::get('/hiddengem/{id}', [App\Http\Controllers\BlogPostController::class, 'show'])->name('blog.show');
+    Route::get('/hiddengem/{id}/edit', [App\Http\Controllers\BlogPostController::class, 'edit'])->name('blog.edit')->middleware('auth');
+    Route::put('/hiddengem/{id}', [App\Http\Controllers\BlogPostController::class, 'update'])->name('blog.update')->middleware('auth');
+    Route::delete('/hiddengem/{id}', [App\Http\Controllers\BlogPostController::class, 'destroy'])->name('blog.destroy')->middleware('auth');
+    Route::post('/hiddengem/{id}/vote', [App\Http\Controllers\BlogPostController::class, 'toggleVote'])->name('blog.vote')->middleware('auth');
+    Route::get('/hiddengem/{id}/check-vote', [App\Http\Controllers\BlogPostController::class, 'checkVote'])->name('blog.check-vote');
+    Route::get('/my-posts', [App\Http\Controllers\BlogPostController::class, 'userPosts'])->name('blog.user-posts')->middleware('auth');
+
+    // Add comment route
+    Route::post('/hiddengem/{id}/comment', [App\Http\Controllers\BlogPostController::class, 'storeComment'])->name('blog.comment.store')->middleware('auth');
 });
 
 // Profile Routes
@@ -75,9 +94,13 @@ Route::prefix('admin')->group(function () {
 
 // Admin Routes - with authentication
 Route::prefix('admin')->middleware('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.index');
-    })->name('admin.dashboard');
+    // Make the dashboard route very explicit
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+
+    // Add a test route that returns a simple string for debugging
+    Route::get('/dashboard-test', function () {
+        return "Admin dashboard test route works!";
+    })->name('admin.dashboard.test');
 
     Route::resource('admins', AdminController::class);
     Route::resource('users', UserController::class);
@@ -99,6 +122,8 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     // Bookings
     Route::resource('bookings', AdminBookingController::class);
     Route::patch('bookings/{booking}/cancel', [AdminBookingController::class, 'cancel'])->name('bookings.cancel');
+    // Booking participants export
+    Route::get('bookings/{id}/export-participants/{format?}', [AdminBookingController::class, 'exportParticipants'])->name('bookings.export-participants');
 
     // Restaurants
     Route::resource('restaurants', RestaurantController::class);
@@ -138,10 +163,51 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('users-trashed', [UserController::class, 'trashed'])->name('users.trashed');
     Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
+
+    // Payments
+    Route::get('/payments', [App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/payments/{id}', [App\Http\Controllers\Admin\PaymentController::class, 'show'])->name('payments.show');
+    Route::post('/payments/{id}/update-status', [App\Http\Controllers\Admin\PaymentController::class, 'updateStatus'])->name('payments.update-status');
+
+    // Loyalty Points
+    Route::get('/loyalty-points', [LoyaltyPointsController::class, 'index'])->name('loyalty-points.index');
+    Route::get('/loyalty-points/settings', [LoyaltyPointsController::class, 'settings'])->name('loyalty-points.settings');
+    Route::post('/loyalty-points/settings', [LoyaltyPointsController::class, 'updateSettings'])->name('loyalty-points.update-settings');
+    Route::get('/loyalty-points/users', [LoyaltyPointsController::class, 'users'])->name('loyalty-points.users');
+    Route::get('/loyalty-points/users/{id}/edit', [LoyaltyPointsController::class, 'editUserPoints'])->name('loyalty-points.edit-user');
+    Route::post('/loyalty-points/users/{id}', [LoyaltyPointsController::class, 'updateUserPoints'])->name('loyalty-points.update-user');
+
+    // Referral Program Routes
+    Route::prefix('referrals')->name('referrals.')->group(function () {
+        Route::get('/', [ReferralController::class, 'index'])->name('index');
+        Route::post('/settings', [ReferralController::class, 'updateSettings'])->name('settings');
+    });
+
+    // Blog Posts (Hidden Gems) Management
+    Route::resource('blog-posts', App\Http\Controllers\Admin\BlogPostController::class)->names([
+        'index' => 'blog-posts.index',
+        'create' => 'blog-posts.create',
+        'store' => 'blog-posts.store',
+        'show' => 'blog-posts.show',
+        'edit' => 'blog-posts.edit',
+        'update' => 'blog-posts.update',
+        'destroy' => 'blog-posts.destroy',
+    ]);
+    Route::put('blog-posts/{id}/update-status', [App\Http\Controllers\Admin\BlogPostController::class, 'updateStatus'])->name('blog-posts.update-status');
+    Route::get('blog-posts/trashed', [App\Http\Controllers\Admin\BlogPostController::class, 'trashed'])->name('blog-posts.trashed');
+    Route::put('blog-posts/{id}/restore', [App\Http\Controllers\Admin\BlogPostController::class, 'restore'])->name('blog-posts.restore');
+
+    // Blog Comments Management
+    Route::get('/blog-comments', [App\Http\Controllers\Admin\BlogCommentController::class, 'index'])->name('blog-comments.index');
+    Route::get('/blog-comments/{id}', [App\Http\Controllers\Admin\BlogCommentController::class, 'show'])->name('blog-comments.show');
+    Route::put('/blog-comments/{id}/accept', [App\Http\Controllers\Admin\BlogCommentController::class, 'accept'])->name('blog-comments.accept');
+    Route::put('/blog-comments/{id}/reject', [App\Http\Controllers\Admin\BlogCommentController::class, 'reject'])->name('blog-comments.reject');
+    Route::put('/blog-comments/{id}/update-status', [App\Http\Controllers\Admin\BlogCommentController::class, 'updateStatus'])->name('blog-comments.update-status');
+    Route::delete('/blog-comments/{id}', [App\Http\Controllers\Admin\BlogCommentController::class, 'destroy'])->name('blog-comments.destroy');
 });
 
 // Admin panel user management routes
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+Route::prefix('admin')->middleware(['admin'])->group(function () {
     // User management
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -161,11 +227,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::post('/users/{id}/referral-balance', [UserController::class, 'updateReferralBalance'])->name('users.referral-balance.update');
 
     // Trashed users
-    Route::get('/users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
-    Route::post('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
-    Route::delete('/users/{id}/force', [UserController::class, 'forceDelete'])->name('users.force-delete');
-
-    // Other admin routes...
+    Route::get('/users-trashed', [UserController::class, 'trashed'])->name('users.trashed');
+    Route::patch('/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('/users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 });
 
 // Seasonal routes

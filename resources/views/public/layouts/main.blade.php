@@ -24,6 +24,26 @@
         body {
             padding-top: 60px;
         }
+
+        /* Ensure dropdown arrows always display correctly */
+        .dropdown-toggle::after {
+            display: inline-block !important;
+            width: 0 !important;
+            height: 0 !important;
+            margin-left: 0.255em !important;
+            vertical-align: 0.255em !important;
+            content: "" !important;
+            border-top: 0.3em solid !important;
+            border-right: 0.3em solid transparent !important;
+            border-bottom: 0 !important;
+            border-left: 0.3em solid transparent !important;
+        }
+
+        /* Fix any alignment issues */
+        .nav-link.dropdown-toggle {
+            display: flex !important;
+            align-items: center !important;
+        }
     </style>
 </head>
 
@@ -66,71 +86,23 @@
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <a href="#" class="text-dark me-3"><i class="fas fa-search"></i></a>
-
-                    <!-- Booking Cart Dropdown -->
+                    <!-- Search Dropdown -->
                     <div class="dropdown me-3">
-                        <a class="text-dark position-relative" href="#" id="bookingCartDropdown" role="button"
+                        <a href="#" class="text-dark position-relative" id="searchDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-calendar-check"></i>
-                            @if (Auth::check() && isset($bookingCount) && $bookingCount > 0)
-                                <span
-                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger badge-booking-count">
-                                    {{ $bookingCount }}
-                                    <span class="visually-hidden">pending bookings</span>
-                                </span>
-                            @endif
+                            <i class="fas fa-search"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end booking-dropdown p-3"
-                            aria-labelledby="bookingCartDropdown" style="min-width: 300px;">
-                            <h6 class="dropdown-header">Your Bookings</h6>
-
-                            @if (Auth::check() && isset($pendingBookings) && count($pendingBookings) > 0)
-                                <div class="booking-items">
-                                    @foreach ($pendingBookings as $booking)
-                                        <div class="booking-item d-flex align-items-center p-2 border-bottom">
-                                            <div class="booking-image me-2">
-                                                @if ($booking->activities->isNotEmpty() && $booking->activities->first()->image)
-                                                    <img src="{{ asset('storage/' . $booking->activities->first()->image) }}"
-                                                        alt="{{ $booking->activities->first()->name }}" width="40"
-                                                        height="40" class="rounded">
-                                                @else
-                                                    <div class="placeholder-image bg-light rounded"
-                                                        style="width:40px;height:40px;"></div>
-                                                @endif
-                                            </div>
-                                            <div class="booking-details flex-grow-1">
-                                                <div class="booking-title small fw-bold text-truncate">
-                                                    {{ $booking->activities->isNotEmpty() ? $booking->activities->first()->name : 'Booking #' . $booking->booking_number }}
-                                                </div>
-                                                <div class="booking-info small text-muted">
-                                                    {{ $booking->created_at ? \Carbon\Carbon::parse($booking->created_at)->format('M d, Y') : 'No date' }}
-                                                </div>
-                                            </div>
-                                            <div class="booking-price fw-bold">
-                                                ${{ number_format($booking->total_price, 2) }}</div>
-                                        </div>
-                                    @endforeach
+                        <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="searchDropdown"
+                            style="min-width: 300px;">
+                            <form action="{{ route('search') }}" method="GET">
+                                <div class="input-group">
+                                    <input type="text" name="query" class="form-control"
+                                        placeholder="Search activities, places..." required>
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <div class="total-text">Total:</div>
-                                    <div class="total-price fw-bold">
-                                        ${{ number_format($pendingBookings->sum('total_price'), 2) }}</div>
-                                </div>
-                                <div class="d-grid gap-2 mt-3">
-                                    <a href="{{ route('checkout') }}" class="btn btn-primary btn-sm">Proceed to
-                                        Checkout</a>
-                                    <a href="{{ route('profile.index') }}#trips-section"
-                                        class="btn btn-outline-secondary btn-sm">View All
-                                        Bookings</a>
-                                </div>
-                            @else
-                                <p class="text-center text-muted my-3">No pending bookings</p>
-                                <div class="d-grid gap-2">
-                                    <a href="{{ route('services') }}" class="btn btn-outline-primary btn-sm">Explore
-                                        Activities</a>
-                                </div>
-                            @endif
+                            </form>
                         </div>
                     </div>
 
@@ -140,19 +112,40 @@
                             <a href="{{ route('register') }}" class="btn btn-register">Register</a>
                         @else
                             <div class="dropdown">
-                                <button class="btn dropdown-toggle" type="button" id="userDropdown"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                    <li><a class="dropdown-item" href="{{ route('profile.index') }}">Profile</a></li>
+                                <a href="#" class="nav-link d-flex align-items-center dropdown-toggle"
+                                    id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <!-- Updated user profile image styling -->
+                                    <div class="user-avatar me-2"
+                                        style="width: 36px; height: 36px; overflow: hidden; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 2px solid #fff; display: flex; align-items: center; justify-content: center;">
+                                        @if (Auth::user()->profile_image)
+                                            <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Profile"
+                                                style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                                        @else
+                                            <div
+                                                style="width: 100%; height: 100%; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; color: #6c757d;">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <span style="font-weight: 500; color: #333;">{{ Auth::user()->first_name }}
+                                        {{ Auth::user()->last_name }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="userDropdown"
+                                    style="border-radius: 8px; border: none; margin-top: 10px;">
+                                    <li class="px-1">
+                                        <a class="dropdown-item rounded" href="{{ route('profile.index') }}"
+                                            style="padding: 8px 16px;">
+                                            <i class="fas fa-user-circle me-2 text-primary"></i> My Profile
+                                        </a>
+                                    </li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <li class="px-1">
+                                        <a class="dropdown-item rounded" href="{{ route('logout') }}"
+                                            style="padding: 8px 16px;"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            Logout
+                                            <i class="fas fa-sign-out-alt me-2 text-danger"></i> Logout
                                         </a>
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             class="d-none">
@@ -170,6 +163,7 @@
 
     @yield('content')
 
+    <!-- Footer Section -->
     <footer class="footer-section">
         <div class="container">
             <!-- Main Footer Content -->
@@ -182,9 +176,9 @@
                     <p class="footer-about">Discover the wonders of Jordan with our expertly curated tours
                         and experiences. From ancient ruins to desert adventures.</p>
                     <div class="footer-social mt-3">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
                     </div>
                 </div>
 
@@ -234,6 +228,7 @@
             </div>
         </div>
     </footer>
+
     <!-- Back to Top Button -->
     <a href="#" class="back-to-top" id="backToTop">
         <i class="fas fa-chevron-up"></i>
@@ -241,15 +236,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="{{ asset('mainJS/main.js') }}"></script>
     <script src="{{ asset('mainJS/wishlist.js') }}"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize all dropdowns
+            // Initialize all dropdowns with the standard Bootstrap way
             var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
             var dropdownList = dropdownElementList.map(function(dropdownToggleEl) {
                 return new bootstrap.Dropdown(dropdownToggleEl)
-            })
+            });
+
+            // Remove custom event listeners that may be interfering with dropdowns
+            const navDropdowns = document.querySelectorAll('.nav-item.dropdown');
+            navDropdowns.forEach(dropdown => {
+                const toggle = dropdown.querySelector('.dropdown-toggle');
+                // Remove any click handlers that may be interfering
+                if (toggle) {
+                    const newToggle = toggle.cloneNode(true);
+                    toggle.parentNode.replaceChild(newToggle, toggle);
+                }
+            });
         });
     </script>
 

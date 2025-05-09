@@ -16,12 +16,11 @@ class BlogPost extends Model
         'location',
         'image',
         'vote_count',
-        'is_approved',
+        'status',
         'is_winner',
     ];
 
     protected $casts = [
-        'is_approved' => 'boolean',
         'is_winner' => 'boolean',
     ];
 
@@ -53,7 +52,9 @@ class BlogPost extends Model
 
     public function decrementVoteCount()
     {
-        $this->decrement('vote_count');
+        // Don't allow vote count to go below 0
+        if ($this->vote_count > 0) {
+            $this->decrement('vote_count');
+        }
     }
 }
-

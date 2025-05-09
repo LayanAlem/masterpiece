@@ -37,7 +37,7 @@ class HomeController extends Controller
             $tripActivities = Activity::whereHas('categoryType', function ($query) use ($tripsCategory) {
                 $query->where('main_category_id', $tripsCategory->id);
             })
-                ->with('categoryType') // Eager load the category type relation
+                ->with(['categoryType', 'images']) // Eager load the category type and images relationships
                 ->inRandomOrder()->take(7)->get();
         }
 

@@ -60,8 +60,8 @@ class ActivityBookingController extends Controller
             // Start a database transaction
             \DB::beginTransaction();
 
-            // Get the activity to ensure it exists
-            $activity = \App\Models\Activity::find($request->activity_id);
+            // Get the activity to ensure it exists - load with images relationship
+            $activity = \App\Models\Activity::with('images')->find($request->activity_id);
             if (!$activity) {
                 throw new \Exception("Activity not found with ID " . $request->activity_id);
             }
@@ -219,6 +219,8 @@ class ActivityBookingController extends Controller
      */
     public function showParticipantsForm(Activity $activity)
     {
+        // Load the activity with its images relationship to prevent the get() on array error
+        $activity->load('images');
         return view('public.pages.activityParticipants', compact('activity'));
     }
 }

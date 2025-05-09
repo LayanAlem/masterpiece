@@ -13,8 +13,65 @@ class ReferralController extends Controller
     /**
      * Display the referral program dashboard
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Initialize query
+        $query = User::with('referrer')->withCount('referrals');
+
+        // Apply search filter if provided
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('referral_code', 'like', "%{$search}%");
+            });
+        }
+
+        // Apply filters
+        if ($request->has('filter') && $request->filter != 'all') {
+            switch ($request->filter) {
+                case 'has_referred':
+                    $query->has('referrals');
+                    break;
+                case 'was_referred':
+                    $query->whereNotNull('referred_by');
+                    break;
+                case 'has_balance':
+                    $query->where('referral_balance', '>', 0);
+                    break;
+            }
+        }
+
+        // Apply sorting
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'name_asc':
+                    $query->orderBy('first_name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('first_name', 'desc');
+                    break;
+                case 'balance_asc':
+                    $query->orderBy('referral_balance', 'asc');
+                    break;
+                case 'balance_desc':
+                    $query->orderBy('referral_balance', 'desc');
+                    break;
+                case 'referrals_desc':
+                    $query->withCount('referrals')->orderBy('referrals_count', 'desc');
+                    break;
+                default:
+                    $query->orderBy('created_at', 'desc');
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        // Get paginated results
+        $users = $query->paginate(15)->withQueryString();
+
         // Get all users who have made successful referrals
         $referrers = User::has('referrals')->withCount('referrals')->get();
 
@@ -40,6 +97,7 @@ class ReferralController extends Controller
         ];
 
         return view('admin.referrals.index', compact(
+            'users',
             'referrers',
             'totalRewardsDistributed',
             'recentReferrals',
@@ -65,7 +123,7 @@ class ReferralController extends Controller
         Setting::set('referral_max_uses', $validated['referral_max_uses']);
 
         return redirect()
-            ->route('admin.referrals.index')
+            ->route('referrals.index')
             ->with('success', 'Referral program settings updated successfully');
     }
 

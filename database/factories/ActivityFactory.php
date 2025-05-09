@@ -33,7 +33,7 @@ class ActivityFactory extends Factory
             'season' => $this->faker->randomElement(['winter', 'spring', 'summer', 'autumn']),
             'is_family_friendly' => $this->faker->boolean(70),
             'is_accessible' => $this->faker->boolean(30),
-            'image' => 'activities/activity-' . $this->faker->numberBetween(1, 12) . '.jpg',
+            'has_images' => false, // Instead of image path, set has_images flag
         ];
     }
 }

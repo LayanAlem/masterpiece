@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\ActivityImage;
 use App\Models\CategoryType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ActivityController extends Controller
 {
@@ -88,27 +90,53 @@ class ActivityController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'is_family_friendly' => 'sometimes|boolean',
             'is_accessible' => 'sometimes|boolean',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_primary.*' => 'required|boolean',
         ]);
 
+        // Start a database transaction
+        DB::beginTransaction();
 
-        // Handle image upload - simplified to match MainCategoryController
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('activities', 'public');
+        try {
+            // Create activity record
+            $activity = new Activity();
+            $activity->fill($validated);
+
+            // Set boolean flags correctly
+            $activity->is_family_friendly = $request->has('is_family_friendly');
+            $activity->is_accessible = $request->has('is_accessible');
+
+            // Set has_images flag if images are being uploaded
+            $hasImages = $request->hasFile('images') && count(array_filter($request->file('images'))) > 0;
+            $activity->has_images = $hasImages;
+
+            $activity->save();
+
+            // Process images if any are uploaded
+            if ($hasImages) {
+                $this->processActivityImages($request, $activity);
+            }
+
+            DB::commit();
+            return redirect()->route('activities.index')->with('success', 'Activity created successfully.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withInput()->with('error', 'Error creating activity: ' . $e->getMessage());
         }
-
-        Activity::create($validated);
-        return redirect()->route('activities.index')->with('success', 'Activity created successfully.');
     }
 
     public function show(Activity $activity)
     {
+        // Load images relationship
+        $activity->load('images');
         return view('admin.activities.show', compact('activity'));
     }
 
     public function edit(Activity $activity)
     {
         $categoryTypes = CategoryType::with('mainCategory')->orderBy('name')->get();
+        // Load the activity's images
+        $activity->load('images');
         return view('admin.activities.edit', compact('activity', 'categoryTypes'));
     }
 
@@ -126,38 +154,52 @@ class ActivityController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'is_family_friendly' => 'sometimes|boolean',
             'is_accessible' => 'sometimes|boolean',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_primary.*' => 'required|boolean',
+            'delete_images.*' => 'nullable|exists:activity_images,id',
         ]);
 
-        // Creating update data array
-        // $activityData = [
-        //     'name' => $validated['name'],
-        //     'category_type_id' => $validated['category_type_id'],
-        //     'description' => $validated['description'],
-        //     'price' => $validated['price'],
-        //     'cost' => $validated['cost'],
-        //     'capacity' => $validated['capacity'],
-        //     'location' => $validated['location'],
-        //     'image' => $validated['image'],
-        //     'start_date' => $validated['start_date'],
-        //     'end_date' => $validated['end_date'],
-        //     'is_family_friendly' => $request->has('is_family_friendly') ? 1 : 0,
-        //     'is_accessible' => $request->has('is_accessible') ? 1 : 0,
-        // ];
+        // Start a database transaction
+        DB::beginTransaction();
 
-        // Handle image upload - updated to match MainCategoryController
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($activity->image && Storage::disk('public')->exists($activity->image)) {
-                Storage::disk('public')->delete($activity->image);
+        try {
+            // Update activity record
+            $activity->fill($validated);
+
+            // Set boolean flags correctly
+            $activity->is_family_friendly = $request->has('is_family_friendly');
+            $activity->is_accessible = $request->has('is_accessible');
+
+            // Handle images - Process deletions first
+            if ($request->has('delete_images')) {
+                foreach ($request->delete_images as $imageId) {
+                    $image = ActivityImage::find($imageId);
+                    if ($image) {
+                        if (Storage::disk('public')->exists($image->path)) {
+                            Storage::disk('public')->delete($image->path);
+                        }
+                        $image->delete();
+                    }
+                }
             }
 
-            // Store the new image
-            $validated['image'] = $request->file('image')->store('activities', 'public');
-        }
+            // Process new images
+            $hasNewImages = $request->hasFile('images') && count(array_filter($request->file('images'))) > 0;
 
-        $activity->update($validated);
-        return redirect()->route('activities.index')->with('success', 'Activity updated successfully.');
+            if ($hasNewImages) {
+                $this->processActivityImages($request, $activity);
+            }
+
+            // Update the has_images flag
+            $activity->has_images = $activity->images()->count() > 0;
+            $activity->save();
+
+            DB::commit();
+            return redirect()->route('activities.index')->with('success', 'Activity updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withInput()->with('error', 'Error updating activity: ' . $e->getMessage());
+        }
     }
 
     public function destroy(Activity $activity)
@@ -208,14 +250,45 @@ class ActivityController extends Controller
     {
         $activity = Activity::onlyTrashed()->findOrFail($id);
 
-        // Delete image
-        if ($activity->image && Storage::disk('public')->exists($activity->image)) {
-            Storage::disk('public')->delete($activity->image);
+        // Delete images
+        $images = ActivityImage::where('activity_id', $activity->id)->get();
+        foreach ($images as $image) {
+            if (Storage::disk('public')->exists($image->path)) {
+                Storage::disk('public')->delete($image->path);
+            }
+            $image->delete();
         }
 
         $activity->forceDelete();
 
         return redirect()->route('activities.trashed')
             ->with('success', 'Activity permanently deleted.');
+    }
+
+    /**
+     * Process and store activity images
+     */
+    private function processActivityImages(Request $request, Activity $activity)
+    {
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+            $isPrimary = $request->is_primary;
+
+            foreach ($images as $key => $image) {
+                // Skip if the file input is empty
+                if (!$image) continue;
+
+                // Store the image
+                $path = $image->store('activities', 'public');
+
+                // Create the image record
+                ActivityImage::create([
+                    'activity_id' => $activity->id,
+                    'path' => $path,
+                    'is_primary' => isset($isPrimary[$key]) ? (bool)$isPrimary[$key] : false,
+                    'display_order' => $key
+                ]);
+            }
+        }
     }
 }

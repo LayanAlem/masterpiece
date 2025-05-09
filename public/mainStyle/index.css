@@ -377,437 +377,454 @@
 .loyalty-benefits,
 .referral-reward {
     flex: 1;
-}
-
-/* Competition banner styles */
-.competition-banner {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    background-color: #7a370c;
-    position: relative;
-}
-
-.competition-content {
-    padding: 3rem;
-    color: white;
+    margin-bottom: 25px;
+    background: rgba(247, 241, 229, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: center;
 }
 
-.competition-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-.competition-text {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-}
-
-.competition-btn {
-    font-weight: 600;
-    padding: 0.6rem 1.5rem;
-    border-radius: 4px;
-    display: inline-block;
-    width: fit-content;
-    transition: all 0.3s;
-}
-
-.competition-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.competition-image {
-    height: 100%;
-    overflow: hidden;
-}
-
-.competition-image img {
-    height: 100%;
+.referral-reward .text-center {
     width: 100%;
-    object-fit: cover;
 }
 
-/* Loyalty and Referral section styles */
+.benefit-value,
+.reward-amount {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 5px;
+    background: linear-gradient(to right, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* Loyalty & Referral Card Styles */
 .loyalty-section {
-    background-color: #fff9e6;
+    background-color: #f8f9fa;
+    padding: 50px 0;
 }
 
 .loyalty-card,
 .referral-card {
-    background-color: white;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.loyalty-card:hover,
+.referral-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15);
+}
+
+.loyalty-card:after,
+.referral-card:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(
+        circle,
+        rgba(224, 145, 50, 0.1) 0%,
+        rgba(224, 145, 50, 0) 70%
+    );
+    border-radius: 50%;
+    z-index: 1;
 }
 
 .loyalty-header,
 .referral-header {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 15px;
 }
 
 .loyalty-icon,
 .referral-icon {
-    font-size: 1.5rem;
-    color: var(--primary);
-    margin-right: 1rem;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-right: 15px;
+    box-shadow: 0 8px 15px rgba(146, 64, 14, 0.25);
 }
 
 .loyalty-title,
 .referral-title {
     font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 0;
+    color: var(--dark);
+    margin: 0;
 }
 
 .loyalty-text,
 .referral-text {
     color: #666;
-    margin-bottom: 1.5rem;
-}
-
-.loyalty-benefits {
-    background-color: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-}
-
-.benefit-value {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.benefit-label {
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.referral-reward {
-    background-color: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-
-.reward-amount {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--primary);
-}
-
-.reward-text {
-    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.5;
 }
 
 .btn-loyalty,
 .btn-referral {
-    background-color: var(--primary);
+    background: linear-gradient(to right, var(--primary), var(--accent));
     color: white;
     font-weight: 600;
-    padding: 0.8rem;
-    transition: all 0.3s;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 15px rgba(146, 64, 14, 0.2);
 }
 
 .btn-loyalty:hover,
 .btn-referral:hover {
-    background-color: var(--primary-dark);
-    color: white;
+    background: linear-gradient(to right, var(--accent), var(--primary));
     transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(146, 64, 14, 0.3);
+    color: white;
 }
 
-/* Footer Styles */
-.footer-section {
-    background-color: #321504;
-    color: #fff;
-    padding: 50px 0 20px;
+/* Competition banner styles */
+.competition-section {
+    padding: 0;
+    margin: 1.5rem 0;
 }
 
-.footer-brand {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
-.footer-brand a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.footer-about {
-    color: #c9d1e2;
-    font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.footer-heading {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #fff;
+.competition-banner {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     position: relative;
-    padding-bottom: 10px;
+    transition: all 0.4s ease;
 }
 
-.footer-heading:after {
+.competition-banner:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.competition-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/images/hiddenGem.jpg");
+    background-size: cover;
+    background-position: center;
+    filter: blur(0px); /* Removed blur completely */
+    transform: scale(1.02); /* Reduced scale to prevent edge issues */
+    z-index: 0;
+}
+
+.competition-bg:after {
     content: "";
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
-    width: 30px;
-    height: 2px;
-    background-color: #e8744c;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(34, 15, 3, 0.88) 0%,
+        rgba(80, 35, 4, 0.8) 70%,
+        rgba(65, 28, 5, 0.75) 100%
+    );
+    z-index: 1;
 }
 
-.footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.competition-bg-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
 }
 
-.footer-links li {
-    margin-bottom: 12px;
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.2;
 }
 
-.footer-links a {
-    color: #c9d1e2;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: block;
+.shape-1 {
+    width: 300px;
+    height: 300px;
+    top: -150px;
+    left: -50px;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(255, 255, 255, 0) 70%
+    );
+    animation: float 15s infinite ease-in-out;
 }
 
-.footer-links a:hover {
-    color: #fff;
-    transform: translateX(5px);
+.shape-2 {
+    width: 200px;
+    height: 200px;
+    bottom: -100px;
+    right: 25%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0) 70%
+    );
+    animation: float 20s infinite ease-in-out reverse;
 }
 
-.footer-social {
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(20px, 20px) scale(1.1);
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+.competition-content {
+    padding: 2.5rem;
+    color: white;
     display: flex;
-    gap: 12px;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 5;
+    backdrop-filter: blur(0px); /* Added to ensure clarity of content */
 }
 
-.social-link {
+.competition-badge {
+    display: inline-block;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.3)
+    );
+    color: white;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.competition-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.competition-text {
+    font-size: 1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 1); /* Full opacity for better readability */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* Enhanced text shadow */
+}
+
+.competition-features {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.feature {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    color: #fff;
-    transition: all 0.3s ease;
-}
-
-.social-link:hover {
-    background-color: #e8744c;
-    color: #fff;
-    transform: translateY(-3px);
-}
-
-.footer-newsletter-text {
-    color: #c9d1e2;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
-.footer-newsletter-form .form-control {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: #fff;
-    padding: 10px 15px;
-}
-
-.footer-newsletter-form .form-control::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.newsletter-btn {
-    background-color: #e8744c;
-    color: #fff;
-    border: none;
+    gap: 6px;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.2)
+    );
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: 500;
-    padding: 10px 15px;
-}
-
-.newsletter-btn:hover {
-    background-color: #d45e37;
-}
-
-.support-contact {
-    margin-top: 20px;
-}
-
-.support-phone {
-    color: #c9d1e2;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.support-phone i {
-    color: #e8744c;
-}
-
-.footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 20px;
-    margin-top: 40px;
-}
-
-.copyright-text {
-    color: #c9d1e2;
-    font-size: 14px;
-    margin-bottom: 0;
-}
-
-.terms-links {
-    display: flex;
-    justify-content: flex-end;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    gap: 20px;
-}
-
-.terms-links a {
-    color: #c9d1e2;
-    font-size: 14px;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.terms-links a:hover {
-    color: #fff;
-}
-.back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 40px;
-    height: 40px;
-    background-color: #e8744c;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
     transition: all 0.3s ease;
-    z-index: 99;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.back-to-top.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.back-to-top:hover {
-    background-color: #d45e37;
-    color: #fff;
+.feature:hover {
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.3)
+    );
     transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.icon-wrapper {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    color: #fff;
-    display: flex;
+.feature i {
+    color: #e09132;
+    font-size: 0.9rem;
+}
+
+.competition-btn {
+    font-weight: 700;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: linear-gradient(45deg, #e09132, #f5a742);
+    color: white;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
-.icon-wrapper:hover {
-    transform: translateY(-5px);
-    background-color: var(--primary-dark);
+.competition-btn:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.4)
+    );
+    transition: all 0.4s ease;
+    z-index: -1;
 }
 
-.icon-wrapper i {
-    font-size: 28px;
+.competition-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    color: white;
 }
 
-/* Update Social Links to match contact.css style */
-.social-link {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    color: #fff;
-    display: flex;
+.competition-btn:hover:before {
+    width: 100%;
+}
+
+.competition-btn i {
+    transition: transform 0.3s ease;
+}
+
+.competition-btn:hover i {
+    transform: translateX(4px);
+}
+
+.competition-timer {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
 }
 
-.social-link:hover {
-    transform: translateY(-5px);
-    color: #fff;
-    background-color: var(--primary-dark);
+.competition-timer:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        rgba(224, 145, 50, 0.3),
+        rgba(224, 145, 50, 0)
+    );
+    z-index: -1;
 }
 
-/* You can add specific colors for different social platforms */
-.social-link.facebook {
-    background-color: #3b5998;
+.timer-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    margin-right: 8px;
 }
 
-.social-link.instagram {
-    background-color: #e1306c;
+.timer-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #e09132;
+    background: -webkit-linear-gradient(#e09132, #f5a742);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
 }
 
-.social-link.twitter {
-    background-color: #1da1f2;
+.competition-image {
+    height: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
-.social-link.youtube {
-    background-color: #ff0000;
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(122, 55, 12, 0.95) 0%,
+        rgba(122, 55, 12, 0.6) 30%,
+        rgba(122, 55, 12, 0) 100%
+    );
+    z-index: 1;
 }
 
-.social-link.tripadvisor {
-    background-color: #00af87;
+.competition-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 3s ease;
+    transform-origin: center;
+    filter: contrast(1.1) saturate(1.1);
 }
 
-/* Responsive adjustments */
-@media (max-width: 767px) {
-    .footer-heading {
-        margin-top: 20px;
-    }
-
-    .support-contact {
-        align-items: flex-start;
-        margin-top: 10px;
-    }
-
-    .terms-links {
-        justify-content: flex-start;
-        margin-top: 10px;
-    }
-
-    .terms-links li {
-        margin-left: 0;
-        margin-right: 20px;
-    }
-
-    .terms-links li:not(:last-child):after {
-        right: -12px;
-    }
+.competition-banner:hover .competition-image img {
+    transform: scale(1.08);
 }
 
-/* Responsive adjustments */
 @media (max-width: 992px) {
     .hero-title {
         font-size: 3rem;
@@ -818,7 +835,15 @@
     }
 
     .competition-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+
+    .competition-content {
+        padding: 2rem;
+    }
+
+    .competition-features {
+        flex-wrap: wrap;
     }
 
     .restaurant-grid {
@@ -878,6 +903,28 @@
     .detail-item {
         font-size: 13px;
     }
+
+    .competition-content {
+        padding: 1.5rem;
+    }
+
+    .competition-title {
+        font-size: 1.5rem;
+    }
+
+    .competition-text {
+        font-size: 0.9rem;
+    }
+
+    .feature {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+    }
+
+    .competition-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -903,15 +950,45 @@
     }
 
     .competition-content {
-        padding: 1.5rem;
+        padding: 1.2rem;
     }
 
     .competition-title {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
     .competition-text {
         font-size: 0.9rem;
+    }
+
+    .competition-features {
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 1rem;
+    }
+
+    .feature {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+
+    .d-flex.align-items-center.flex-wrap {
+        gap: 10px;
+    }
+
+    .competition-btn {
+        margin-right: 0;
+        font-size: 0.75rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .competition-timer {
+        padding: 8px 15px;
+        margin-top: 1.5rem;
+    }
+
+    .timer-value {
+        font-size: 1rem;
     }
 
     .benefit-value {
@@ -940,9 +1017,27 @@
 }
 
 @media (max-width: 767px) {
+    .footer-heading {
+        margin-top: 20px;
+    }
+
+    .support-contact {
+        align-items: flex-start;
+        margin-top: 10px;
+    }
+
     .terms-links {
         justify-content: flex-start;
         margin-top: 15px;
+    }
+
+    .terms-links li {
+        margin-left: 0;
+        margin-right: 20px;
+    }
+
+    .terms-links li:not(:last-child):after {
+        right: -12px;
     }
 }
 
@@ -1146,4 +1241,211 @@
     padding: 20px 0;
     font-style: italic;
     color: #999 !important;
+}
+
+/* Footer section styles */
+.footer-section {
+    background-color: #371f11; /* Changed to dark brown color */
+    color: white; /* Keeping white text for good contrast */
+    padding: 50px 0 20px;
+}
+
+.footer-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.footer-brand a {
+    color: white; /* Changed to white for better visibility */
+    text-decoration: none;
+}
+
+.footer-about {
+    color: rgba(
+        255,
+        255,
+        255,
+        0.8
+    ); /* Changed for better readability on dark background */
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+.footer-social {
+    display: flex;
+}
+
+.social-link {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: white;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.social-link:hover {
+    transform: translateY(-3px);
+    background-color: var(--primary);
+    color: white;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.footer-heading {
+    color: white; /* Changed to white for better visibility */
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8); /* Changed for better readability */
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.footer-links a:hover {
+    color: white; /* Brightened on hover */
+    padding-left: 5px;
+}
+
+.footer-newsletter-text {
+    color: rgba(255, 255, 255, 0.8); /* Changed for better readability */
+    margin-bottom: 15px;
+}
+
+.footer-newsletter-form .form-control {
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+}
+
+.newsletter-btn {
+    background-color: var(--accent); /* Changed to accent color for contrast */
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    font-weight: 600;
+}
+
+.newsletter-btn:hover {
+    background-color: #f5a742; /* Lighter version of accent */
+    color: white;
+}
+
+.support-phone {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.9); /* Changed for better readability */
+    margin-top: 15px;
+}
+
+.support-phone i {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(
+        255,
+        255,
+        255,
+        0.15
+    ); /* Adjusted for dark background */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: white;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Changed for dark background */
+    padding-top: 20px;
+    margin-top: 40px;
+}
+
+.copyright-text {
+    color: rgba(255, 255, 255, 0.7); /* Changed for better readability */
+    font-size: 0.9rem;
+}
+
+.terms-links {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+}
+
+.terms-links li {
+    margin-left: 20px;
+    position: relative;
+}
+
+.terms-links li:not(:last-child):after {
+    content: "";
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 12px;
+    background-color: #ddd;
+}
+
+.terms-links a {
+    color: rgba(255, 255, 255, 0.7); /* Changed for better readability */
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.terms-links a:hover {
+    color: white; /* Brightened on hover */
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 46px;
+    height: 46px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 99;
+}
+
+.back-to-top.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-5px);
+    color: white;
 }

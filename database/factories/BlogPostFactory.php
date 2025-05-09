@@ -26,43 +26,63 @@ class BlogPostFactory extends Factory
         'Traditional Jordanian Wedding',
         'The Roman Theater Experience',
         'Jordan\'s Best Kept Secrets',
-        'Discovering Umm Qais'
+        'Discovering Umm Qais',
+        'Historical Sites of Jordan',
+        'Jordan Valley Landscapes',
+        'Hidden Waterfalls of Jordan',
+        'Mountain Trekking in Jordan',
+        'Street Food in Amman'
     ];
 
     // Jordan locations
     protected $locations = [
-        'Amman', 'Petra', 'Wadi Rum', 'Dead Sea', 'Aqaba',
-        'Jerash', 'Madaba', 'Umm Qais', 'Ajloun', 'Salt',
-        'Dana Biosphere Reserve', 'Wadi Mujib', 'Mount Nebo'
+        'Amman',
+        'Petra',
+        'Wadi Rum',
+        'Dead Sea',
+        'Aqaba',
+        'Jerash',
+        'Madaba',
+        'Umm Qais',
+        'Ajloun',
+        'Salt',
+        'Dana Biosphere Reserve',
+        'Wadi Mujib',
+        'Mount Nebo'
     ];
 
     public function definition(): array
     {
         $user = User::inRandomOrder()->first() ??
-               User::factory()->create();
+            User::factory()->create();
 
-        $title = $this->faker->unique()->randomElement($this->blogTitles);
+        // Add randomness to title to avoid unique constraint issues
+        $title = $this->faker->randomElement($this->blogTitles) . ' #' . rand(1, 1000);
         $location = $this->faker->randomElement($this->locations);
+
+        // Use the new status field with the appropriate values
+        $statuses = ['published', 'pending', 'rejected'];
+        $statusWeights = [80, 15, 5]; // 80% published, 15% pending, 5% rejected
 
         return [
             'user_id' => $user->id,
             'title' => $title,
             'content' => $this->faker->paragraphs(6, true),
             'location' => $location . ', Jordan',
-            'image' => 'blog/' . strtolower(str_replace([' ', '\''], ['-', ''], $title)) . '.jpg',
+            'image' => null, // We'll set this in the seeder
             'vote_count' => $this->faker->numberBetween(0, 100),
-            'is_approved' => $this->faker->boolean(80),
+            'status' => $this->faker->randomElement($statuses, $statusWeights),
             'is_winner' => $this->faker->boolean(10),
         ];
     }
 
     /**
-     * Configure the blog post as approved
+     * Configure the blog post as published
      */
-    public function approved(): static
+    public function published(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'is_approved' => true,
+        return $this->state(fn(array $attributes) => [
+            'status' => 'published',
         ]);
     }
 
@@ -71,8 +91,8 @@ class BlogPostFactory extends Factory
      */
     public function winner(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'is_approved' => true,
+        return $this->state(fn(array $attributes) => [
+            'status' => 'published',
             'is_winner' => true,
             'vote_count' => $this->faker->numberBetween(50, 200),
         ]);
@@ -83,8 +103,19 @@ class BlogPostFactory extends Factory
      */
     public function pending(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'is_approved' => false,
+        return $this->state(fn(array $attributes) => [
+            'status' => 'pending',
+            'is_winner' => false,
+        ]);
+    }
+
+    /**
+     * Configure the blog post as rejected
+     */
+    public function rejected(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'status' => 'rejected',
             'is_winner' => false,
         ]);
     }

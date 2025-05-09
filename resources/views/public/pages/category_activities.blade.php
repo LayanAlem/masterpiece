@@ -7,26 +7,28 @@
 @endpush
 
 @section('content')
-    
 
-    <!-- Category Header Section -->
+
+    <!-- Modern, elegant hero section -->
     <section class="category-header">
         <div class="container">
-            <h1 class="category-title">{{ $category->name }}</h1>
-            <p class="category-description">{{ $category->description }}</p>
+            <div class="hero-content">
+                <h1 class="category-title">{{ $category->name }}</h1>
+                <p class="category-description">{{ $category->description }}</p>
 
-            <!-- Search Bar -->
-            <div class="search-container mt-4">
-                <form action="{{ route('category.activities', ['categoryId' => $category->id]) }}" method="GET"
-                    id="search-form">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for activities..." name="search"
-                            value="{{ request('search') }}">
-                        <button class="btn search-btn" type="submit">
-                            <i class="fas fa-search"></i> Search
-                        </button>
-                    </div>
-                </form>
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <form action="{{ route('category.activities', ['categoryId' => $category->id]) }}" method="GET"
+                        id="search-form">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for activities..." name="search"
+                                value="{{ request('search') }}">
+                            <button class="btn search-btn" type="submit">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -183,40 +185,41 @@
                     @foreach ($activities as $activity)
                         <div class="col-lg-4 col-md-6 mb-4 activity-item">
                             <div class="tour-card">
-                                <div class="tour-image">
-                                    <img src="{{ asset($activity->image ? 'storage/' . $activity->image : 'api/placeholder/800/500') }}"
-                                        alt="{{ $activity->name }}">
-                                    <button class="favorite-btn" data-activity-id="{{ $activity->id }}">
-                                        <i class="far fa-heart"></i>
-                                    </button>
-                                    <div class="location-tag">
-                                        <i class="fas fa-map-marker-alt"></i> {{ $activity->location }}
-                                    </div>
-                                </div>
-                                <div class="tour-content">
-                                    <h3 class="tour-title">{{ $activity->name }}</h3>
-                                    <p class="tour-description">{{ Str::limit($activity->description, 100) }}</p>
-                                    <div class="tour-meta">
-                                        <div class="rating">
-                                            <i class="fas fa-star"></i>
-                                            <span
-                                                class="rating-score">{{ number_format($activity->average_rating, 1) }}</span>
-                                            <span class="reviews-count">({{ $activity->reviews_count }})</span>
-                                        </div>
-                                        <div class="duration">
-                                            <i class="far fa-clock"></i>
-                                            <span>{{ $activity->formatted_duration }}</span>
+                                <a href="{{ route('activity.detail', $activity->id) }}" class="card-link">
+                                    <div class="tour-image">
+                                        <img src="{{ asset($activity->image ? 'storage/' . $activity->image : 'api/placeholder/800/500') }}"
+                                            alt="{{ $activity->name }}">
+                                        <div class="location-tag">
+                                            <i class="fas fa-map-marker-alt"></i> {{ $activity->location }}
                                         </div>
                                     </div>
-                                    <div class="tour-footer">
-                                        <div class="price">
-                                            ${{ number_format($activity->price, 0) }}<span
-                                                class="per-person">/person</span>
+                                    <div class="tour-content">
+                                        <h3 class="tour-title">{{ $activity->name }}</h3>
+                                        <p class="tour-description">{{ Str::limit($activity->description, 100) }}</p>
+                                        <div class="tour-meta">
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <span
+                                                    class="rating-score">{{ number_format($activity->average_rating, 1) }}</span>
+                                                <span class="reviews-count">({{ $activity->reviews_count }})</span>
+                                            </div>
+                                            <div class="duration">
+                                                <i class="far fa-clock"></i>
+                                                <span>{{ $activity->formatted_duration }}</span>
+                                            </div>
                                         </div>
-                                        <a href="{{ route('activity.detail', $activity->id) }}" class="btn book-btn">Book
-                                            Now</a>
+                                        <div class="tour-footer">
+                                            <div class="price">
+                                                ${{ number_format($activity->price, 0) }}<span
+                                                    class="per-person">/person</span>
+                                            </div>
+                                            <span class="btn book-btn">Book Now</span>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
+                                <button class="favorite-btn" data-activity-id="{{ $activity->id }}">
+                                    <i class="far fa-heart"></i>
+                                </button>
                             </div>
                         </div>
                     @endforeach

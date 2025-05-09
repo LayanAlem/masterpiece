@@ -93,8 +93,8 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Loyalty Points</th>
+                            <th>Referral Balance</th>
                             <th>Referral Code</th>
-                            <th>Referred By</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -106,9 +106,11 @@
                                 <td>{{ $user->last_name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->phone }}</td>
-                                <td>{{ $user->loyalty_points }}</td>
-                                <td>{{ $user->referral_code }}</td>
-                                <td>{{ optional($user->referrer)->first_name ?? 'N/A' }}</td>
+                                <td>{{ $user->loyalty_points ?? 0 }}</td>
+                                <td>${{ number_format($user->referral_balance ?? 0, 2) }}</td>
+                                <td>
+                                    <small class="text-muted">{{ $user->referral_code }}</small>
+                                </td>
                                 <td>
                                     <div class="dropdown ms-3">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -116,6 +118,9 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ route('users.show', $user->id) }}">
+                                                <i class="bx bx-show me-1"></i> View
+                                            </a>
                                             <a class="dropdown-item" href="{{ route('users.edit', $user->id) }}">
                                                 <i class="bx bx-edit-alt me-1"></i> Edit
                                             </a>

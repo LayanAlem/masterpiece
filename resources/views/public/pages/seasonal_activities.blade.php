@@ -5,14 +5,54 @@
     <link rel="stylesheet" href="{{ asset('mainStyle/activities.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.css">
     <style>
-        /* Special seasonal styling */
+        /* Set theme variables based on current season */
+        :root {
+            @if ($season['theme'] == 'winter')
+                --seasonal-color: {{ $season['colors']['main'] ?? '#1976D2' }};
+                --seasonal-color-light: {{ $season['colors']['light'] ?? '#64B5F6' }};
+                --seasonal-color-dark: {{ $season['colors']['dark'] ?? '#0D47A1' }};
+                --seasonal-color-rgb: {{ $season['colors']['rgb'] ?? '25, 118, 210' }};
+                --seasonal-gradient: linear-gradient(135deg, {{ $season['colors']['main'] ?? '#1976D2' }} 0%, {{ $season['colors']['light'] ?? '#64B5F6' }} 100%);
+            @elseif($season['theme'] == 'spring')
+                --seasonal-color: {{ $season['colors']['main'] ?? '#7CB342' }};
+                --seasonal-color-light: {{ $season['colors']['light'] ?? '#AED581' }};
+                --seasonal-color-dark: {{ $season['colors']['dark'] ?? '#558B2F' }};
+                --seasonal-color-rgb: {{ $season['colors']['rgb'] ?? '124, 179, 66' }};
+                --seasonal-gradient: linear-gradient(135deg, {{ $season['colors']['main'] ?? '#7CB342' }} 0%, {{ $season['colors']['light'] ?? '#AED581' }} 100%);
+            @elseif($season['theme'] == 'summer')
+                --seasonal-color: {{ $season['colors']['main'] ?? '#FF9800' }};
+                --seasonal-color-light: {{ $season['colors']['light'] ?? '#FFD54F' }};
+                --seasonal-color-dark: {{ $season['colors']['dark'] ?? '#EF6C00' }};
+                --seasonal-color-rgb: {{ $season['colors']['rgb'] ?? '255, 152, 0' }};
+                --seasonal-gradient: linear-gradient(135deg, {{ $season['colors']['main'] ?? '#FF9800' }} 0%, {{ $season['colors']['light'] ?? '#FFD54F' }} 100%);
+            @elseif($season['theme'] == 'autumn')
+                --seasonal-color: {{ $season['colors']['main'] ?? '#E64A19' }};
+                --seasonal-color-light: {{ $season['colors']['light'] ?? '#FF8A65' }};
+                --seasonal-color-dark: {{ $season['colors']['dark'] ?? '#BF360C' }};
+                --seasonal-color-rgb: {{ $season['colors']['rgb'] ?? '230, 74, 25' }};
+                --seasonal-gradient: linear-gradient(135deg, {{ $season['colors']['main'] ?? '#E64A19' }} 0%, {{ $season['colors']['light'] ?? '#FF8A65' }} 100%);
+            @else
+                --seasonal-color: #4CAF50;
+                --seasonal-color-light: #8BC34A;
+                --seasonal-color-dark: #2E7D32;
+                --seasonal-color-rgb: 76, 175, 80;
+                --seasonal-gradient: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+            @endif
+        }
+
+        body {
+            background: #ffffff;
+        }
+
+        /* Enhanced seasonal header styling */
         .seasonal-header {
             background-size: cover;
             background-position: center;
             position: relative;
-            padding: 100px 0;
+            padding: 60px 0;
             margin-bottom: 40px;
             color: white;
+            overflow: hidden;
         }
 
         .seasonal-header::before {
@@ -30,20 +70,38 @@
 
         .seasonal-header .container {
             position: relative;
-            z-index: 2;
+            z-index: 5;
+            text-align: center;
         }
 
         .seasonal-title {
             font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            position: relative;
+            margin-top: 20px;
+            /* display: inline-block; */
+            color: white;
+        }
+
+        .seasonal-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--seasonal-color);
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .seasonal-description {
             font-size: 1.2rem;
             max-width: 800px;
-            margin: 0 auto 25px;
+            margin: 30px auto 35px;
             line-height: 1.7;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
@@ -53,32 +111,128 @@
             justify-content: center;
             align-items: center;
             gap: 30px;
-            margin-bottom: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
         }
 
         .seasonal-meta-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 1.1rem;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .seasonal-meta-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .seasonal-meta-item i {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
+            color: var(--seasonal-color-light);
         }
 
         .season-tag {
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 30px;
+            /* display: inline-block; */
+            padding: 12px 30px;
+            border-radius: 50px;
             font-weight: 600;
-            background: rgba(255, 255, 255, 0.2);
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
+        /* Search form styling */
+        .search-container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .search-container .input-group {
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: stretch;
+        }
+
+        .search-container .form-control {
+            border: none;
+            padding: 15px 25px;
+            font-size: 1rem;
+            height: auto;
+            flex: 1;
+        }
+
+        .search-container .search-btn {
+            padding: 0 30px;
+            background: var(--seasonal-color);
+            border: none;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .search-container .search-btn:hover {
+            background: var(--seasonal-color-dark);
+            /* transform: translateY(-2px); */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Season-specific themes - using dynamic variables from controller */
+        .winter-theme {
+            --seasonal-color: {{ $season['colors']['main'] ?? '#1976D2' }};
+            --seasonal-color-light: {{ $season['colors']['light'] ?? '#64B5F6' }};
+            --seasonal-color-dark: {{ $season['colors']['dark'] ?? '#0D47A1' }};
+            --seasonal-color-rgb: {{ $season['colors']['rgb'] ?? '25, 118, 210' }};
+            --seasonal-gradient: linear-gradient(135deg, {{ $season['colors']['main'] ?? '#1976D2' }} 0%, {{ $season['colors']['light'] ?? '#64B5F6' }} 100%);
+        }
+
+        .spring-theme {
+            --seasonal-color: {{ $season['colors']['main'] ?? '#7CB342' }};
+            --seasonal-color-light: {{ $season['colors']['light'] ?? '#AED581' }};
+            --seasonal-color-dark: {{ $season['colors']['dark'] ?? '#558B2F' }};
+            --seasonal-color-rgb: {{ $season['colors']['rgb'] ?? '124, 179, 66' }};
+            --seasonal-gradient: linear-gradient(135deg, {{ $season['colors']['main'] ?? '#7CB342' }} 0%, {{ $season['colors']['light'] ?? '#AED581' }} 100%);
+        }
+
+        .summer-theme {
+            --seasonal-color: {{ $season['colors']['main'] ?? '#FF9800' }};
+            --seasonal-color-light: {{ $season['colors']['light'] ?? '#FFD54F' }};
+            --seasonal-color-dark: {{ $season['colors']['dark'] ?? '#EF6C00' }};
+            --seasonal-color-rgb: {{ $season['colors']['rgb'] ?? '255, 152, 0' }};
+            --seasonal-gradient: linear-gradient(135deg, {{ $season['colors']['main'] ?? '#FF9800' }} 0%, {{ $season['colors']['light'] ?? '#FFD54F' }} 100%);
+        }
+
+        .autumn-theme {
+            --seasonal-color: {{ $season['colors']['main'] ?? '#E64A19' }};
+            --seasonal-color-light: {{ $season['colors']['light'] ?? '#FF8A65' }};
+            --seasonal-color-dark: {{ $season['colors']['dark'] ?? '#BF360C' }};
+            --seasonal-color-rgb: {{ $season['colors']['rgb'] ?? '230, 74, 25' }};
+            --seasonal-gradient: linear-gradient(135deg, {{ $season['colors']['main'] ?? '#E64A19' }} 0%, {{ $season['colors']['light'] ?? '#FF8A65' }} 100%);
+        }
+
+        /* Activity card styles with improved image handling */
         .activity-card {
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border-radius: 15px;
@@ -88,65 +242,52 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            /* Add position relative */
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .activity-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(146, 64, 11, 0.2);
-        }
-
-        .activity-image {
-            height: 220px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .activity-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .activity-card:hover .activity-image img {
             transform: scale(1.1);
         }
 
-        .seasonal-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            z-index: 2;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        .activity-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .activity-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
         }
 
         .activity-content {
             padding: 20px;
-            background: white;
-            flex-grow: 1;
+            flex: 1;
             display: flex;
             flex-direction: column;
         }
 
         .activity-title {
             font-size: 1.3rem;
-            margin-bottom: 10px;
             font-weight: 700;
+            margin-bottom: 10px;
             color: var(--dark);
-            line-height: 1.3;
         }
 
         .activity-description {
-            color: #666;
+            color: #555;
             margin-bottom: 15px;
-            line-height: 1.5;
+            flex: 1;
         }
 
         .activity-meta {
@@ -155,22 +296,21 @@
             margin-bottom: 15px;
         }
 
-        .activity-location {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #555;
-            font-size: 0.9rem;
-        }
-
+        .activity-location,
         .activity-rating {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .activity-location i {
+            color: var(--seasonal-color);
         }
 
         .activity-rating i {
-            color: #ffc107;
+            color: #FFC107;
         }
 
         .activity-footer {
@@ -178,86 +318,83 @@
             justify-content: space-between;
             align-items: center;
             margin-top: auto;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
         }
 
         .activity-price {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--primary);
+            color: var(--seasonal-color);
         }
 
         .activity-price .small {
             font-size: 0.8rem;
-            color: #666;
-            font-weight: normal;
+            font-weight: 400;
+            color: #777;
         }
 
         .book-now-btn {
-            padding: 8px 20px;
+            padding: 8px 18px;
             border-radius: 30px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: var(--seasonal-color) !important;
             color: white;
             font-weight: 600;
-            border: none;
+            font-size: 0.9rem;
             transition: all 0.3s ease;
+            border: none;
         }
 
         .book-now-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(146, 64, 11, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             color: white;
+            background: var(--seasonal-color-dark);
         }
 
-        .season-filter-section {
-            background-color: #f8f9fa;
-            padding: 20px 0;
-            margin-bottom: 40px;
-            border-radius: 10px;
-        }
-
-        .filter-btn {
-            border: 1px solid #ddd;
-            background: white;
-            padding: 8px 20px;
+        .seasonal-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--seasonal-gradient);
+            color: white;
+            padding: 6px 12px;
             border-radius: 30px;
-            font-weight: 500;
-            color: #555;
-            transition: all 0.3s ease;
-            margin-right: 8px;
-            margin-bottom: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .filter-btn:hover,
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .view-btn {
-            width: 40px;
-            height: 40px;
+        .favorite-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: 1px solid #ddd;
-            background: white;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 5px;
+            cursor: pointer;
+            z-index: 2;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .view-btn:hover,
-        .view-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+        .favorite-btn:hover {
+            background: white;
+            transform: scale(1.1);
         }
 
+        .favorite-btn i {
+            color: #FF5252;
+            font-size: 1rem;
+        }
+
+        /* List view styles */
         .list-view .activity-item {
-            width: 100%;
+            margin-bottom: 20px;
         }
 
         .list-view .activity-card {
@@ -266,99 +403,29 @@
         }
 
         .list-view .activity-image {
-            flex: 0 0 40%;
+            flex: 0 0 35%;
+            height: 100%;
         }
 
         .list-view .activity-content {
-            flex: 1;
-        }
-
-        .list-view .activity-description {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .active-filters {
+            padding: 20px;
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
+            flex-direction: column;
         }
 
-        .active-filters-label {
-            font-weight: 600;
-            color: #555;
+        .list-view .activity-meta {
+            margin-top: auto;
         }
 
-        .active-filter-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background-color: #f0f0f0;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
+        @media (max-width: 991px) {
+            .list-view .activity-card {
+                height: auto;
+                flex-direction: column;
+            }
 
-        .remove-filter {
-            background: rgba(0, 0, 0, 0.1);
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            line-height: 1;
-            color: #555;
-            text-decoration: none;
-        }
-
-        .clear-all-filters {
-            font-size: 0.85rem;
-            color: var(--primary);
-            font-weight: 500;
-            text-decoration: underline;
-        }
-
-        /* Season-specific themes can be added here */
-        .winter-theme {
-            --seasonal-color: #1976D2;
-            --seasonal-gradient: linear-gradient(135deg, #1976D2 0%, #64B5F6 100%);
-        }
-
-        .spring-theme {
-            --seasonal-color: #7CB342;
-            --seasonal-gradient: linear-gradient(135deg, #7CB342 0%, #AED581 100%);
-        }
-
-        .summer-theme {
-            --seasonal-color: #FF9800;
-            --seasonal-gradient: linear-gradient(135deg, #FF9800 0%, #FFD54F 100%);
-        }
-
-        .autumn-theme {
-            --seasonal-color: #E64A19;
-            --seasonal-gradient: linear-gradient(135deg, #E64A19 0%, #FF8A65 100%);
-        }
-
-        /* Apply seasonal theming */
-        .seasonal-theme .seasonal-badge,
-        .seasonal-theme .book-now-btn,
-        .seasonal-theme .filter-btn:hover,
-        .seasonal-theme .filter-btn.active,
-        .seasonal-theme .view-btn:hover,
-        .seasonal-theme .view-btn.active {
-            background: var(--seasonal-gradient);
-        }
-
-        .seasonal-theme .activity-price,
-        .seasonal-theme .clear-all-filters {
-            color: var(--seasonal-color);
+            .list-view .activity-image {
+                flex: 0 0 220px;
+            }
         }
 
         @media (max-width: 767px) {
@@ -371,39 +438,284 @@
                 gap: 15px;
             }
 
-            .list-view .activity-card {
-                flex-direction: column;
-                height: auto;
+            .seasonal-header {
+                padding: 40px 0;
             }
 
-            .list-view .activity-image {
-                flex: 0 0 200px;
+            .search-container .form-control {
+                height: 50px;
+                padding: 10px 20px;
             }
+
+            .seasonal-description {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Season tips section styling */
+        .season-tips-section {
+            background-color: #f9f9f9;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            margin: 60px 0;
+            padding: 60px 0;
+            border: 1px solid #eee;
+        }
+
+        .season-tips-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 35px;
+            position: relative;
+            z-index: 2;
+            border-left: 5px solid var(--seasonal-color);
+            transition: all 0.3s ease;
+        }
+
+        .season-tips-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .season-tips-card h3 {
+            color: var(--dark);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .season-tips-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 70px;
+            background: var(--seasonal-gradient);
+            border-radius: 10px;
+        }
+
+        .season-tips-card h3 i {
+            color: var(--seasonal-color);
+            margin-right: 12px;
+            font-size: 1.8rem;
+            background: rgba(var(--seasonal-color-rgb), 0.1);
+            padding: 12px;
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .season-tips-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .season-tips-list li {
+            padding: 12px 0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            line-height: 1.6;
+            position: relative;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+        }
+
+        .season-tips-list li:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+        }
+
+        .season-tips-list li i {
+            color: var(--seasonal-color);
+            margin-right: 12px;
+            font-size: 1.1rem;
+            position: relative;
+            top: 3px;
+            flex-shrink: 0;
+        }
+
+        /* Filter section styling */
+        .season-filter-section {
+            margin-bottom: 30px;
+            padding: 15px 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--seasonal-color);
+            color: var(--seasonal-color);
+        }
+
+        .filter-btn i {
+            font-size: 0.8rem;
+        }
+
+        .view-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            color: #777;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active,
+        .view-btn:hover {
+            background: var(--seasonal-color);
+            color: white;
+            border-color: var(--seasonal-color);
+        }
+
+        .active-filters {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .active-filters-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .active-filter-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f5f5f5;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+
+        .remove-filter {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #999;
+            text-decoration: none;
+        }
+
+        .remove-filter:hover {
+            color: #d32f2f;
+        }
+
+        .clear-all-filters {
+            font-size: 0.85rem;
+            color: #d32f2f;
+            text-decoration: none;
+            margin-left: auto;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .no-results i {
+            font-size: 3.5rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .no-results p {
+            color: #666;
+            max-width: 500px;
+            margin: 0 auto 25px;
+        }
+
+        /* Price slider customization */
+        .noUi-connect {
+            background: var(--seasonal-color);
+        }
+
+        #apply-price-filter {
+            background-color: var(--seasonal-color);
+            border-color: var(--seasonal-color);
+        }
+
+        #apply-price-filter:hover {
+            background-color: var(--seasonal-color-dark);
+            border-color: var(--seasonal-color-dark);
+        }
+
+        .dropdown-item.active,
+        .dropdown-item:active {
+            background-color: var(--seasonal-color);
         }
     </style>
 @endpush
 
 @section('content')
-    <!-- Breadcrumb Section -->
-    <section class="breadcrumb-section">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('services') }}">Services</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $season['title'] }}</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
 
-    <!-- Seasonal Header Section -->
+    <!-- Enhanced Seasonal Header Section -->
     <section class="seasonal-header {{ $season['theme'] }}-theme"
-        style="background-image: url('{{ asset($season['banner'] ?? $season['image']) }}')">
+        style="background-image: url('{{ $season['banner'] }}');">
         <div class="container text-center">
             <span class="season-tag">{{ $season['title'] }} Season</span>
             <h1 class="seasonal-title">{{ $season['title'] }} Activities</h1>
             <p class="seasonal-description">{{ $season['description'] }}</p>
+
+            <!-- Search Bar -->
+            <div class="search-container mb-4">
+                <form action="{{ route('seasonal.activities', ['season' => $season['slug']]) }}" method="GET"
+                    id="search-form">
+                    <div class="input-group">
+                        <input type="text" class="form-control"
+                            placeholder="Search for {{ strtolower($season['title']) }} activities..." name="search"
+                            value="{{ request('search') }}">
+                        <button class="btn search-btn" type="submit">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <div class="seasonal-meta">
                 <div class="seasonal-meta-item">
                     <i class="far fa-calendar-alt"></i>
@@ -562,23 +874,44 @@
     </section>
 
     <!-- Seasonal Activities Section -->
-    <section class="seasonal-activities-section seasonal-theme {{ $season['theme'] }}-theme">
+    <section class="seasonal-activities-section">
         <div class="container">
             @if ($activities->count() > 0)
                 <div class="row" id="activities-container">
                     @foreach ($activities as $activity)
                         <div class="col-lg-4 col-md-6 mb-4 activity-item">
                             <div class="activity-card">
-                                <a href="{{ route('activity.detail', $activity->id) }}" class="card-link"></a>
-                                <div class="activity-image">
-                                    <img src="{{ asset($activity->image ? 'storage/' . $activity->image : 'api/placeholder/800/500') }}"
-                                        alt="{{ $activity->name }}">
+                                <a href="{{ route('activity.detail', $activity->id) }}" class="card-link">
+                                    <div class="activity-image" style="height: 200px; overflow: hidden; border-radius: 15px 15px 0 0;">
+                                    @if ($activity->has_images)
+                                        @php
+                                            $primaryImage = null;
+                                            if (
+                                                $activity->images instanceof \Illuminate\Database\Eloquent\Collection &&
+                                                $activity->images->count() > 0
+                                            ) {
+                                                $primaryImage = $activity->images->where('is_primary', true)->first();
+                                                if (!$primaryImage) {
+                                                    $primaryImage = $activity->images->first();
+                                                }
+                                            }
+                                        @endphp
+                                        <img src="{{ asset('storage/' . ($primaryImage ? $primaryImage->path : 'placeholder.jpg')) }}"
+                                            alt="{{ $activity->name }}"
+                                            style="width: 100%; height: 100%; object-fit: cover;"
+                                            onerror="this.src='{{ asset('api/placeholder/800/500') }}'">
+                                    @else
+                                        <img src="{{ asset('assets/images/jordan-country.jpg') }}" 
+                                            alt="{{ $activity->name }}" 
+                                            style="width: 100%; height: 100%; object-fit: cover;">
+                                    @endif
                                     <div class="seasonal-badge">{{ $season['title'] }} Special</div>
                                     <button class="favorite-btn" data-activity-id="{{ $activity->id }}">
                                         <i class="far fa-heart"></i>
                                     </button>
-                                </div>
-                                <div class="activity-content">
+                                    </div>
+                                    <div class="activity-content">
+                                </a>
                                     <h3 class="activity-title">{{ $activity->name }}</h3>
                                     <p class="activity-description">{{ Str::limit($activity->description, 100) }}</p>
                                     <div class="activity-meta">
@@ -656,7 +989,6 @@
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.7.0/nouislider.min.js"></script>
-    <script src="{{ asset('mainJS/wishlist.js') }}"></script>
     <script>
         $(document).ready(function() {
             // Initialize price slider

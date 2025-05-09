@@ -133,8 +133,11 @@
                             <tr>
                                 <td>{{ ($activities->currentPage() - 1) * $activities->perPage() + $loop->iteration }}</td>
                                 <td>
-                                    @if ($activity->image)
-                                        <img src="{{ asset('storage/' . $activity->image) }}"
+                                    @if ($activity->has_images)
+                                        @php
+                                            $primaryImage = $activity->images->where('is_primary', true)->first();
+                                        @endphp
+                                        <img src="{{ asset('storage/' . $primaryImage->path) }}"
                                             alt="{{ $activity->name }}"
                                             style="width: 80px; height: 60px; object-fit: cover;"
                                             class="rounded shadow-sm border">

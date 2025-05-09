@@ -22,7 +22,7 @@ class SeasonalController extends Controller
                 'slug' => 'winter',
                 'theme' => 'winter',
                 'image' => 'api/placeholder/800/500',
-                'banner' => 'api/placeholder/1920/600',
+                'banner' => 'https://www.christmascentral.com/product_images/uploaded_images/sunny-winter-scene-lars-eberhardt-bcg-yva8tha-unsplash-960x600.jpg',
                 'temperature' => 'Cold (0-10°C)',
                 'weather' => 'Snow and Rain',
                 'description' => 'Discover the magic of winter with activities designed for the cold season. From cozy indoor experiences to thrilling snow adventures, we offer a range of options to make your winter truly memorable.',
@@ -32,6 +32,13 @@ class SeasonalController extends Controller
                     'Plan shorter daylight hours into your itinerary',
                     'Look for winter festivals and holiday celebrations',
                     'Book accommodations with heating and cozy amenities'
+                ],
+                // Add CSS root color variables
+                'colors' => [
+                    'main' => '#1976D2',       // Blue
+                    'light' => '#64B5F6',      // Light blue
+                    'dark' => '#0D47A1',       // Dark blue
+                    'rgb' => '25, 118, 210',   // RGB values for main color
                 ]
             ],
             'spring' => [
@@ -40,7 +47,7 @@ class SeasonalController extends Controller
                 'slug' => 'spring',
                 'theme' => 'spring',
                 'image' => 'api/placeholder/800/500',
-                'banner' => 'api/placeholder/1920/600',
+                'banner' => 'https://media.cntraveler.com/photos/5ca3803bd6636b493bd5cfd4/16:9/w_2560,c_limit/Cherry-Blossoms_GettyImages-137375463.jpg',
                 'temperature' => 'Mild (10-20°C)',
                 'weather' => 'Occasional Showers',
                 'description' => 'Welcome the new season with our spring activities. Witness nature\'s rebirth with blooming gardens, refreshing hikes, and cultural experiences that celebrate renewal and growth.',
@@ -50,6 +57,13 @@ class SeasonalController extends Controller
                     'Visit gardens and natural areas for beautiful blooms',
                     'Be prepared for muddy trails if hiking',
                     'Look for seasonal food festivals and cultural events'
+                ],
+                // Add CSS root color variables
+                'colors' => [
+                    'main' => '#7CB342',       // Green
+                    'light' => '#AED581',      // Light green
+                    'dark' => '#558B2F',       // Dark green
+                    'rgb' => '124, 179, 66',   // RGB values for main color
                 ]
             ],
             'summer' => [
@@ -58,7 +72,7 @@ class SeasonalController extends Controller
                 'slug' => 'summer',
                 'theme' => 'summer',
                 'image' => 'api/placeholder/800/500',
-                'banner' => 'api/placeholder/1920/600',
+                'banner' => 'https://media.cnn.com/api/v1/images/stellar/prod/200430171957-summer-travel-2020.jpg?q=w_3000,h_1688,x_0,y_0,c_fill',
                 'temperature' => 'Hot (25-35°C)',
                 'weather' => 'Sunny and Clear',
                 'description' => 'Make the most of summer\'s long days and warm weather with our specially curated activities. From beach escapes to mountain adventures, create unforgettable memories under the summer sun.',
@@ -68,6 +82,13 @@ class SeasonalController extends Controller
                     'Book popular attractions in advance as summer is high season',
                     'Consider early morning activities to avoid crowds and heat',
                     'Look for outdoor concerts, festivals and evening events'
+                ],
+                // Add CSS root color variables
+                'colors' => [
+                    'main' => '#FF9800',       // Orange
+                    'light' => '#FFD54F',      // Light orange/yellow
+                    'dark' => '#EF6C00',       // Dark orange
+                    'rgb' => '255, 152, 0',    // RGB values for main color
                 ]
             ],
             'autumn' => [
@@ -76,7 +97,7 @@ class SeasonalController extends Controller
                 'slug' => 'autumn',
                 'theme' => 'autumn',
                 'image' => 'api/placeholder/800/500',
-                'banner' => 'api/placeholder/1920/600',
+                'banner' => 'https://i0.wp.com/www.hachettebookgroup.com/wp-content/uploads/2020/09/Fall_Zoom_Background_3-2.jpg?resize=1024%2C576&ssl=1',
                 'temperature' => 'Cool (10-20°C)',
                 'weather' => 'Partly Cloudy',
                 'description' => 'Experience the beauty of fall with our autumn activities. Enjoy the spectacular foliage, harvest festivals, and the perfect weather for outdoor adventures during this colorful season.',
@@ -86,6 +107,13 @@ class SeasonalController extends Controller
                     'Visit orchards and farms for harvest activities',
                     'Check for seasonal wine tastings and food festivals',
                     'Book accommodations in advance for peak foliage season'
+                ],
+                // Add CSS root color variables
+                'colors' => [
+                    'main' => '#E64A19',       // Rust red
+                    'light' => '#FF8A65',      // Light rust
+                    'dark' => '#BF360C',       // Dark rust/brown
+                    'rgb' => '230, 74, 25',    // RGB values for main color
                 ]
             ],
         ];

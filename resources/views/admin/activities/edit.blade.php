@@ -177,23 +177,152 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Activity Image</label>
-                                @if ($activity->image)
-                                    <div class="mb-3">
-                                        <label class="form-label">Current Image</label><br>
-                                        <img src="{{ Storage::url($activity->image) }}" style="width: 120px; height: 90px; object-fit: cover;"
-                                            class="rounded border">
-                                    </div>
-                                @endif
+                            <div class="mb-4">
+                                <label class="form-label">Activity Images (Up to 3 images)</label>
+                                <div class="activity-images">
+                                    <div class="row mb-3">
+                                        <!-- Primary Image Slot -->
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-2">Primary Image</h6>
+                                                    <div class="image-preview mb-2" id="primaryImagePreview">
+                                                        @php
+                                                            $primaryImage = $activity->images
+                                                                ->where('is_primary', true)
+                                                                ->first();
+                                                        @endphp
+                                                        @if ($primaryImage)
+                                                            <img src="{{ Storage::url($primaryImage->path) }}"
+                                                                class="img-fluid rounded">
+                                                            <input type="hidden" name="existing_images[]"
+                                                                value="{{ $primaryImage->id }}">
+                                                        @else
+                                                            <img src="{{ asset('assetsAdmin/img/image-placeholder.jpg') }}"
+                                                                class="img-fluid rounded">
+                                                        @endif
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <input class="form-control @error('images.0') is-invalid @enderror"
+                                                            type="file" id="primary_image" name="images[]"
+                                                            accept="image/*"
+                                                            onchange="previewImage(this, 'primaryImagePreview')">
+                                                        <input type="hidden" name="is_primary[]" value="1">
+                                                        @error('images.0')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                        <div class="form-text">This will be the main image displayed</div>
+                                                    </div>
+                                                    @if ($primaryImage)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="delete_primary_image" name="delete_images[]"
+                                                                value="{{ $primaryImage->id }}">
+                                                            <label class="form-check-label text-danger"
+                                                                for="delete_primary_image">
+                                                                Delete this image
+                                                            </label>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div class="mb-3">
-                                    <label for="image" class="form-label">Change Image</label>
-                                    <input class="form-control @error('image') is-invalid @enderror" type="file" id="image" name="image" accept="image/*">
-                                    @error('image')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <div class="form-text">Recommended size: 800x600 pixels. Max file size: 2MB.</div>
+                                        <!-- Additional Image 1 -->
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-2">Additional Image 1</h6>
+                                                    <div class="image-preview mb-2" id="image1Preview">
+                                                        @php
+                                                            $additionalImages = $activity->images
+                                                                ->where('is_primary', false)
+                                                                ->values();
+                                                            $image1 = $additionalImages->get(0);
+                                                        @endphp
+                                                        @if ($image1)
+                                                            <img src="{{ Storage::url($image1->path) }}"
+                                                                class="img-fluid rounded">
+                                                            <input type="hidden" name="existing_images[]"
+                                                                value="{{ $image1->id }}">
+                                                        @else
+                                                            <img src="{{ asset('assetsAdmin/img/image-placeholder.jpg') }}"
+                                                                class="img-fluid rounded">
+                                                        @endif
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <input
+                                                            class="form-control @error('images.1') is-invalid @enderror"
+                                                            type="file" id="image1" name="images[]"
+                                                            accept="image/*"
+                                                            onchange="previewImage(this, 'image1Preview')">
+                                                        <input type="hidden" name="is_primary[]" value="0">
+                                                        @error('images.1')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                    @if ($image1)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="delete_image1" name="delete_images[]"
+                                                                value="{{ $image1->id }}">
+                                                            <label class="form-check-label text-danger"
+                                                                for="delete_image1">
+                                                                Delete this image
+                                                            </label>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Additional Image 2 -->
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h6 class="card-title mb-2">Additional Image 2</h6>
+                                                    <div class="image-preview mb-2" id="image2Preview">
+                                                        @php
+                                                            $image2 = $additionalImages->get(1);
+                                                        @endphp
+                                                        @if ($image2)
+                                                            <img src="{{ Storage::url($image2->path) }}"
+                                                                class="img-fluid rounded">
+                                                            <input type="hidden" name="existing_images[]"
+                                                                value="{{ $image2->id }}">
+                                                        @else
+                                                            <img src="{{ asset('assetsAdmin/img/image-placeholder.jpg') }}"
+                                                                class="img-fluid rounded">
+                                                        @endif
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <input
+                                                            class="form-control @error('images.2') is-invalid @enderror"
+                                                            type="file" id="image2" name="images[]"
+                                                            accept="image/*"
+                                                            onchange="previewImage(this, 'image2Preview')">
+                                                        <input type="hidden" name="is_primary[]" value="0">
+                                                        @error('images.2')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                    @if ($image2)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                id="delete_image2" name="delete_images[]"
+                                                                value="{{ $image2->id }}">
+                                                            <label class="form-check-label text-danger"
+                                                                for="delete_image2">
+                                                                Delete this image
+                                                            </label>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-text">Recommended size: 800x600 pixels. Max file size: 2MB per image.
                                 </div>
                             </div>
 
@@ -230,6 +359,41 @@
 
             // Initialize on page load
             updateEndDateMin();
+
+            // Handle delete image checkboxes
+            const deleteCheckboxes = document.querySelectorAll('input[name="delete_images[]"]');
+            deleteCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const imagePreview = this.closest('.card-body').querySelector(
+                        '.image-preview img');
+                    if (this.checked) {
+                        imagePreview.style.opacity = '0.3';
+                    } else {
+                        imagePreview.style.opacity = '1';
+                    }
+                });
+            });
         });
+
+        // Image preview function
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId).querySelector('img');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.opacity = '1';
+
+                    // If there's a delete checkbox for this image, uncheck it
+                    const deleteCheckbox = input.closest('.card-body').querySelector('input[type="checkbox"]');
+                    if (deleteCheckbox) {
+                        deleteCheckbox.checked = false;
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = "{{ asset('assetsAdmin/img/image-placeholder.jpg') }}";
+            }
+        }
     </script>
 @endsection

@@ -249,6 +249,142 @@ class BookingController extends Controller
     }
 
     /**
+     * Export participants for a specific booking
+     *
+     * @param int $id Booking ID
+     * @param string $format Export format (csv, excel, pdf)
+     * @return \Illuminate\Http\Response
+     */
+    public function exportParticipants($id, $format = 'csv')
+    {
+        $booking = Booking::with(['user', 'activities', 'participants'])->findOrFail($id);
+        $participants = $booking->participants;
+
+        // Prepare filename
+        $filename = 'booking-' . $booking->booking_number . '-participants.' . $format;
+
+        // Export based on requested format
+        switch ($format) {
+            case 'csv':
+                return $this->exportParticipantsToCSV($booking, $participants, $filename);
+
+            case 'excel':
+                return $this->exportParticipantsToExcel($booking, $participants, $filename);
+
+            case 'pdf':
+                return $this->exportParticipantsToPDF($booking, $participants, $filename);
+
+            default:
+                return redirect()->back()->with('error', 'Unsupported export format');
+        }
+    }
+
+    /**
+     * Export participants to CSV format
+     *
+     * @param \App\Models\Booking $booking
+     * @param \Illuminate\Database\Eloquent\Collection $participants
+     * @param string $filename
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    protected function exportParticipantsToCSV($booking, $participants, $filename)
+    {
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $callback = function () use ($booking, $participants) {
+            $file = fopen('php://output', 'w');
+
+            // Add booking information header
+            fputcsv($file, ['Booking Information']);
+            fputcsv($file, ['Booking Number:', $booking->booking_number]);
+            fputcsv($file, ['Status:', ucfirst($booking->status)]);
+            fputcsv($file, ['Date:', $booking->created_at->format('Y-m-d')]);
+            fputcsv($file, ['Customer:', ($booking->user->first_name ?? '') . ' ' . ($booking->user->last_name ?? 'Guest')]);
+            fputcsv($file, ['Email:', $booking->user->email ?? 'N/A']);
+            fputcsv($file, ['Total Participants:', count($participants)]);
+
+            // Add activities
+            fputcsv($file, ['']);
+            fputcsv($file, ['Activities:']);
+            foreach ($booking->activities as $activity) {
+                fputcsv($file, [$activity->name, $activity->location ?? 'N/A', $activity->start_date ? date('Y-m-d', strtotime($activity->start_date)) : 'N/A']);
+            }
+
+            // Add blank row as separator
+            fputcsv($file, ['']);
+
+            // Add participant header row
+            fputcsv($file, ['#', 'Name', 'Email', 'Phone', 'Activity', 'Added On']);
+
+            // Add participant rows
+            foreach ($participants as $index => $participant) {
+                $activityName = $participant->activity ? $participant->activity->name : 'N/A';
+
+                fputcsv($file, [
+                    $index + 1,
+                    $participant->name,
+                    $participant->email ?? 'N/A',
+                    $participant->phone ?? 'N/A',
+                    $activityName,
+                    $participant->created_at->format('Y-m-d'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Export participants to Excel format
+     *
+     * @param \App\Models\Booking $booking
+     * @param \Illuminate\Database\Eloquent\Collection $participants
+     * @param string $filename
+     * @return \Illuminate\Http\Response
+     */
+    protected function exportParticipantsToExcel($booking, $participants, $filename)
+    {
+        // For now, use CSV as Excel export
+        // In a production app, you would use a library like PhpSpreadsheet
+        return $this->exportParticipantsToCSV($booking, $participants, $filename);
+    }
+
+    /**
+     * Export participants to PDF format
+     *
+     * @param \App\Models\Booking $booking
+     * @param \Illuminate\Database\Eloquent\Collection $participants
+     * @param string $filename
+     * @return \Illuminate\Http\Response
+     */
+    protected function exportParticipantsToPDF($booking, $participants, $filename)
+    {
+        // Load the booking with its relationships
+        $booking->load(['user', 'activities']);
+
+        // Create PDF directly using DOMPDF
+        $html = view('admin.bookings.pdf.participants-export', compact('booking', 'participants'))->render();
+
+        $dompdf = new \Dompdf\Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
+
+    /**
      * Process loyalty points when a booking is marked as completed
      * This adds the earned points to the user's account
      *

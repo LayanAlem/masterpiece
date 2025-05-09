@@ -25,13 +25,14 @@ class Activity extends Model
         'season',
         'is_family_friendly',
         'is_accessible',
-        'image',
+        'has_images',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'is_family_friendly' => 'boolean',
         'is_accessible' => 'boolean',
+        'has_images' => 'boolean',
     ];
 
     /**
@@ -48,6 +49,46 @@ class Activity extends Model
     public function bookings()
     {
         return $this->belongsToMany(Booking::class, 'activity_booking');
+    }
+
+    /**
+     * Get all images for this activity
+     */
+    public function images()
+    {
+        return $this->hasMany(ActivityImage::class)->orderBy('display_order');
+    }
+
+    /**
+     * Get the primary image for this activity
+     */
+    public function primaryImage()
+    {
+        return $this->hasOne(ActivityImage::class)->where('is_primary', true);
+    }
+
+    /**
+     * Get the image URL for the activity
+     *
+     * This method prioritizes the primary image, falling back to the first non-primary image
+     * and then to a placeholder if no images exist.
+     */
+    public function getImageAttribute()
+    {
+        if ($this->has_images) {
+            $primaryImage = $this->images->where('is_primary', true)->first();
+            if ($primaryImage) {
+                return $primaryImage->path;
+            }
+
+            // Fallback to first image if no primary image
+            $firstImage = $this->images->first();
+            if ($firstImage) {
+                return $firstImage->path;
+            }
+        }
+
+        return null;
     }
 
     /**

@@ -537,6 +537,10 @@
                                             <a class="dropdown-item" href="{{ route('bookings.show', $booking->id) }}">
                                                 <i class="bx bx-show me-1"></i> View Details
                                             </a>
+                                            <a class="dropdown-item"
+                                                href="{{ route('bookings.export-participants', $booking->id) }}">
+                                                <i class="bx bx-export me-1"></i> Export Participants
+                                            </a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item text-danger delete-btn" href="javascript:void(0);"
                                                 data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"

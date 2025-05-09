@@ -9,7 +9,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class User extends Authenticatable
 {
     use HasApiTokens, SoftDeletes, HasFactory, Notifiable;
@@ -73,11 +72,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all activity bookings for the user
+     * Get all activity bookings for the user through the bookings relationship
      */
     public function activityBookings()
     {
-        return $this->hasMany(ActivityBooking::class);
+        // Use hasManyThrough to access activity bookings through the bookings relationship
+        return $this->hasManyThrough(
+            ActivityBooking::class,
+            Booking::class,
+            'user_id',  // Foreign key on bookings table
+            'booking_id',  // Foreign key on activity_booking table
+            'id',  // Local key on users table
+            'id'   // Local key on bookings table
+        );
     }
 
     public function reviews()
@@ -86,6 +93,14 @@ class User extends Authenticatable
     }
 
     public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    /**
+     * Get the user's wishlist items
+     */
+    public function wishlist()
     {
         return $this->hasMany(Wishlist::class);
     }

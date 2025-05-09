@@ -560,11 +560,35 @@
             background-color: rgba(246, 246, 246, 0.6);
             border-radius: 8px;
             transition: all 0.3s ease;
+            border: 1px solid #eee;
         }
 
         .write-review-prompt:hover {
             background-color: rgba(246, 246, 246, 1);
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .write-review-btn {
+            background-color: var(--primary, #92400b);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(146, 64, 11, 0.2);
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .write-review-btn:hover {
+            background-color: #7a3609;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(146, 64, 11, 0.3);
+            color: white;
+            text-decoration: none;
         }
 
         .review-status {
@@ -589,6 +613,218 @@
         .status-rejected {
             background-color: rgba(220, 53, 69, 0.1);
             color: #dc3545;
+        }
+
+        /* Navbar Dropdown Fix */
+        .navbar-nav .nav-item.dropdown .dropdown-menu {
+            position: absolute;
+            z-index: 1000;
+            display: none;
+            min-width: 10rem;
+            padding: 0.5rem 0;
+            margin: 0;
+            font-size: 1rem;
+            color: #212529;
+            text-align: left;
+            list-style: none;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, .15);
+            border-radius: 0.25rem;
+        }
+
+        .navbar-nav .nav-item.dropdown .dropdown-menu.show {
+            display: block;
+            margin-top: 0;
+        }
+
+        .navbar-nav .nav-item.dropdown .dropdown-toggle::after {
+            display: inline-block;
+            margin-left: 0.255em;
+            vertical-align: 0.255em;
+            content: "";
+            border-top: 0.3em solid;
+            border-right: 0.3em solid transparent;
+            border-bottom: 0;
+            border-left: 0.3em solid transparent;
+        }
+
+        .navbar-nav .nav-item.dropdown .dropdown-toggle:empty::after {
+            margin-left: 0;
+        }
+
+        .navbar-nav .nav-item.dropdown .dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 0.25rem 1rem;
+            clear: both;
+            font-weight: 400;
+            color: #212529;
+            text-align: inherit;
+            text-decoration: none;
+            white-space: nowrap;
+            background-color: transparent;
+            border: 0;
+        }
+
+        .navbar-nav .nav-item.dropdown .dropdown-item:hover,
+        .navbar-nav .nav-item.dropdown .dropdown-item:focus {
+            color: #1e2125;
+            background-color: #f8f9fa;
+        }
+
+        .navbar-nav .nav-item.dropdown .dropdown-item.active,
+        .navbar-nav .nav-item.dropdown .dropdown-item:active {
+            color: #fff;
+            text-decoration: none;
+            background-color: #0d6efd;
+        }
+
+        /* Override any conflicting navbar styles */
+        .nav-link.dropdown-toggle:after {
+            display: inline-block !important;
+            position: static !important;
+            width: auto !important;
+            height: auto !important;
+            margin-left: 0.255em !important;
+            vertical-align: 0.255em !important;
+            content: "" !important;
+            border-top: 0.3em solid !important;
+            border-right: 0.3em solid transparent !important;
+            border-bottom: 0 !important;
+            border-left: 0.3em solid transparent !important;
+            transform: none !important;
+            background-color: transparent !important;
+        }
+
+        /* Add new styles for review modal */
+        .review-modal .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .review-modal .modal-body {
+            padding-top: 0;
+        }
+
+        .review-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px;
+        }
+
+        .review-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .review-modal .rating-large {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .review-modal .review-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .review-modal .review-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .review-card {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .all-reviews-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .all-reviews-btn:hover {
+            background-color: #f1f3f5;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-reviews-message {
+            text-align: center;
+            padding: 30px;
+            background-color: rgba(246, 246, 246, 0.6);
+            border-radius: 8px;
+        }
+
+        .no-reviews-message i {
+            font-size: 3rem;
+            color: #dee2e6;
+            margin-bottom: 15px;
+        }
+
+        .no-reviews-message h4 {
+            margin-bottom: 10px;
+        }
+
+        .no-reviews-message p {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        /* Star rating styles for review modals */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #ddd;
+            padding: 0 5px;
+            transition: color 0.3s ease;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover~label,
+        .star-rating input:checked~label {
+            color: #FFC107;
+        }
+
+        /* Fixes for star rating in edit modal */
+        #editStarRating input {
+            display: none;
+        }
+
+        #editStarRating label {
+            cursor: pointer;
+            font-size: 30px;
+            color: #ddd;
+            padding: 0 5px;
+        }
+
+        #editStarRating label:hover,
+        #editStarRating label:hover~label,
+        #editStarRating input:checked~label {
+            color: #FFC107;
         }
     </style>
 @endpush
@@ -623,15 +859,50 @@
 
             <!-- Photo Gallery -->
             <div class="photo-gallery">
+                @php
+                    $primaryImage = null;
+                    $additionalImages = collect(); // Initialize as a collection instead of array
+
+                    if (
+                        $activity->has_images &&
+                        $activity->images instanceof \Illuminate\Database\Eloquent\Collection &&
+                        $activity->images->count() > 0
+                    ) {
+                        // Get the primary image
+                        $primaryImage = $activity->images->where('is_primary', true)->first();
+
+                        // Get additional images
+                        $additionalImages = $activity->images->where('is_primary', false)->take(2);
+                    }
+                @endphp
+
                 <div class="photo-item main-photo">
-                    <img src="{{ asset($activity->image ? 'storage/' . $activity->image : 'api/placeholder/800/400') }}"
+                    <img src="{{ asset($primaryImage ? 'storage/' . $primaryImage->path : 'api/placeholder/800/400') }}"
                         alt="{{ $activity->name }}">
                 </div>
+
                 <div class="photo-item sub-photo">
-                    <img src="/api/placeholder/400/200" alt="Close-up detail of {{ $activity->name }}">
+                    @if ($additionalImages->isNotEmpty() && $additionalImages->first())
+                        <img src="{{ asset('storage/' . $additionalImages->first()->path) }}"
+                            alt="Close-up detail of {{ $activity->name }}">
+                    @elseif($primaryImage)
+                        <img src="{{ asset('storage/' . $primaryImage->path) }}"
+                            alt="Close-up detail of {{ $activity->name }}">
+                    @else
+                        <img src="{{ asset('api/placeholder/400/200') }}" alt="Close-up detail of {{ $activity->name }}">
+                    @endif
                 </div>
+
                 <div class="photo-item sub-photo">
-                    <img src="/api/placeholder/400/200" alt="{{ $activity->name }} additional view">
+                    @if ($additionalImages->count() > 1 && $additionalImages->get(1))
+                        <img src="{{ asset('storage/' . $additionalImages->get(1)->path) }}"
+                            alt="{{ $activity->name }} additional view">
+                    @elseif($primaryImage)
+                        <img src="{{ asset('storage/' . $primaryImage->path) }}"
+                            alt="{{ $activity->name }} additional view">
+                    @else
+                        <img src="{{ asset('api/placeholder/400/200') }}" alt="{{ $activity->name }} additional view">
+                    @endif
                 </div>
             </div>
 
@@ -642,13 +913,23 @@
                     Sorry, This Experience is Fully Booked
                 </button>
             @else
-                <button class="book-btn" id="openBookingModal">
-                    <i class="fas fa-calendar-check"></i>
-                    Book Your {{ $activity->name }} Experience Now
-                    <span class="ms-2 badge rounded-pill bg-light text-dark">
-                        {{ $activity->remaining_capacity }} @choice('seat|seats', $activity->remaining_capacity) left
-                    </span>
-                </button>
+                @auth
+                    <button class="book-btn" id="openBookingModal">
+                        <i class="fas fa-calendar-check"></i>
+                        Book Your {{ $activity->name }} Experience Now
+                        <span class="ms-2 badge rounded-pill bg-light text-dark">
+                            {{ $activity->remaining_capacity }} @choice('seat|seats', $activity->remaining_capacity) left
+                        </span>
+                    </button>
+                @else
+                    <button class="book-btn" id="openLoginModal">
+                        <i class="fas fa-calendar-check"></i>
+                        Book Your {{ $activity->name }} Experience Now
+                        <span class="ms-2 badge rounded-pill bg-light text-dark">
+                            {{ $activity->remaining_capacity }} @choice('seat|seats', $activity->remaining_capacity) left
+                        </span>
+                    </button>
+                @endauth
             @endif
 
             <!-- Weather & Preparation -->
@@ -707,28 +988,6 @@
                                 <span>Small backpack</span>
                             </li>
                         </ul>
-                    </div>
-                </div>
-
-                <h4 class="mt-4">Best Time to Visit</h4>
-                <div class="season-grid">
-                    <div class="season-card">
-                        <div class="season-title">Spring (Mar-May)</div>
-                        <div class="season-desc">Perfect temperatures, wildflowers blooming. Morning/late afternoon with
-                            moderate crowds.</div>
-                    </div>
-                    <div class="season-card">
-                        <div class="season-title">Summer (Jun-Aug)</div>
-                        <div class="season-desc">Very hot during day. Early morning visits recommended. Lower crowds.</div>
-                    </div>
-                    <div class="season-card">
-                        <div class="season-title">Fall (Sep-Nov)</div>
-                        <div class="season-desc">Mild temperatures, clear skies. Excellent photography conditions.</div>
-                    </div>
-                    <div class="season-card">
-                        <div class="season-title">Winter (Dec-Feb)</div>
-                        <div class="season-desc">Cool temperatures, possible rain, stunning views. Dramatic skies, fewer
-                            tourists.</div>
                     </div>
                 </div>
             </div>
@@ -800,34 +1059,37 @@
                         </div>
                     </div>
 
-                    @foreach ($activity->reviews->where('status', 'approved')->take(4) as $review)
-                        <div class="review-card">
-                            <div class="review-avatar">
-                                <img src="{{ $review->user->profile_image ? asset('storage/' . $review->user->profile_image) : '/api/placeholder/60/60' }}"
-                                    alt="{{ $review->user->first_name ?? 'Reviewer' }}">
-                            </div>
-                            <div class="review-content">
-                                <h5 class="reviewer-name">{{ $review->user->first_name ?? 'Anonymous' }}
-                                    {{ $review->user->last_name ?? '' }}</h5>
-                                <div class="review-date">Visited
-                                    {{ \Carbon\Carbon::parse($review->created_at)->format('F Y') }}</div>
-                                <div class="review-rating mb-2">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <i
-                                            class="fas fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"></i>
-                                    @endfor
+                    <div class="reviews-container">
+                        @foreach ($activity->reviews->where('status', 'approved')->take(3) as $review)
+                            <div class="review-card">
+                                <div class="review-avatar">
+                                    <img src="{{ $review->user->profile_image ? asset('storage/' . $review->user->profile_image) : '/api/placeholder/60/60' }}"
+                                        alt="{{ $review->user->first_name ?? 'Reviewer' }}">
                                 </div>
-                                <div class="review-text">
-                                    "{{ $review->comment }}"
+                                <div class="review-content">
+                                    <h5 class="reviewer-name">{{ $review->user->first_name ?? 'Anonymous' }}
+                                        {{ $review->user->last_name ?? '' }}</h5>
+                                    <div class="review-date">Visited
+                                        {{ \Carbon\Carbon::parse($review->created_at)->format('F Y') }}</div>
+                                    <div class="review-rating mb-2">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i
+                                                class="fas fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"></i>
+                                        @endfor
+                                    </div>
+                                    <div class="review-text">
+                                        "{{ $review->comment }}"
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
 
-                    @if ($activity->reviews->where('status', 'approved')->count() > 4)
+                    @if ($activity->reviews->where('status', 'approved')->count() > 3)
                         <div class="text-center mt-4">
                             <button class="btn btn-outline-primary" id="loadMoreReviews">
-                                <i class="fas fa-comment-dots me-1"></i> Load More Reviews
+                                <i class="fas fa-comment-dots me-1"></i> See All
+                                {{ $activity->reviews->where('status', 'approved')->count() }} Reviews
                             </button>
                         </div>
                     @endif
@@ -853,73 +1115,58 @@
                             <div class="write-review-prompt mt-4 p-3 bg-light rounded">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div>
-                                        <h5 class="mb-1"><i class="fas fa-star me-2 text-warning"></i> Share your experience
+                                        <h5 class="mb-1"><i class="fas fa-star me-2 text-warning"></i> Share your
+                                            experience
                                         </h5>
-                                        <p class="mb-0 text-muted">You've completed this activity. Help others by writing a
+                                        <p class="mb-0 text-muted">You've completed this activity. Help others by writing
+                                            a
                                             review!</p>
                                     </div>
-                                    <a href="{{ route('reviews.create', ['booking_id' => $eligibleBooking->id, 'activity_id' => $activity->id]) }}"
-                                        class="btn btn-primary">
+                                    <button type="button" class="btn btn-primary write-review-btn"
+                                        data-booking-id="{{ $eligibleBooking->id }}">
                                         <i class="fas fa-pencil-alt me-1"></i> Write a Review
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         @endif
                     @endauth
                 @else
-                    <div class="review-card">
-                        <div class="review-avatar">
-                            <img src="/api/placeholder/60/60" alt="Michael Chen">
-                        </div>
-                        <div class="review-content">
-                            <h5 class="reviewer-name">Michael Chen</h5>
-                            <div class="review-date">Visited April 2024</div>
-                            <div class="review-rating mb-2">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <i class="fas fa-star {{ $i <= 5 ? 'text-warning' : 'text-muted' }}"></i>
-                                @endfor
-                            </div>
-                            <div class="review-text">
-                                "The experience was breathtaking. Our guide's knowledge brought this place to life. Worth
-                                every minute of the journey."
-                            </div>
+                    <div class="no-reviews-message p-4 mb-4">
+                        <div class="text-center">
+                            <i class="far fa-comment-alt d-block mb-3"></i>
+                            <h4>No Reviews Yet</h4>
+                            <p>This activity doesn't have any reviews yet.</p>
+
+                            @auth
+                                @php
+                                    $hasCompletedBooking = false;
+                                    $eligibleBooking = null;
+
+                                    foreach (Auth::user()->bookings->where('status', 'completed') as $booking) {
+                                        if ($booking->activities->contains($activity->id)) {
+                                            $hasCompletedBooking = true;
+                                            if (!$booking->hasReview()) {
+                                                $eligibleBooking = $booking;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                @endphp
+
+                                @if ($hasCompletedBooking && $eligibleBooking)
+                                    <div class="mt-3">
+                                        <button type="button"
+                                            class="btn btn-primary write-review-btn d-flex align-items-center justify-content-center mx-auto"
+                                            data-booking-id="{{ $eligibleBooking->id }}">
+                                            <i class="fas fa-pencil-alt me-1"
+                                                style="position: relative; top: 8px; font-size: small;"></i> Be the first to
+                                            write a review
+                                        </button>
+                                    </div>
+                                @endif
+                            @endauth
                         </div>
                     </div>
-
-                    <!-- Display a review prompt if the user has a completed booking -->
-                    @auth
-                        @php
-                            $hasCompletedBooking = false;
-                            $eligibleBooking = null;
-
-                            foreach (Auth::user()->bookings->where('status', 'completed') as $booking) {
-                                if ($booking->activities->contains($activity->id)) {
-                                    $hasCompletedBooking = true;
-                                    if (!$booking->hasReview()) {
-                                        $eligibleBooking = $booking;
-                                        break;
-                                    }
-                                }
-                            }
-                        @endphp
-
-                        @if ($hasCompletedBooking && $eligibleBooking)
-                            <div class="write-review-prompt mt-4 p-3 bg-light rounded">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div>
-                                        <h5 class="mb-1"><i class="fas fa-star me-2 text-warning"></i> Be the first to
-                                            review!</h5>
-                                        <p class="mb-0 text-muted">You've completed this activity. Help others by sharing your
-                                            experience!</p>
-                                    </div>
-                                    <a href="{{ route('reviews.create', ['booking_id' => $eligibleBooking->id, 'activity_id' => $activity->id]) }}"
-                                        class="btn btn-primary">
-                                        <i class="fas fa-pencil-alt me-1"></i> Write a Review
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
-                    @endauth
                 @endif
             </div>
 
@@ -931,8 +1178,18 @@
                         @foreach ($similarActivities as $relatedActivity)
                             <div class="activity-card">
                                 <div class="activity-img">
-                                    <img src="{{ asset($relatedActivity->image ? 'storage/' . $relatedActivity->image : 'api/placeholder/400/250') }}"
-                                        alt="{{ $relatedActivity->name }}">
+                                    @if ($relatedActivity->has_images)
+                                        @php
+                                            $primaryImage = $relatedActivity->images
+                                                ->where('is_primary', true)
+                                                ->first();
+                                        @endphp
+                                        <img src="{{ asset('storage/' . $primaryImage->path) }}"
+                                            alt="{{ $relatedActivity->name }}">
+                                    @else
+                                        <img src="{{ asset('api/placeholder/400/250') }}"
+                                            alt="{{ $relatedActivity->name }}">
+                                    @endif
                                 </div>
                                 <div class="activity-info">
                                     <h4 class="activity-name">{{ $relatedActivity->name }}</h4>
@@ -943,7 +1200,11 @@
                                         </div>
                                     </div>
                                     <p class="mb-2">{{ Str::limit($relatedActivity->description, 60) }}</p>
-                                    <div class="activity-price">From ${{ number_format($relatedActivity->price, 0) }} USD
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="activity-price">From
+                                            ${{ number_format($relatedActivity->price, 0) }}</span>
+                                        <a href="{{ route('activity.detail', $relatedActivity->id) }}"
+                                            class="book-now-mini">Book Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -962,7 +1223,10 @@
                                     </div>
                                 </div>
                                 <p class="mb-2">Experience Bedouin hospitality under the stars in Wadi Rum.</p>
-                                <div class="activity-price">From $85 USD</div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="activity-price">From $85 USD</span>
+                                    <a href="#" class="btn btn-sm book-now-btn">Book</a>
+                                </div>
                             </div>
                         </div>
                         <div class="activity-card">
@@ -978,7 +1242,10 @@
                                     </div>
                                 </div>
                                 <p class="mb-2">Relax and float in mineral-rich, therapeutic mud.</p>
-                                <div class="activity-price">From $95 USD</div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="activity-price">From $95 USD</span>
+                                    <a href="#" class="btn btn-sm book-now-btn">Book</a>
+                                </div>
                             </div>
                         </div>
                     @endif
@@ -1073,8 +1340,18 @@
                                                     id="participantCount">1</span> Participants</div>
                                         </div>
                                         <div class="tour-image">
-                                            <img src="{{ asset($activity->image ? 'storage/' . $activity->image : 'api/placeholder/80/80') }}"
-                                                alt="{{ $activity->name }}" class="rounded-circle shadow-sm">
+                                            @if ($activity->has_images)
+                                                @php
+                                                    $primaryImage = $activity->images
+                                                        ->where('is_primary', true)
+                                                        ->first();
+                                                @endphp
+                                                <img src="{{ asset('storage/' . $primaryImage->path) }}"
+                                                    alt="{{ $activity->name }}" class="rounded-circle shadow-sm">
+                                            @else
+                                                <img src="{{ asset('api/placeholder/80/80') }}"
+                                                    alt="{{ $activity->name }}" class="rounded-circle shadow-sm">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="regular-price mt-3">
@@ -1314,6 +1591,309 @@
         </div>
     </div>
 
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login Required</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="py-4">
+                        <i class="fas fa-user-lock fa-3x text-primary mb-3"></i>
+                        <h4 class="mb-3">Please login to continue</h4>
+                        <p class="text-muted mb-4">You need to be logged in to book this experience. Please login to your
+                            account or create a new one.</p>
+
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="{{ route('login') }}" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i> Login
+                            </a>
+                            <a href="{{ route('register') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i> Sign Up
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="modal fade review-modal" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalLabel">Review Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="review-avatar-large">
+                        <img id="reviewModalAvatar" src="/api/placeholder/80/80" alt="Reviewer">
+                    </div>
+                    <h4 id="reviewModalName" class="mb-1">Reviewer Name</h4>
+                    <div id="reviewModalDate" class="review-date">Visited April 2023</div>
+                    <div id="reviewModalRating" class="rating-large">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <div id="reviewModalComment" class="review-text">
+                        "The review text will appear here."
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Reviews Modal -->
+    <div class="modal fade" id="allReviewsModal" tabindex="-1" aria-labelledby="allReviewsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="allReviewsModalLabel">All Reviews for {{ $activity->name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="allReviewsContainer">
+                        <!-- Reviews will be loaded here -->
+                        @if ($activity->reviews && $activity->reviews->where('status', 'approved')->count() > 0)
+                            @foreach ($activity->reviews->where('status', 'approved') as $review)
+                                <div class="review-card mb-4" data-review-id="{{ $review->id }}">
+                                    <div class="review-avatar">
+                                        <img src="{{ $review->user->profile_image ? asset('storage/' . $review->user->profile_image) : '/api/placeholder/60/60' }}"
+                                            alt="{{ $review->user->first_name ?? 'Reviewer' }}">
+                                    </div>
+                                    <div class="review-content">
+                                        <h5 class="reviewer-name">{{ $review->user->first_name ?? 'Anonymous' }}
+                                            {{ $review->user->last_name ?? '' }}</h5>
+                                        <div class="review-date">Visited
+                                            {{ \Carbon\Carbon::parse($review->created_at)->format('F Y') }}</div>
+                                        <div class="review-rating mb-2">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i
+                                                    class="fas fa-star {{ $i <= $review->rating ? 'text-warning' : 'text-muted' }}"></i>
+                                            @endfor
+                                        </div>
+                                        <div class="review-text">
+                                            "{{ $review->comment }}"
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="no-reviews-message">
+                                <i class="far fa-comment-alt"></i>
+                                <h4>No Reviews Yet</h4>
+                                <p>This activity doesn't have any reviews yet. Be the first to share your experience!</p>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Write Review Modal -->
+    <div class="modal fade" id="writeReviewModal" tabindex="-1" aria-labelledby="writeReviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="writeReviewModalLabel">Write a Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="reviewAlerts"></div>
+
+                    <div class="activity-summary mb-4">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ asset($primaryImage ? 'storage/' . $primaryImage->path : 'api/placeholder/100/100') }}"
+                                alt="{{ $activity->name }}" class="me-3"
+                                style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                            <div>
+                                <h4 class="mb-1">{{ $activity->name }}</h4>
+                                <p class="text-muted mb-0"><i class="fas fa-map-marker-alt me-1"></i>
+                                    {{ $activity->location ?? 'Location not specified' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review-guidelines bg-light p-3 rounded mb-4">
+                        <h6 class="mb-2"><i class="fas fa-lightbulb text-warning me-2"></i>Tips for a Great Review</h6>
+                        <ul class="mb-0 ps-3">
+                            <li>Focus on your personal experience</li>
+                            <li>Be specific about what you liked and any suggestions for improvement</li>
+                            <li>Keep it honest and helpful for other travelers</li>
+                        </ul>
+                    </div>
+
+                    <form id="reviewForm">
+                        <input type="hidden" name="activity_id" id="review_activity_id" value="{{ $activity->id }}">
+                        <input type="hidden" name="booking_id" id="review_booking_id" value="">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                        <div class="mb-4">
+                            <p class="fw-bold mb-2">How would you rate your experience?</p>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="rating" value="5" required>
+                                <label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+                            </div>
+                            <div class="invalid-feedback rating-error">Please select a rating</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="comment" class="form-label fw-bold">Your Review</label>
+                            <textarea id="comment" name="comment" rows="5" class="form-control"
+                                placeholder="Share your experience, what you enjoyed, and any suggestions for improvement..." required></textarea>
+                            <div class="form-text">Minimum 10 characters, maximum 1000 characters.</div>
+                            <div class="invalid-feedback comment-error">Please enter your review (10-1000 characters)</div>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="submitReviewBtn">
+                                <i class="fas fa-paper-plane me-1"></i> Submit Review
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Review Modal -->
+    <div class="modal fade" id="editReviewModal" tabindex="-1" aria-labelledby="editReviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editReviewModalLabel">Edit Your Review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="editReviewAlerts"></div>
+
+                    <div class="activity-summary mb-4">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ asset($primaryImage ? 'storage/' . $primaryImage->path : 'api/placeholder/100/100') }}"
+                                alt="{{ $activity->name }}" class="me-3"
+                                style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                            <div>
+                                <h4 class="mb-1">{{ $activity->name }}</h4>
+                                <p class="text-muted mb-0"><i class="fas fa-map-marker-alt me-1"></i>
+                                    {{ $activity->location ?? 'Location not specified' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="edit-review-status mb-3"></div>
+
+                    <div class="review-guidelines bg-light p-3 rounded mb-4">
+                        <h6 class="mb-2"><i class="fas fa-lightbulb text-warning me-2"></i>Tips for a Great Review</h6>
+                        <ul class="mb-0 ps-3">
+                            <li>Focus on your personal experience</li>
+                            <li>Be specific about what you liked and any suggestions for improvement</li>
+                            <li>Keep it honest and helpful for other travelers</li>
+                        </ul>
+                    </div>
+
+                    <form id="editReviewForm">
+                        <input type="hidden" name="review_id" id="edit_review_id" value="">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="_method" value="PUT">
+
+                        <div class="mb-4">
+                            <p class="fw-bold mb-2">How would you rate your experience?</p>
+                            <div class="star-rating" id="editStarRating">
+                                <input type="radio" id="edit_star5" name="rating" value="5" required>
+                                <label for="edit_star5" title="5 stars"><i class="fas fa-star"></i></label>
+
+                                <input type="radio" id="edit_star4" name="rating" value="4">
+                                <label for="edit_star4" title="4 stars"><i class="fas fa-star"></i></label>
+
+                                <input type="radio" id="edit_star3" name="rating" value="3">
+                                <label for="edit_star3" title="3 stars"><i class="fas fa-star"></i></label>
+
+                                <input type="radio" id="edit_star2" name="rating" value="2">
+                                <label for="edit_star2" title="2 stars"><i class="fas fa-star"></i></label>
+
+                                <input type="radio" id="edit_star1" name="rating" value="1">
+                                <label for="edit_star1" title="1 star"><i class="fas fa-star"></i></label>
+                            </div>
+                            <div class="invalid-feedback edit-rating-error">Please select a rating</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="edit_comment" class="form-label fw-bold">Your Review</label>
+                            <textarea id="edit_comment" name="comment" rows="5" class="form-control"
+                                placeholder="Share your experience, what you enjoyed, and any suggestions for improvement..." required></textarea>
+                            <div class="form-text">Minimum 10 characters, maximum 1000 characters.</div>
+                            <div class="invalid-feedback edit-comment-error">Please enter your review (10-1000 characters)
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-danger" id="deleteReviewBtn">
+                                <i class="fas fa-trash-alt me-1"></i> Delete Review
+                            </button>
+
+                            <div>
+                                <button type="button" class="btn btn-secondary me-2"
+                                    data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary" id="updateReviewBtn">
+                                    <i class="fas fa-save me-1"></i> Update Review
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteReviewConfirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete your review? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteReview">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
@@ -1331,6 +1911,7 @@
             // Elements
             const bookingModal = document.getElementById('bookingModal');
             const openBookingModalBtn = document.getElementById('openBookingModal');
+            const openLoginModalBtn = document.getElementById('openLoginModal');
             const decreaseQuantityBtn = document.getElementById('decreaseQuantity');
             const increaseQuantityBtn = document.getElementById('increaseQuantity');
             const ticketQuantityInput = document.getElementById('ticketQuantity');
@@ -1352,11 +1933,12 @@
             const step3 = document.getElementById('step3');
             const bookingSteps = document.querySelectorAll('.booking-steps .step');
 
-            // Initialize modal
+            // Initialize modals
             const modal = new bootstrap.Modal(bookingModal);
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
 
             // Open modal when book button is clicked
-            openBookingModalBtn.addEventListener('click', function() {
+            openBookingModalBtn?.addEventListener('click', function() {
                 modal.show();
 
                 // Set the maximum number of tickets to the available capacity
@@ -1375,6 +1957,11 @@
                     document.getElementById('capacityWarningText').innerHTML =
                         `<strong>Note:</strong> Only ${maxCapacity} seats remain available for this activity.`;
                 }
+            });
+
+            // Open login modal when unregistered user tries to book
+            openLoginModalBtn?.addEventListener('click', function() {
+                loginModal.show();
             });
 
             // Quantity selector
@@ -2158,6 +2745,437 @@
                         `You'll earn ${pointsToEarn} points from this purchase (worth $${(pointsToEarn * 0.1).toFixed(2)})`;
                 }
             }
+
+            // Add event listeners for review modals
+            const reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            const allReviewsModal = new bootstrap.Modal(document.getElementById('allReviewsModal'));
+
+            // Make individual review cards clickable to show detailed view
+            document.querySelectorAll('.review-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Get review details from the card
+                    const avatar = this.querySelector('.review-avatar img').src;
+                    const name = this.querySelector('.reviewer-name').textContent;
+                    const date = this.querySelector('.review-date').textContent;
+                    const ratingHtml = this.querySelector('.review-rating').innerHTML;
+                    const comment = this.querySelector('.review-text').textContent;
+
+                    // Populate the modal with review details
+                    document.getElementById('reviewModalAvatar').src = avatar;
+                    document.getElementById('reviewModalName').textContent = name;
+                    document.getElementById('reviewModalDate').textContent = date;
+                    document.getElementById('reviewModalRating').innerHTML = ratingHtml;
+                    document.getElementById('reviewModalComment').textContent = comment;
+
+                    // Show the modal
+                    reviewModal.show();
+                });
+            });
+
+            // Handle "Load More Reviews" button click
+            if (document.getElementById('loadMoreReviews')) {
+                document.getElementById('loadMoreReviews').addEventListener('click', function() {
+                    allReviewsModal.show();
+                });
+            }
+
+            // Make reviews in the all reviews modal clickable too
+            document.querySelectorAll('#allReviewsContainer .review-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    // Get review details from the card
+                    const avatar = this.querySelector('.review-avatar img').src;
+                    const name = this.querySelector('.reviewer-name').textContent;
+                    const date = this.querySelector('.review-date').textContent;
+                    const ratingHtml = this.querySelector('.review-rating').innerHTML;
+                    const comment = this.querySelector('.review-text').textContent;
+
+                    // Populate the review modal
+                    document.getElementById('reviewModalAvatar').src = avatar;
+                    document.getElementById('reviewModalName').textContent = name;
+                    document.getElementById('reviewModalDate').textContent = date;
+                    document.getElementById('reviewModalRating').innerHTML = ratingHtml;
+                    document.getElementById('reviewModalComment').textContent = comment;
+
+                    // Hide all reviews modal and show the single review modal
+                    allReviewsModal.hide();
+                    setTimeout(() => reviewModal.show(), 500);
+                });
+            });
+
+            // Review modal handling
+            const writeReviewModal = new bootstrap.Modal(document.getElementById('writeReviewModal'));
+            const editReviewModal = new bootstrap.Modal(document.getElementById('editReviewModal'));
+            const deleteReviewConfirmModal = new bootstrap.Modal(document.getElementById(
+                'deleteReviewConfirmModal'));
+
+            // Handle "Write a Review" button click
+            document.querySelectorAll('.write-review-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const bookingId = this.getAttribute('data-booking-id');
+                    document.getElementById('review_booking_id').value = bookingId;
+
+                    // Reset form
+                    document.getElementById('reviewForm').reset();
+                    document.getElementById('reviewAlerts').innerHTML = '';
+
+                    // Show write review modal
+                    writeReviewModal.show();
+                });
+            });
+
+            // Handle review submission
+            document.getElementById('reviewForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Disable submit button and show loading
+                const submitBtn = document.getElementById('submitReviewBtn');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML =
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+
+                // Get form data
+                const formData = new FormData(this);
+
+                // Validate form
+                let isValid = true;
+                let errors = [];
+
+                const rating = formData.get('rating');
+                const comment = formData.get('comment');
+
+                if (!rating) {
+                    document.querySelector('.rating-error').style.display = 'block';
+                    errors.push('Please select a rating');
+                    isValid = false;
+                } else {
+                    document.querySelector('.rating-error').style.display = 'none';
+                }
+
+                if (!comment || comment.length < 10 || comment.length > 1000) {
+                    document.querySelector('.comment-error').style.display = 'block';
+                    errors.push('Please enter a review between 10 and 1000 characters');
+                    isValid = false;
+                } else {
+                    document.querySelector('.comment-error').style.display = 'none';
+                }
+
+                if (!isValid) {
+                    // Show errors
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    return;
+                }
+
+                // Submit data via AJAX using a regular form submission approach (not JSON)
+                fetch('{{ route('reviews.quick') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                            'Accept': 'application/json'
+                        },
+                        body: formData // Using FormData instead of JSON.stringify
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Check for either success key (from older code) or status == 'success' (from newer code)
+                        if (data.success || data.status === 'success') {
+                            // Show success message
+                            Swal.fire({
+                                title: 'Review Submitted!',
+                                text: data.message ||
+                                    'Your review has been submitted successfully and is pending approval.',
+                                icon: 'success',
+                                confirmButtonColor: '#92400b'
+                            }).then(() => {
+                                // Close modal and reload page to show the new review
+                                const writeReviewModal = bootstrap.Modal.getInstance(document
+                                    .getElementById('writeReviewModal'));
+                                writeReviewModal.hide();
+                                location.reload();
+                            });
+                        } else {
+                            // Show error message
+                            const errorMessage = data.message ||
+                                'An error occurred while submitting your review.';
+                            const alertHtml = `
+                            <div class="alert alert-danger">
+                                <strong>Error!</strong> ${errorMessage}
+                            </div>
+                        `;
+                            document.getElementById('reviewAlerts').innerHTML = alertHtml;
+
+                            // Re-enable submit button
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnText;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+
+                        // Show error message
+                        const alertHtml = `
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> An unexpected error occurred. Please try again.
+                        </div>
+                    `;
+                        document.getElementById('reviewAlerts').innerHTML = alertHtml;
+
+                        // Re-enable submit button
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    });
+            });
+
+            // Open edit review modal when clicking on user's own review
+            // We need to check if the user is the author of the review
+            @auth
+            document.querySelectorAll('.review-card').forEach(card => {
+                const reviewId = card.getAttribute('data-review-id');
+                const reviewerName = card.querySelector('.reviewer-name').textContent.trim();
+
+                // Check if the logged-in user is the author of this review
+                // This is a simple check comparing the name, but you might want to use user IDs instead
+                if (reviewerName.includes('{{ Auth::user()->first_name }}')) {
+                    card.classList.add('my-review');
+
+                    // Add a click handler for edit when it's the user's own review
+                    card.addEventListener('click', function(e) {
+                        // If it's a click on the review card but not on any action buttons
+                        if (e.target.closest('.review-actions') === null) {
+                            // Fetch review data
+                            fetch(`{{ url('/reviews') }}/${reviewId}/edit`, {
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.review) {
+                                        const review = data.review;
+
+                                        // Populate edit form
+                                        document.getElementById('edit_review_id').value = review
+                                            .id;
+                                        document.querySelector(
+                                            `#editStarRating input[value="${review.rating}"]`
+                                        ).checked = true;
+                                        document.getElementById('edit_comment').value = review
+                                            .comment;
+
+                                        // Show review status
+                                        const statusHtml = `
+                                            <div class="review-status status-${review.status}">
+                                                <i class="fas ${review.status === 'approved' ? 'fa-check-circle' : (review.status === 'rejected' ? 'fa-times-circle' : 'fa-clock')} me-1"></i>
+                                                Status: ${review.status.charAt(0).toUpperCase() + review.status.slice(1)}
+                                                ${review.status === 'pending' ? '<small class="ms-2">(Your review is awaiting approval)</small>' : ''}
+                                                ${review.status === 'rejected' ? '<small class="ms-2">(Your review may need revisions)</small>' : ''}
+                                            </div>
+                                        `;
+                                        document.querySelector('.edit-review-status')
+                                            .innerHTML = statusHtml;
+
+                                        // Show edit modal instead of view modal
+                                        if (reviewModal._isShown) {
+                                            reviewModal.hide();
+                                            setTimeout(() => editReviewModal.show(), 500);
+                                        } else {
+                                            editReviewModal.show();
+                                        }
+                                    } else {
+                                        console.error('Error fetching review data:', data
+                                            .message || 'Unknown error');
+                                        // Show regular review modal as fallback
+                                        reviewModal.show();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    // Show regular review modal as fallback
+                                    reviewModal.show();
+                                });
+                        }
+                    });
+                }
+            });
+        @endauth
+
+        // Handle edit review form submission
+        document.getElementById('editReviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Disable submit button and show loading
+            const updateBtn = document.getElementById('updateReviewBtn');
+            const originalBtnText = updateBtn.innerHTML;
+            updateBtn.disabled = true;
+            updateBtn.innerHTML =
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+
+            // Get form data
+            const formData = new FormData(this);
+            const reviewId = formData.get('review_id');
+            const rating = formData.get('rating');
+            const comment = formData.get('comment');
+
+            // Validate form
+            let isValid = true;
+            let errors = [];
+
+            if (!rating) {
+                document.querySelector('.edit-rating-error').style.display = 'block';
+                errors.push('Please select a rating');
+                isValid = false;
+            } else {
+                document.querySelector('.edit-rating-error').style.display = 'none';
+            }
+
+            if (!comment || comment.length < 10 || comment.length > 1000) {
+                document.querySelector('.edit-comment-error').style.display = 'block';
+                errors.push('Please enter a review between 10 and 1000 characters');
+                isValid = false;
+            } else {
+                document.querySelector('.edit-comment-error').style.display = 'none';
+            }
+
+            if (!isValid) {
+                // Show errors
+                updateBtn.disabled = false;
+                updateBtn.innerHTML = originalBtnText;
+                return;
+            }
+
+            // Submit data via AJAX
+            fetch(`{{ url('/reviews') }}/${reviewId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        rating: rating,
+                        comment: comment
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        Swal.fire({
+                            title: 'Review Updated!',
+                            text: 'Your review has been updated successfully and is pending approval.',
+                            icon: 'success',
+                            confirmButtonColor: '#92400b'
+                        }).then(() => {
+                            // Close modal and reload page to show the updated review
+                            editReviewModal.hide();
+                            location.reload();
+                        });
+                    } else {
+                        // Show error message
+                        const alertHtml = `
+                                <div class="alert alert-danger">
+                                    <strong>Error!</strong> ${data.message || 'An error occurred while updating your review.'}
+                                </div>
+                            `;
+                        document.getElementById('editReviewAlerts').innerHTML = alertHtml;
+
+                        // Re-enable submit button
+                        updateBtn.disabled = false;
+                        updateBtn.innerHTML = originalBtnText;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    // Show error message
+                    const alertHtml = `
+                            <div class="alert alert-danger">
+                                <strong>Error!</strong> An unexpected error occurred. Please try again.
+                            </div>
+                        `;
+                    document.getElementById('editReviewAlerts').innerHTML = alertHtml;
+
+                    // Re-enable submit button
+                    updateBtn.disabled = false;
+                    updateBtn.innerHTML = originalBtnText;
+                });
+        });
+
+        // Handle delete review button click
+        document.getElementById('deleteReviewBtn').addEventListener('click', function() {
+            // Show delete confirmation modal
+            deleteReviewConfirmModal.show();
+        });
+
+        // Handle confirm delete button click
+        document.getElementById('confirmDeleteReview').addEventListener('click', function() {
+            const reviewId = document.getElementById('edit_review_id').value;
+
+            // Disable button and show loading
+            this.disabled = true;
+            this.innerHTML =
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+
+            // Submit delete request
+            fetch(`{{ url('/reviews') }}/${reviewId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        Swal.fire({
+                            title: 'Review Deleted!',
+                            text: 'Your review has been deleted successfully.',
+                            icon: 'success',
+                            confirmButtonColor: '#92400b'
+                        }).then(() => {
+                            // Close modals and reload page
+                            deleteReviewConfirmModal.hide();
+                            editReviewModal.hide();
+                            location.reload();
+                        });
+                    } else {
+                        // Show error message
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data.message || 'An error occurred while deleting your review.',
+                            icon: 'error',
+                            confirmButtonColor: '#92400b'
+                        });
+
+                        // Re-enable button
+                        this.disabled = false;
+                        this.innerHTML = 'Delete';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+
+                    // Show error message
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An unexpected error occurred. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: '#92400b'
+                    });
+
+                    // Re-enable button
+                    this.disabled = false;
+                    this.innerHTML = 'Delete';
+                });
+        });
         });
     </script>
 @endpush

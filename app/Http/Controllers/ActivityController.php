@@ -75,4 +75,16 @@ class ActivityController extends Controller
 
         return view('public.pages.detailed', compact('activity', 'similarActivities', 'weather'));
     }
+
+    /**
+     * Display the detailed view of an activity (alias for show).
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
+    public function detailed($id)
+    {
+        // This method is an alias for show() to maintain compatibility with route 'activities.detailed'
+        return $this->show($id);
+    }
 }

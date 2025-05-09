@@ -108,7 +108,40 @@ class UserController extends Controller
     public function show($id): View
     {
         $user = User::findOrFail($id);
-        return view('admin.users.show', compact('user'));
+
+        // Get the user's referrer information if available
+        if ($user->referred_by) {
+            $user->load('referrer');
+        }
+
+        // Get users referred by this user
+        $referredUsers = User::where('referred_by', $user->id)->get();
+
+        // Get user's bookings
+        $bookings = $user->bookings()->latest()->take(5)->get();
+
+        // Get user's activity bookings
+        $activities = $user->activityBookings()->latest()->take(5)->get();
+
+        // Get user's reviews
+        $reviews = $user->reviews()->latest()->take(5)->get();
+
+        // Get user's wishlist
+        $wishlist = $user->wishlist()->latest()->take(6)->get();
+
+        // You would typically have a points history model, but for now we'll create a placeholder
+        // This would come from a dedicated table in a real implementation
+        $pointsHistory = collect(); // Empty collection as placeholder
+
+        return view('admin.users.show', compact(
+            'user',
+            'referredUsers',
+            'bookings',
+            'activities',
+            'reviews',
+            'wishlist',
+            'pointsHistory'
+        ));
     }
 
     /**

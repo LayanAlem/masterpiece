@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('image');
             $table->integer('vote_count')->default(0);
-            $table->boolean('is_approved')->default(false);
+            $table->enum('status', ['published', 'pending', 'rejected'])->default('pending'); // Define allowed values
             $table->boolean('is_winner')->default(false);
             $table->timestamps();
         });

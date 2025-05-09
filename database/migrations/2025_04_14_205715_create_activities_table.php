@@ -22,14 +22,25 @@ return new class extends Migration
             $table->enum('season', ['winter', 'spring', 'summer', 'autumn']);
             $table->boolean('is_family_friendly')->default(false);
             $table->boolean('is_accessible')->default(false);
-            $table->string('image')->nullable();
+            $table->boolean('has_images')->default(false);
             $table->softDeletes();
+            $table->timestamps();
+        });
+
+        // Create table for activity images
+        Schema::create('activity_images', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('activity_id')->constrained()->onDelete('cascade');
+            $table->string('path');
+            $table->boolean('is_primary')->default(false);
+            $table->integer('display_order')->default(0);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists('activity_images');
         Schema::dropIfExists('activities');
     }
 };

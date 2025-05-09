@@ -63,21 +63,32 @@ body {
     transition: var(--transition);
 }
 
+/* Remove any conflicting styles first */
 .nav-link:after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 50%;
-    background-color: var(--primary);
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
+    display: none !important;
 }
 
-.nav-link:hover:after,
-.nav-link.active:after {
-    width: 60%;
+/* Reset dropdown items */
+.dropdown-toggle::after {
+    display: none;
+}
+
+/* Clean styling for navbar dropdowns */
+.navbar .nav-item.dropdown .dropdown-toggle::after {
+    display: inline-block !important;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-left: 0.3em solid transparent;
+    border-bottom: 0;
+}
+
+/* Fix positioning of the caret */
+.navbar .nav-item.dropdown .nav-link {
+    display: flex;
+    align-items: center;
 }
 
 .nav-link:hover,
@@ -121,11 +132,11 @@ body {
 }
 
 .sidebar-header {
-    background: linear-gradient(
-        135deg,
-        var(--primary) 0%,
-        var(--primary-dark) 100%
-    );
+ /* Dark overlay for better text readability */
+    background-image: url("/assets/images/profile_bg.jpg"); /* Path to your background image */
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
     color: var(--white);
     padding: 30px 20px;
     text-align: center;
@@ -140,7 +151,18 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 0;
+    background-color: rgba(0, 0, 0, 0.2); Additional overlay for depth
+}
+
+/* Make children position relative to appear above the blur overlay */
+.sidebar-header .avatar,
+.sidebar-header .user-name,
+.sidebar-header .membership {
+    position: relative;
+    z-index: 1;
 }
 
 .sidebar-header .avatar {
@@ -753,26 +775,31 @@ body {
 }
 
 .code-value {
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-dark);
     margin-bottom: 0;
-    color: var(--primary);
     position: relative;
     display: inline-block;
+    font-family: "Consolas", "Monaco", monospace;
+    letter-spacing: 0.5px;
+    user-select: all;
 }
 
-.code-value:after {
-    content: "📋";
-    font-size: 1rem;
-    margin-left: 10px;
-    opacity: 0.7;
-    cursor: pointer;
-    transition: var(--transition);
+.code-display {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 5px;
 }
 
-.code-value:hover:after {
-    opacity: 1;
+#copy-feedback-message {
+    color: var(--green);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-style: italic;
+    transition: all 0.3s ease;
 }
 
 .rewards-label {
@@ -1117,4 +1144,475 @@ body {
     background-color: #e74c3c;
     border: none;
     padding: 8px 25px;
+}
+
+/* =================================
+   Modern Button Styles
+   ================================= */
+
+.btn-profile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem; /* 8px */
+    padding: 0.625rem 1.25rem; /* 10px 20px */
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1.5;
+}
+
+.btn-profile-primary {
+    background-color: var(--primary);
+    color: white;
+    border: 1px solid var(--primary);
+}
+
+.btn-profile-primary:hover {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(146, 64, 11, 0.2);
+}
+
+.btn-profile-secondary {
+    background-color: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.btn-profile-secondary:hover {
+    background-color: rgba(146, 64, 11, 0.05);
+    color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-profile-danger {
+    background-color: #dc3545;
+    color: white;
+    border: 1px solid #dc3545;
+}
+
+.btn-profile-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
+}
+
+.btn-profile-light {
+    background-color: #f8f9fa;
+    color: #343a40;
+    border: 1px solid #dee2e6;
+}
+
+.btn-profile-light:hover {
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+    color: #343a40;
+}
+
+.btn-profile-sm {
+    padding: 0.5rem 1rem; /* 8px 16px */
+    font-size: 0.8rem;
+}
+
+/* Apply base style to existing edit/save buttons */
+.edit-button,
+.save-button {
+    /* Inherit from .btn-profile and specific type */
+    /* Example: class="edit-button btn-profile btn-profile-secondary btn-profile-sm" */
+    /* Remove redundant styles if applying classes directly */
+    background-color: transparent; /* Overridden by btn class */
+    color: var(--primary); /* Overridden by btn class */
+    border: 1px solid var(--primary); /* Overridden by btn class */
+    padding: 8px 16px; /* Overridden by btn class */
+    border-radius: 8px; /* Overridden by btn class */
+    font-size: 0.875rem; /* Overridden by btn class */
+    font-weight: 500; /* Overridden by btn class */
+    transition: var(--transition); /* Overridden by btn class */
+    display: inline-flex;
+    align-items: center;
+    gap: 5px; /* Overridden by btn class */
+}
+
+/* Hide original save button, rely on edit-mode toggle */
+#save-info-btn,
+#save-password-btn {
+    display: none;
+}
+.edit-mode #save-info-btn,
+.edit-mode #save-password-btn {
+    display: inline-flex; /* Or inline-block if preferred */
+}
+.edit-mode #edit-info-btn,
+.edit-mode #edit-password-btn {
+    display: none;
+}
+
+/* =================================
+   Modern Booking Card Styles
+   ================================= */
+
+.booking-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.booking-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.booking-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.booking-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin: 0;
+}
+
+.booking-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Use existing status colors */
+.booking-status.status-confirmed {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+.booking-status.status-pending {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+.booking-status.status-completed {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+.booking-status.status-cancelled {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.booking-card-body {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px 20px;
+}
+
+.booking-detail {
+    font-size: 0.9rem;
+}
+
+.booking-detail-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.booking-detail-value {
+    color: var(--dark);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.booking-detail-value i {
+    color: var(--primary);
+    font-size: 0.9em;
+}
+
+.booking-card-footer {
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .booking-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .booking-card-body {
+        grid-template-columns: 1fr; /* Stack details vertically */
+        gap: 12px;
+    }
+    .booking-card-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .booking-card-footer .btn-profile {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Ensure empty state is visible */
+.empty-bookings {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    border: 2px dashed var(--medium-gray);
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+}
+
+.empty-bookings i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.3;
+    color: var(--primary);
+}
+.empty-bookings p {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* =================================
+   Modern Referral Section Styles
+   ================================= */
+
+#referral-section .content-card {
+    /* Subtle gradient background */
+    background: linear-gradient(135deg, #ffffff 0%, #fdfbfb 100%);
+}
+
+#referral-section .content-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Increased gap */
+}
+
+.referral-info-box {
+    background-color: #fff; /* Keep it clean */
+    border-radius: 10px; /* Slightly larger radius */
+    padding: 25px;
+    border: 1px solid #e9ecef;
+    border-left: 4px solid var(--primary-light, #b45309); /* Accent border */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+}
+
+.referral-code-display {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa; /* Light background for contrast */
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    gap: 15px;
+}
+
+.referral-code-display .code-label {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0;
+    flex-shrink: 0;
+    font-weight: 500;
+}
+
+.referral-code-display .code-value {
+    font-family: "Consolas", "Monaco", monospace; /* Alternative monospace */
+    font-size: 1.2rem; /* Slightly larger code */
+    font-weight: 600;
+    color: var(--primary-dark, #793509);
+    background-color: transparent; /* Remove inner background */
+    padding: 0;
+    border-radius: 0;
+    user-select: all;
+    margin-left: 10px;
+    letter-spacing: 0.5px;
+}
+
+.copy-code-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 1.2rem; /* Match code size */
+    padding: 5px;
+    transition: color 0.2s ease, transform 0.2s ease;
+    margin-left: auto;
+    line-height: 1; /* Ensure icon aligns well */
+}
+
+.copy-code-btn:hover {
+    color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.copy-feedback {
+    font-size: 0.85rem;
+    color: var(--green, #15803d);
+    margin-left: 8px;
+    display: none;
+    font-style: italic;
+    font-weight: 500;
+}
+
+.referral-rewards-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.referral-rewards-summary .rewards-label {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.referral-rewards-summary .rewards-value {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.referral-stats-modern {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(200px, 1fr)
+    ); /* Slightly wider min */
+    gap: 20px;
+}
+
+.referral-stat-item {
+    background: linear-gradient(145deg, #ffffff, #f9f9f9); /* Subtle gradient */
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.referral-stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Add colored accents based on icon */
+.referral-stat-item:nth-child(1)::before {
+    /* Wallet */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        var(--green, #15803d),
+        var(--primary-light, #b45309)
+    );
+}
+.referral-stat-item:nth-child(2)::before {
+    /* Users */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+        90deg,
+        var(--primary, #92400b),
+        var(--accent, #e09132)
+    );
+}
+
+.referral-stat-item i {
+    font-size: 2rem; /* Larger icon */
+    color: var(--primary);
+    margin-bottom: 15px;
+    display: block;
+    line-height: 1;
+}
+
+.referral-stat-item .stat-number {
+    font-size: 2rem; /* Larger number */
+    font-weight: 700;
+    color: var(--dark);
+    display: block;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.referral-stat-item .stat-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: block;
+    line-height: 1.4;
+}
+
+/* Adjust referral section in smaller screens */
+@media (max-width: 768px) {
+    /* ... other rules ... */
+    .referral-code-display {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .referral-code-display .code-value {
+        margin-left: 0;
+    }
+    .copy-code-btn {
+        margin-left: 0; /* Align left on mobile */
+        margin-top: 5px;
+    }
+    .referral-rewards-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    .referral-stats-modern {
+        grid-template-columns: 1fr; /* Stack stats */
+    }
 }

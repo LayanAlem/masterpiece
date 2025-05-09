@@ -256,3 +256,141 @@
         </div>
     </div>
 </div>
+
+<!-- Complete Your Journey Section -->
+@php
+    // Make sure we have a valid category_type_id before querying
+    $categoryTypeId = $activity->category_type_id ?? null;
+    $similarActivities = collect(); // Initialize as empty collection
+
+    if ($categoryTypeId) {
+        // Only get activities from the SAME category type, not from other categories
+        $similarActivities = \App\Models\Activity::where('category_type_id', $categoryTypeId)
+            ->where('id', '!=', $activity->id)
+            ->take(3)
+            ->get();
+    }
+@endphp
+
+@if ($similarActivities->count() > 0)
+    <div class="similar-activities-section mt-5 mb-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-4">Complete Your Journey</h2>
+            <p class="text-center text-muted mb-4">Discover more experiences similar to {{ $activity->name }}</p>
+
+            <div class="row">
+                @foreach ($similarActivities as $similarActivity)
+                    <div class="col-md-4 mb-4">
+                        <div class="similar-activity-card">
+                            <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden hover-scale">
+                                <div class="activity-image-container">
+                                    <img src="{{ $similarActivity->image_url }}" class="card-img-top"
+                                        alt="{{ $similarActivity->name }}">
+                                    <div class="activity-category-badge">
+                                        {{ $similarActivity->categoryType->name }}
+                                    </div>
+                                </div>
+                                <div class="card-body p-4">
+                                    <h5 class="card-title mb-3">{{ $similarActivity->name }}</h5>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="activity-location">
+                                            <i class="fas fa-map-marker-alt me-1 text-primary"></i>
+                                            {{ $similarActivity->location }}
+                                        </div>
+                                        <div class="activity-price">
+                                            <span class="fw-bold">${{ $similarActivity->price }}</span> <small
+                                                class="text-muted">per person</small>
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted mb-4">
+                                        {{ Str::limit($similarActivity->description, 100) }}</p>
+                                </div>
+                                <div class="card-footer bg-white border-0 p-4 pt-0">
+                                    <a href="{{ route('activities.show', $similarActivity->id) }}"
+                                        class="btn btn-primary btn-book-now w-100">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .similar-activities-section {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+            border-radius: 8px;
+        }
+
+        .similar-activity-card {
+            transition: transform 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: translateY(-5px);
+        }
+
+        .activity-image-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .activity-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .hover-scale:hover img {
+            transform: scale(1.1);
+        }
+
+        .activity-category-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .section-title {
+            position: relative;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        .btn-book-now {
+            font-weight: 600;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .btn-book-now:hover {
+            background-color: #3e9142;
+            border-color: #3e9142;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+@endif

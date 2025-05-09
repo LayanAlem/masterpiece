@@ -8,6 +8,7 @@ use App\Services\ReferralService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
         // Register the ReferralService as a singleton
         $this->app->singleton(ReferralService::class, function ($app) {
             return new ReferralService();
+        });
+
+        // Register PDF facade
+        $this->app->bind('PDF', function ($app) {
+            return new \Barryvdh\DomPDF\PDF($app['dompdf'], $app['config'], $app['files'], $app['view']);
         });
     }
 

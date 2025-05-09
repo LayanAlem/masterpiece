@@ -76,7 +76,7 @@
             <!-- Dashboard -->
             <li class="menu-item {{ Route::is('admin.dashboard') ? 'active' : '' }}">
               <a href="{{ route('admin.dashboard') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <i class="tf-icons bx bx-home-circle me-1"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
@@ -138,18 +138,13 @@
 
                 <ul class="menu-sub">
                   <li class="menu-item">
-                    <a href="layouts-without-menu.html" class="menu-link">
+                    <a href="{{ route('blog-posts.index') }}" class="menu-link">
                       <div data-i18n="Without menu">Posts</div>
                     </a>
                   </li>
                   <li class="menu-item">
-                    <a href="layouts-without-navbar.html" class="menu-link">
+                    <a href="{{ route('blog-comments.index') }}" class="menu-link">
                       <div data-i18n="Without navbar">Comments</div>
-                    </a>
-                  </li>
-                  <li class="menu-item">
-                    <a href="layouts-without-navbar.html" class="menu-link">
-                      <div data-i18n="Without navbar">Reported Comments</div>
                     </a>
                   </li>
                 </ul>
@@ -173,14 +168,14 @@
                   <div data-i18n="Analytics">Bookings</div>
                 </a>
             </li>
-            <li class="menu-item {{ Route::is('reviews.*') ? 'active' : '' }}">
-                <a href="{{ route('reviews.index') }}" class="menu-link">
+            <li class="menu-item {{ Route::is('admin.reviews.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.reviews.index') }}" class="menu-link">
                     <i class='bx bx-comment-edit me-1'></i>
                   <div data-i18n="Analytics">Reviews</div>
                 </a>
             </li>
-            <li class="menu-item">
-                <a href="index.html" class="menu-link">
+            <li class="menu-item {{ Route::is('payments.index') || Route::is('payments.show') ? 'active' : '' }}">
+                <a href="{{ route('payments.index') }}" class="menu-link">
                     <i class='bx bx-credit-card me-1'></i>
                   <div data-i18n="Analytics">Payments</div>
                 </a>
@@ -189,35 +184,17 @@
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Settings</span></li>
             <!-- Cards -->
-            <li class="menu-item">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class='bx bx-star me-1'></i>
-                  <div data-i18n="Layouts">Royalty Program</div>
-                </a>
-
-                <ul class="menu-sub">
-                  <li class="menu-item">
-                    <a href="layouts-without-menu.html" class="menu-link">
-                      <div data-i18n="Without menu">Points Management</div>
-                    </a>
-                  </li>
-                  <li class="menu-item">
-                    <a href="layouts-without-menu.html" class="menu-link">
-                      <div data-i18n="Without menu">Total Points</div>
-                    </a>
-                  </li>
-                  <li class="menu-item">
-                    <a href="layouts-without-navbar.html" class="menu-link">
-                      <div data-i18n="Without navbar">Used Points</div>
-                    </a>
-                  </li>
-                </ul>
-              </li>
             <!-- User interface -->
-            <li class="menu-item">
-                <a href="index.html" class="menu-link">
+            <li class="menu-item {{ Route::is('loyalty-points.*') ? 'active' : '' }}">
+                <a href="{{ route('loyalty-points.index') }}" class="menu-link">
+                    <i class='bx bx-star me-1'></i>
+                  <div data-i18n="Analytics">Loyalty Points</div>
+                </a>
+            </li>
+            <li class="menu-item {{ Route::is('admin.referrals.*') ? 'active' : '' }}">
+                <a href="{{ route('referrals.index') }}" class="menu-link">
                     <i class='bx bx-user-voice me-1'></i>
-                  <div data-i18n="Analytics">Referals</div>
+                  <div data-i18n="Analytics">Referrals</div>
                 </a>
             </li>
         </aside>
@@ -244,20 +221,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb rounded-3 p-2 mb-0 bg-light">
             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="bx bx-home-alt text-primary"></i></a></li>
-            @php
-                $routeName = Route::currentRouteName();
-                $routeSegments = explode('.', $routeName);
-                $lastSegment = end($routeSegments);
-                $secondSegment = count($routeSegments) > 1 ? $routeSegments[count($routeSegments) - 2] : null;
-            @endphp
-
-            @if ($secondSegment && $secondSegment !== 'admin')
-<li class="breadcrumb-item">
-                <a href="{{ route($secondSegment . '.index') }}">{{ ucfirst($secondSegment) }}</a>
-              </li>
+            @if (Route::currentRouteName() != 'admin.dashboard')
+<li class="breadcrumb-item active">{{ ucfirst(str_replace('.', ' ', str_replace('admin.', '', Route::currentRouteName()))) }}</li>
 @endif
-
-            <li class="breadcrumb-item active">{{ ucfirst($lastSegment) }}</li>
           </ol>
         </nav>
       </div>
@@ -379,6 +345,8 @@
 
     <!-- Page JS -->
     <script src="{{ asset('assetsAdmin/js/dashboards-analytics.js') }}"></script>
+
+    @yield('page-js')
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
